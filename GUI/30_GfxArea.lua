@@ -10,9 +10,35 @@ function GfxArea(
 	
 	local self = SubSurface(psrf, sx,sy, sw,sh )
 	self.setColor( color )
+	self.get():SetDrawingFlags( SelSurface.DrawingFlagsConst('BLEND') )
+
+	local mask = 0	-- invalid
+	local back
+
+	function self.FrozeUnder()	
+		-- The current content of the surface will be "under" our graphic
+		self.refresh() -- Ensure the background is fresh
+		back = self.get():clone()
+		mask = SelSurface:create { size = { sw,sh }, pixelformat=SelSurface.PixelFormatConst('ARGB') }
+		mask:SetColor( color.get() )
+	end
+
+	self.ownsrf = self.get
+	function self.get()
+		if mask == 0 then
+			return self.ownsrf()
+		else
+			return mask
+		end
+	end
 
 	function self.Clear()
-		self.get():Clear( bgcolor.get() )
+		if mask ~= 0 then
+			self.ownsrf():restore(back)
+			mask:Clear( bgcolor.get() )
+		else
+			self.get():Clear( bgcolor.get() )
+		end
 	end
 
 	function self.DrawGfx( data, amin )	-- Minimal graphics
@@ -35,6 +61,12 @@ function GfxArea(
 				self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
 			end
 			y = v 
+		end
+
+		if mask ~= 0 then	-- Apply the mask
+			self.ownsrf():SetBlittingFlags( SelSurface.BlittingFlagsConst('BLEND_ALPHACHANNEL') )
+			self.ownsrf():Blit( mask, nil, 0,0 )
+			self.ownsrf():SetBlittingFlags( SelSurface.BlittingFlagsConst('NONE') )
 		end
 	end
 
