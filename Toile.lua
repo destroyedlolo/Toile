@@ -1,7 +1,15 @@
 TOILE_VERSION=0.0001
 
+-- Ensure we're not using obsolete version
+assert( SELENE_VERSION >= 3.1000, "HDB requires at least Selene v3.10.00" )
+
+-- compatibility with newer Lua
+local unpack = unpack or table.unpack
+
+
 -- modules helpers
 lfs = require "lfs" -- LuaFileSystem
+
 
 function loaddir(path, dir )
 	local t={}
