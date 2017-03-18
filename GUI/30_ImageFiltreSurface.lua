@@ -1,6 +1,6 @@
 -- Apply a filtre to a surface
 
-function FiltreSurface(
+function ImageFiltreSurface(
 	psrf,	-- mother surface
 	sx,sy,	-- Surface's position
 	imask,	-- mask image
