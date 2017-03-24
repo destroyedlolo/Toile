@@ -5,8 +5,18 @@ function GfxArea(
 	sx,sy,	-- position in the mother surface
 	sw,sh,	-- its size
 	color,	-- initial foreground color
-	bgcolor -- background color
+	bgcolor, -- background color
+	opts
 )
+--[[ known options  :
+--	align : how to align the graphic (LEFT by default, RIGHT known also)
+--]]
+	if not opts then
+		opts = {}
+	end
+	if opts.align ~= ALIGN_RIGHT then
+		opts.align = ALIGN_LEFT
+	end
 	
 	local self = SubSurface(psrf, sx,sy, sw,sh )
 	self.setColor( color )
@@ -55,6 +65,10 @@ function GfxArea(
 
 		local y		-- previous value
 		local x=0	-- x position
+		if opts.align == ALIGN_RIGHT then
+			x = self.get():GetWidth() - data:HowMany()*sx
+		end
+
 		for v in data:iData() do
 			if y then
 				x = x+1
