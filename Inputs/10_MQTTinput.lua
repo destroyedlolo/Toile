@@ -9,11 +9,11 @@ function MQTTinput(aname, atpc, afunc)
 
 	-- methods
 	function self.get()
-		return SelShared.get( self.getTopic() )
+		return SelShared.get( self.getName() )
 	end
 
 	function self.set( v )
-		SelShared.set( self.getTopic(), v )
+		SelShared.set( self.getName(), v )
 	end
 
 	function self.received()
@@ -56,6 +56,15 @@ function MQTTinput(aname, atpc, afunc)
 	end
 
 	-- initialiser
+	local function rcvdt(tp, v)
+		self.set( v )
+		return true
+	end
+
+	if not afunc then
+		afunc = rcvdt
+	end
+
 	table.insert( Topics, { topic=atpc, func=afunc, trigger=self.received, trigger_once=true } )
 
 	return self

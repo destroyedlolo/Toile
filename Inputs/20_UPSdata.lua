@@ -19,7 +19,7 @@ function UPSdata( name, topic,
 
 	function self.update()
 		local v = self.get()
-		local maxp = tonumber( SelShared.get('onduleur/ups.realpower.nominal') )
+		local maxp = tonumber( nominal.get() )
 
 		if maxp then	-- we can calculate the real power
 			srf.update( string.format('%3.1f', v*maxp/100) .. ' W' )

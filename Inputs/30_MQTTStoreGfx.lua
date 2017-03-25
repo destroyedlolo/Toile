@@ -18,12 +18,12 @@ function MQTTStoreGfx(
 	local dt = SelCollection.create( sgfx.get():GetWidth() )
 	local ansmax
 
+	local self = MQTTDisplay( name, topic, srf, opts )
+
 	local function adddt( )
-		local v = SelShared.get( topic )
+		local v = self.get()	-- Retrieve last arrived data
 		dt:Push(v)
 	end
-
-	local self = MQTTDisplay( name, topic, srf, opts )
 
 	local function updgfx()
 		sgfx.DrawGfx(dt, opts.forced_min)
