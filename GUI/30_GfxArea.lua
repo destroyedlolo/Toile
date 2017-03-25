@@ -21,6 +21,7 @@ function GfxArea(
 	local self = SubSurface(psrf, sx,sy, sw,sh )
 	self.setColor( color )
 	self.get():SetDrawingFlags( SelSurface.DrawingFlagsConst('BLEND') )
+	self.get():SetRenderOptions( SelSurface.RenderOptionsFlagsConst('ANTIALIAS') )
 
 	local mask = 0	-- invalid
 	local back
