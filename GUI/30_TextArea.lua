@@ -59,6 +59,13 @@ function TextArea(
 		end
 	end
 
+	function self.SmartCR()	-- CR() only if the area is not empty
+		local x,y = self.getCSR()
+		if x~=0 or y~=0 then	-- Scroll only if the display is not empty
+			self.CR()
+		end
+	end
+
 	function self.DrawString( t )
 		local w = srf:GetFont():StringWidth( t )
 
