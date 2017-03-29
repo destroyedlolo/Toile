@@ -1,4 +1,4 @@
--- Apply a filtre to a surface
+-- Applies a filtre to a surface
 
 function ImageFiltreSurface(
 	psrf,	-- mother surface
