@@ -27,6 +27,13 @@ print( city ..':' .. self.get() )
 	end
 
 	self.TaskOnceAdd( self.update )
+	icn.TaskOnceAdd( self.update )
+	desc.TaskOnceAdd( self.update )
+	temp.TaskOnceAdd( self.update )
+	wspd.TaskOnceAdd( self.update )
+	wdir.TaskOnceAdd( self.update )
+	clouds.TaskOnceAdd( self.update )
+	humidity.TaskOnceAdd( self.update )
 
 	return self
 end
