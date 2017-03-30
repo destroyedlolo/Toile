@@ -1,6 +1,6 @@
 -- Reports condition
 
-local function Condition (
+function Condition (
 	srf,	-- surface to report condition
 	opts
 )
@@ -18,6 +18,7 @@ local function Condition (
 		opts.issue_color = COL_ORANGE
 	end
 
+	local self = {}
 	local status
 
 	function self.Update()

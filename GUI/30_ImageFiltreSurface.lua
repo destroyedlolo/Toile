@@ -30,16 +30,15 @@ function ImageFiltreSurface(
 
 	function self.Clear()
 		self.get():Clear( opts.bgcolor.get() )
+		self.ApplyMask()
+		self.refresh()
 	end
 
 	function self.Update( color )
 		self.get():Clear( color.get() )
+		self.ApplyMask()
 		self.refresh()
 	end
-
-	self.Clear()
-	self.ApplyMask()
-	self.refresh()
 
 	return self
 end
