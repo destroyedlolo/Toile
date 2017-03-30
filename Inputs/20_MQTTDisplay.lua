@@ -9,12 +9,14 @@ function MQTTDisplay(
 --	vfunction : validation function
 --	gradient : gradient to colorize
 --	suffix : string to add to the value (i.e. : unit)
+--
+--	+ options supported by MQTTinput
 --]]
 	if not opts then
 		opts = {}
 	end
 
-	local self = MQTTinput( name, topic, opts.vfunction)
+	local self = MQTTinput( name, topic, opts.vfunction, opts)
 
 	function self.update()
 		local v = self.get()

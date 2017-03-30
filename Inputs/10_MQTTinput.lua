@@ -1,6 +1,13 @@
 -- Generic class to handle input coming from MQTT
 
-function MQTTinput(aname, atpc, afunc)
+function MQTTinput(aname, atpc, afunc, opts)
+--[[ known options :
+--	condition - condition to report activities
+--]]
+	if not opts then
+		opts = {}
+	end
+
 	local self = MQTTdata(aname, atpc)
 
 	-- Private fields
@@ -19,6 +26,10 @@ function MQTTinput(aname, atpc, afunc)
 	function self.received()
 		self.TaskSubmit()
 		self.TaskOnceSubmit()
+
+		if opts.condition then
+			opts.condition.ping()
+		end
 	end
 
 	function self.TaskAdd( func )
