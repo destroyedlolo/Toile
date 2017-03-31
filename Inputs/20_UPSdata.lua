@@ -14,7 +14,7 @@ function UPSdata( name, topic,
 		opts = {}
 	end
 
-	local self = MQTTinput( name, topic, opts.vfunction )
+	local self = MQTTinput( name, topic, opts.vfunction, opts )
 	local nominal = MQTTinput( name .." nominal", topicnominal)
 
 	function self.update()
