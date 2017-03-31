@@ -10,6 +10,8 @@ function MQTTStoreGfx(
 --[[ known options  :
 --	suffix : string to add to the value (i.e. : unit)
 --	forced_min : force the minimum value to display
+--
+--	+ options supported by MQTTinput
 --]]
 	if not opts then
 		opts = {}

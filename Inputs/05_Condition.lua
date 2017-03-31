@@ -2,6 +2,7 @@
 
 function Condition (
 	srf,	-- surface to report condition
+	keep,	-- Duration to report ok condition
 	opts
 )
 --[[ known options :
@@ -18,14 +19,22 @@ function Condition (
 		opts.issue_color = COL_ORANGE
 	end
 
-	local self = {}
+	local self = bipTimer( keep )
 	local status
 
+	function self.turnoff() -- Timeout to report condition
+		status = 0
+		srf.Clear()
+		self.TaskOnceRemove(self.turnoff)
+	end
+
 	function self.Update()
+		self.TaskOnceRemove(self.turnoff)
 		if status == 0 then -- No condition
 			srf.Clear()
 		elseif status < 0 then -- Everything is fine
 			srf.Update( opts.ok_color )
+			self.TaskOnceAdd(self.turnoff)
 		else	-- Error condition
 			srf.Update( opts.issue_color )
 		end
@@ -37,6 +46,7 @@ function Condition (
 	end
 
 	function self.ping()	-- Report working condition
+		self.getTimer():Reset()
 		if status == 0 then
 			status = -1
 			self.Update()
