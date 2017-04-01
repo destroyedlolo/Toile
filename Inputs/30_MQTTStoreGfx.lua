@@ -4,7 +4,7 @@ function MQTTStoreGfx(
 	name, topic,
 	srf,	-- surface to display the value
 	sgfx,	-- surface to display the graphic
-	smax,	-- surface to display the maximum
+	smax,	-- surface to display the maximum	(optional)
 	opts
 )
 --[[ known options  :
@@ -42,7 +42,9 @@ function MQTTStoreGfx(
 
 	self.TaskOnceAdd( adddt )
 	self.TaskOnceAdd( updgfx )
-	self.TaskOnceAdd( updmax )
+	if smax then
+		self.TaskOnceAdd( updmax )
+	end
 
 	return self
 end
