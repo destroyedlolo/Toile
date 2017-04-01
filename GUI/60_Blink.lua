@@ -39,7 +39,12 @@ function Blink(
 		cons_r,cons_g,cons_b,cons_a = r,g,b,a
 	end
 
-	function self.update( v )
+	function self.update( v, keep )
+		if keep == true then
+			parent_update(v)
+			return
+		end
+			
 		cur_r,cur_g,cur_b,cur_a = COL_WHITE.get()
 		val = v
 		parent_setColorRGB( cur_r,cur_g,cur_b,cur_a )

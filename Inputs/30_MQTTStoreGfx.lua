@@ -10,6 +10,8 @@ function MQTTStoreGfx(
 --[[ known options  :
 --	suffix : string to add to the value (i.e. : unit)
 --	forced_min : force the minimum value to display
+--	force_max_refresh : force refresh even if the max value doesn't change
+--		(usefull if Max overlap gfx with 'frozen under')
 --
 --	+ options supported by MQTTinput
 --]]
@@ -34,8 +36,9 @@ function MQTTStoreGfx(
 
 	local function updmax()
 		local _,max = dt:MinMax()
-		if not ansmax or max ~= ansmax then
-			smax.update( max )
+
+		if not ansmax or max ~= ansmax or opts.force_max_refresh then
+			smax.update( max, ansmax == max)
 			ansmax = max
 		end
 	end

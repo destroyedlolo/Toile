@@ -12,6 +12,9 @@ function Field(
 --	sample_text : text to use to compute the field width
 --	width, height : force the field's geometry
 --	bgcolor : background color
+--	ndecimal : round to ndecimal
+--	refresh : force refresh even if the data doesn't change
+--		(useful if smax overlap gfx with mask)
 --
 --	At last one of sample_text or width MUST be provided
 --]]
@@ -60,6 +63,9 @@ function Field(
 	end
 
 	function self.update( v )
+		if opts.ndecimal then
+			v = string.format("%." .. (opts.ndecimal or 0) .. "f", v)
+		end
 		self.Clear()
 		self.DrawStringOff(v, 0,0)
 		self.refresh()
