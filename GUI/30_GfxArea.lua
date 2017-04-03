@@ -10,11 +10,12 @@ function GfxArea(
 )
 --[[ known options  :
 --	align : how to align the graphic (LEFT by default, RIGHT known also)
+--	stretch : if not null, enlarge the graphic to fit surface width (force left alignment)
 --]]
 	if not opts then
 		opts = {}
 	end
-	if opts.align ~= ALIGN_RIGHT then
+	if opts.align ~= ALIGN_RIGHT or opts.stretch then
 		opts.align = ALIGN_LEFT
 	end
 	
@@ -64,6 +65,12 @@ function GfxArea(
 		local h = self.get():GetHeight()-1
 		local sy = h/(max-min) -- vertical scale
 		local sx = self.get():GetWidth()/data:GetSize()
+		if opts.stretch then
+			if data:HowMany() == 0 then -- No data to display
+				return
+			end
+			sx = self.get():GetWidth()/data:HowMany()
+		end
 
 		local y		-- previous value
 		local x=0	-- x position
@@ -75,6 +82,9 @@ function GfxArea(
 			if y then
 				x = x+1
 				self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
+if opts.stretch then
+print(x, self.get():GetWidth(), (x-1)*sx, x*sx)
+end
 			end
 			y = v 
 		end
