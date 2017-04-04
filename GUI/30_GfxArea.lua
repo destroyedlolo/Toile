@@ -69,7 +69,7 @@ function GfxArea(
 			if data:HowMany() == 0 then -- No data to display
 				return
 			end
-			sx = self.get():GetWidth()/data:HowMany()
+			sx = self.get():GetWidth()/(data:HowMany() - 1) -- -1 as the 1st one doesn't have offset
 		end
 
 		local y		-- previous value
