@@ -82,9 +82,6 @@ function GfxArea(
 			if y then
 				x = x+1
 				self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
-if opts.stretch then
-print(x, self.get():GetWidth(), (x-1)*sx, x*sx)
-end
 			end
 			y = v 
 		end
