@@ -20,8 +20,8 @@ function Weather3H(
 	local temp = MQTTDisplay( city..'3H'..time..'temp', topic ..'/'.. city ..'/'.. time ..'/temperature', dsp.temp )
 	local wspd = MQTTDisplay( city..'3H'..time..'wspd', topic ..'/'.. city ..'/'.. time ..'/wind/speed', dsp.windspeed, { align = ALIGN_RIGHT } )
 	local wdir = MQTTinput( city..'3H'..time..'wdir', topic ..'/'.. city ..'/'.. time ..'/wind/direction')
-	local clouds = MQTTinput( city..'3H'..time..'clouds', topic ..'/'.. city ..'/'.. time ..'/clouds')
-	local humidity = MQTTinput( city..'3H'..time..'humidity', topic ..'/'.. city ..'/'.. time ..'/humidity')
+	local clouds = MQTTDisplay( city..'3H'..time..'clouds', topic ..'/'.. city ..'/'.. time ..'/clouds', dsp.clouds)
+	local humidity = MQTTDisplay( city..'3H'..time..'humidity', topic ..'/'.. city ..'/'.. time ..'/humidity', dsp.humidity)
 
 	dsp.setName( city..'3H'..time )
 	
@@ -31,10 +31,8 @@ print( city ..':' .. self.get() )
 
 	self.TaskOnceAdd( dsp.updtime )
 	icn.TaskOnceAdd( self.update )
---	temp.TaskOnceAdd( self.update )
-	wspd.TaskOnceAdd( self.update )
 	wdir.TaskOnceAdd( self.update )
-	clouds.TaskOnceAdd( self.update )
+--	clouds.TaskOnceAdd( self.update )
 	humidity.TaskOnceAdd( self.update )
 
 	return self
