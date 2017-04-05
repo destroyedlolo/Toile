@@ -7,6 +7,11 @@ function FieldBackBorder(
 	color,	-- initial foreground color
 	opts 	-- See Field for known options
 )
+--[[ known options  :
+--	ndecimal : round to ndecimal
+--
+--	TODO : all Field's need to be implemented
+--]]
 	if not opts then
 		opts = {}
 	end
@@ -26,6 +31,10 @@ function FieldBackBorder(
 	local self = FieldBackground( psrf, x-2,y-2, font, color, opts )
 
 	function self.update(v)
+		if opts.ndecimal then
+			v = string.format("%." .. (opts.ndecimal or 0) .. "f", tonumber(v))
+		end
+
 		self.Clear()
 
 		-- draw borders
