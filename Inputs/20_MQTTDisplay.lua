@@ -8,7 +8,6 @@ function MQTTDisplay(
 --[[ known options  :
 --	vfunction : validation function
 --	gradient : gradient to colorize
---	suffix : string to add to the value (i.e. : unit)
 --
 --	+ options supported by MQTTinput
 --]]
@@ -25,10 +24,6 @@ function MQTTDisplay(
 			srf.setColorRGB( opts.gradient.findgradientcolor(v) )
 		end
 
-		if opts.suffix then
-			v = v .. opts.suffix
-		end
-		
 		srf.update(v)
 	end
 

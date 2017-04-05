@@ -8,7 +8,6 @@ function MQTTStoreGfx(
 	opts
 )
 --[[ known options  :
---	suffix : string to add to the value (i.e. : unit)
 --	forced_min : force the minimum value to display
 --	force_max_refresh : force refresh even if the max value doesn't change
 --		(usefull if Max overlap gfx with 'frozen under')

@@ -15,6 +15,7 @@ function Field(
 --	ndecimal : round to ndecimal
 --	refresh : force refresh even if the data doesn't change
 --		(useful if smax overlap gfx with mask)
+--	suffix : string to add to the value (i.e. : unit)
 --
 --	At last one of sample_text or width MUST be provided
 --]]
@@ -64,7 +65,10 @@ function Field(
 
 	function self.update( v )
 		if opts.ndecimal then
-			v = string.format("%." .. (opts.ndecimal or 0) .. "f", v)
+			v = string.format("%." .. (opts.ndecimal or 0) .. "f", tonumber(v))
+		end
+		if opts.suffix then
+			v = v .. opts.suffix
 		end
 		self.Clear()
 		self.DrawStringOff(v, 0,0)
