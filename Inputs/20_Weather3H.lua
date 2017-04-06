@@ -29,11 +29,9 @@ function Weather3H(
 print( city ..':' .. self.get() )
 	end
 
-	self.TaskOnceAdd( dsp.updtime )
-	icn.TaskOnceAdd( self.update )
+	self.TaskOnceAdd( dsp.updTime )
+	icn.TaskOnceAdd( dsp.updateIcon )
 	wdir.TaskOnceAdd( self.update )
---	clouds.TaskOnceAdd( self.update )
-	humidity.TaskOnceAdd( self.update )
 
 	return self
 end
