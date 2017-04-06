@@ -25,13 +25,8 @@ function Weather3H(
 
 	dsp.setName( city..'3H'..time )
 	
-	function self.update()
-print( city ..':' .. self.get() )
-	end
-
 	self.TaskOnceAdd( dsp.updTime )
 	icn.TaskOnceAdd( dsp.updateIcon )
---	wdir.TaskOnceAdd( self.update )
 
 	return self
 end
