@@ -19,7 +19,7 @@ function Weather3H(
 	local desc = MQTTDisplay( city..'3H'..time..'desc', topic ..'/'.. city ..'/'.. time ..'/weather/description', dsp.desc)
 	local temp = MQTTDisplay( city..'3H'..time..'temp', topic ..'/'.. city ..'/'.. time ..'/temperature', dsp.temp )
 	local wspd = MQTTDisplay( city..'3H'..time..'wspd', topic ..'/'.. city ..'/'.. time ..'/wind/speed', dsp.windspeed, { align = ALIGN_RIGHT } )
-	local wdir = MQTTinput( city..'3H'..time..'wdir', topic ..'/'.. city ..'/'.. time ..'/wind/direction')
+	local wdir = MQTTDisplay( city..'3H'..time..'wdir', topic ..'/'.. city ..'/'.. time ..'/wind/direction', dsp.windd)
 	local clouds = MQTTDisplay( city..'3H'..time..'clouds', topic ..'/'.. city ..'/'.. time ..'/clouds', dsp.clouds)
 	local humidity = MQTTDisplay( city..'3H'..time..'humidity', topic ..'/'.. city ..'/'.. time ..'/humidity', dsp.humidity)
 
@@ -31,7 +31,7 @@ print( city ..':' .. self.get() )
 
 	self.TaskOnceAdd( dsp.updTime )
 	icn.TaskOnceAdd( dsp.updateIcon )
-	wdir.TaskOnceAdd( self.update )
+--	wdir.TaskOnceAdd( self.update )
 
 	return self
 end
