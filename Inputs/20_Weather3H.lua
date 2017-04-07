@@ -26,9 +26,7 @@ function Weather3H(
 		MQTTDisplay( city..'3H'..time..'wspd', topic ..'/'.. city ..'/'.. time ..'/wind/speed', dsp.windspeed, { align = ALIGN_RIGHT } )
 	end
 	if dsp.windd then
-print('avant')
 		MQTTDisplay( city..'3H'..time..'wdir', topic ..'/'.. city ..'/'.. time ..'/wind/direction', dsp.windd)
-print('apres')
 	end
 	if dsp.clouds then
 		MQTTDisplay( city..'3H'..time..'clouds', topic ..'/'.. city ..'/'.. time ..'/clouds', dsp.clouds)
