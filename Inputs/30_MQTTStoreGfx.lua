@@ -18,7 +18,7 @@ function MQTTStoreGfx(
 		opts = {}
 	end
 
-	local dt = SelCollection.create( sgfx.get():GetWidth() )
+	local dt = SelTimedCollection.create( sgfx.get():GetWidth() )
 	local ansmax
 
 	local self = MQTTDisplay( name, topic, srf, opts )
