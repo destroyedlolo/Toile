@@ -11,6 +11,8 @@ function GfxArea(
 --[[ known options  :
 --	align : how to align the graphic (LEFT by default, RIGHT known also)
 --	stretch : if not null, enlarge the graphic to fit surface width (force left alignment)
+--	vlines = { { val, col }, ... } : draw a line for specified value
+--	vevrylines = { { val, col }, ... } : draw a line every val'th value
 --]]
 	if not opts then
 		opts = {}
@@ -20,7 +22,6 @@ function GfxArea(
 	end
 	
 	local self = SubSurface(psrf, sx,sy, sw,sh )
-	self.setColor( color )
 	self.get():SetDrawingFlags( SelSurface.DrawingFlagsConst('BLEND') )
 	self.get():SetRenderOptions( SelSurface.RenderOptionsFlagsConst('ANTIALIAS') )
 
@@ -56,6 +57,10 @@ function GfxArea(
 	function self.DrawGfx( data, amin )	-- Minimal graphics
 		self.Clear()
 
+			--
+			-- Calculate scales
+			--
+
 		local min,max = data:MinMax()
 		min = amin or min
 		if max == min then	-- No dynamic data to draw
@@ -72,11 +77,37 @@ function GfxArea(
 			sx = self.get():GetWidth()/(data:HowMany() - 1) -- -1 as the 1st one doesn't have offset
 		end
 
+			--
+			-- Draw additional gfx
+			--
+
+		if opts.vevrylines then
+			for _,v in ipairs( opts.vevrylines ) do
+				self.setColor( v[2] )
+				for y = math.ceil(min/v[1])*v[1], math.floor(max/v[1])*v[1], v[1] do
+					self.get():DrawLine(0,  h - (y-min)*sy, self.get():GetWidth(), h - (y-min)*sy)
+				end
+			end
+		end
+
+		if opts.vlines then
+			for _,v in ipairs( opts.vlines ) do
+				self.setColor( v[2] )
+				self.get():DrawLine(0,  h - (v[1]-min)*sy, self.get():GetWidth(), h - (v[1]-min)*sy)
+			end
+		end
+
+			--
+			-- Drawing
+			--
+
 		local y		-- previous value
 		local x=0	-- x position
 		if opts.align == ALIGN_RIGHT then
 			x = self.get():GetWidth() - data:HowMany()*sx
 		end
+
+		self.setColor( color )
 
 		for v in data:iData() do
 			if y then
