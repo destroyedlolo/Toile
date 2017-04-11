@@ -28,7 +28,11 @@ function MQTTStoreGfx(
 		dt:Push(v)
 	end
 
-	local function updgfx()
+	function self.getCollection()
+		return dt
+	end
+
+	function self.updgfx()
 		sgfx.DrawGfx(dt, opts.forced_min)
 		SelShared.PushTask( sgfx.refresh, SelShared.TaskOnceConst("LAST") )
 	end
@@ -43,7 +47,7 @@ function MQTTStoreGfx(
 	end
 
 	self.TaskOnceAdd( adddt )
-	self.TaskOnceAdd( updgfx )
+	self.TaskOnceAdd( self.updgfx )
 	if smax then
 		self.TaskOnceAdd( updmax )
 	end
