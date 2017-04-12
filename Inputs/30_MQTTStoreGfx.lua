@@ -4,13 +4,14 @@ function MQTTStoreGfx(
 	name, topic,
 	srf,	-- surface to display the value
 	sgfx,	-- surface to display the graphic
-	smax,	-- surface to display the maximum	(optional)
 	opts
 )
 --[[ known options  :
 --	forced_min : force the minimum value to display
 --	force_max_refresh : force refresh even if the max value doesn't change
 --		(usefull if Max overlap gfx with 'frozen under')
+--	smax : max surface
+--	smin : min surface
 --
 --	+ options supported by MQTTinput
 --]]
@@ -19,7 +20,7 @@ function MQTTStoreGfx(
 	end
 
 	local dt = SelTimedCollection.create( sgfx.get():GetWidth() )
-	local ansmax
+	local ansmax, ansmin
 
 	local self = MQTTDisplay( name, topic, srf, opts )
 
@@ -37,19 +38,20 @@ function MQTTStoreGfx(
 		SelShared.PushTask( sgfx.refresh, SelShared.TaskOnceConst("LAST") )
 	end
 
-	local function updmax()
-		local _,max = dt:MinMax()
+	local function updmaxmin()
+		local min,max = dt:MinMax()
 
-		if not ansmax or max ~= ansmax or opts.force_max_refresh then
-			smax.update( max, ansmax == max)
+		if opts.smax and (not ansmax or max ~= ansmax or opts.force_max_refresh) then
+			opts.smax.update( max, ansmax == max)
 			ansmax = max
 		end
 	end
 
 	self.TaskOnceAdd( adddt )
 	self.TaskOnceAdd( self.updgfx )
-	if smax then
-		self.TaskOnceAdd( updmax )
+
+	if opts.smax or opts.smin then
+		self.TaskOnceAdd( updmaxmin )
 	end
 
 	return self
