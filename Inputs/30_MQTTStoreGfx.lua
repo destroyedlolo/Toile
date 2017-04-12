@@ -45,6 +45,11 @@ function MQTTStoreGfx(
 			opts.smax.update( max, ansmax == max)
 			ansmax = max
 		end
+
+		if opts.smin and (not ansmin or min ~= ansmin or opts.force_min_refresh) then
+			opts.smin.update( min, ansmin == min)
+			ansmin = min
+		end
 	end
 
 	self.TaskOnceAdd( adddt )
