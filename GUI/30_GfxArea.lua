@@ -11,10 +11,10 @@ function GfxArea(
 --[[ known options  :
 --	align : how to align the graphic (LEFT by default, RIGHT known also)
 --	stretch : if not null, enlarge the graphic to fit surface width (force left alignment)
---	vlines = { { val, col }, ... } : draw a line for specified value
---	vevrylines = { { val, col }, ... } : draw a line every val'th value
---	hlinesH = col : draw a line every hour.
---	hlinesD = col : draw a line every day.
+--	hlines = { { val, col }, ... } : draw a line for specified value
+--	heverylines = { { val, col }, ... } : draw a line every val'th value
+--	vlinesH = col : draw a line every hour.
+--	vlinesD = col : draw a line every day.
 --]]
 	if not opts then
 		opts = {}
@@ -82,8 +82,8 @@ function GfxArea(
 			--
 			-- Draw additional gfx
 			--
-		if opts.vevrylines then
-			for _,v in ipairs( opts.vevrylines ) do
+		if opts.heverylines then
+			for _,v in ipairs( opts.heverylines ) do
 				self.setColor( v[2] )
 				for y = math.ceil(min/v[1])*v[1], math.floor(max/v[1])*v[1], v[1] do
 					self.get():DrawLine(0,  h - (y-min)*sy, self.get():GetWidth(), h - (y-min)*sy)
@@ -91,8 +91,8 @@ function GfxArea(
 			end
 		end
 
-		if opts.vlines then
-			for _,v in ipairs( opts.vlines ) do
+		if opts.hlines then
+			for _,v in ipairs( opts.hlines ) do
 				self.setColor( v[2] )
 				self.get():DrawLine(0,  h - (v[1]-min)*sy, self.get():GetWidth(), h - (v[1]-min)*sy)
 			end
@@ -115,20 +115,20 @@ function GfxArea(
 			if y then
 				x = x+1
 
-				if opts.hlinesH then
+				if opts.vlinesH then
 					local hr = os.date('%H',t)
 					if ansH and ansH ~= hr then
-						self.setColor( opts.hlinesH )
+						self.setColor( opts.vlinesH )
 						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHeight())
 						self.setColor( color )
 					end
 					ansH = hr
 				end
 
-				if opts.hlinesD then
+				if opts.vlinesD then
 					local d = os.date('%d',t)
 					if ansD and ansD ~= d then
-						self.setColor( opts.hlinesD )
+						self.setColor( opts.vlinesD )
 						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHeight())
 						self.setColor( color )
 					end
