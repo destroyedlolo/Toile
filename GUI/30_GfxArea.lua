@@ -13,6 +13,8 @@ function GfxArea(
 --	stretch : if not null, enlarge the graphic to fit surface width (force left alignment)
 --	vlines = { { val, col }, ... } : draw a line for specified value
 --	vevrylines = { { val, col }, ... } : draw a line every val'th value
+--	hlinesH = col : draw a line every hour.
+--	hlinesD = col : draw a line every day.
 --]]
 	if not opts then
 		opts = {}
@@ -80,7 +82,6 @@ function GfxArea(
 			--
 			-- Draw additional gfx
 			--
-
 		if opts.vevrylines then
 			for _,v in ipairs( opts.vevrylines ) do
 				self.setColor( v[2] )
@@ -109,9 +110,31 @@ function GfxArea(
 
 		self.setColor( color )
 
-		for v in data:iData() do
+		local ansH,ansD
+		for v,t in data:iData() do
 			if y then
 				x = x+1
+
+				if opts.hlinesH then
+					local hr = os.date('%H',t)
+					if ansH and ansH ~= hr then
+						self.setColor( opts.hlinesH )
+						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHeight())
+						self.setColor( color )
+					end
+					ansH = hr
+				end
+
+				if opts.hlinesD then
+					local d = os.date('%d',t)
+					if ansD and ansD ~= d then
+						self.setColor( opts.hlinesD )
+						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHeight())
+						self.setColor( color )
+					end
+					ansD = d
+				end
+
 				self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
 			end
 			y = v 
