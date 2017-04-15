@@ -29,6 +29,10 @@ function MQTTStoreGfx(
 		dt:Push(v)
 	end
 
+	function self.getName()
+		return name
+	end
+
 	function self.getCollection()
 		return dt
 	end
