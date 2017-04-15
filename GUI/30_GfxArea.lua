@@ -64,7 +64,12 @@ function GfxArea(
 			--
 
 		local min,max = data:MinMax()
-		min = amin or min
+		if amin then
+			if amin < min then
+				min = amin
+			end
+		end
+	
 		if max == min then	-- No dynamic data to draw
 			self.ownsrf():Clear( bgcolor.get() ) -- Ensure empty surface if nothing as to be displayed
 			return
