@@ -5,6 +5,7 @@ function ImagesCollection(
 	opts
 )
 --[[ known options  :
+--	transparent : handle transparency
 --]]
 
 	if not opts then
@@ -16,11 +17,21 @@ function ImagesCollection(
 
 	function self.getImg( id )
 		if not Imgs[ id ] then
-			Imgs[ id ] = SelImage.create( dir .. id .. '.png' )
+			local t = SelImage.create( dir .. id .. '.png' )
+			if not opts.transparent then
+				Imgs[ id ] = t
+			else
+				Imgs[ id ] = t:toSurface()
+				t:destroy()
+			end
 		end
 		return Imgs[ id ]
 	end
 
+	function self.getTransparency()
+		return opts.transparent
+	end
+		
 	return self
 end
 
