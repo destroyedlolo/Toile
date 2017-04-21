@@ -22,7 +22,7 @@ function UPSdata( name, topic,
 		local maxp = tonumber( nominal.get() )
 
 		if maxp then	-- we can calculate the real power
-			srf.update( string.format('%3.1f', v*maxp/100) .. ' W' )
+			srf.update( string.format('%3.1f', v*maxp/100))
 		else
 			srf.update( v .. '%' )
 		end

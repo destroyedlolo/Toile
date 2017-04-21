@@ -64,12 +64,9 @@ function Field(
 		end
 	end
 
-	function self.update( v )
+	function self.updtxt( v )
 		if opts.ndecimal then
 			v = string.format("%." .. (opts.ndecimal or 0) .. "f", tonumber(v))
-		end
-		if opts.gradient then
-			self.setColorRGB( opts.gradient.findgradientcolor(v) )
 		end
 		if opts.suffix then
 			v = v .. opts.suffix
@@ -77,6 +74,14 @@ function Field(
 		self.Clear()
 		self.DrawStringOff(v, 0,0)
 		self.refresh()
+	end
+
+	function self.update( v )
+		if opts.gradient then
+			self.setColorRGB( opts.gradient.findgradientcolor(v) )
+		end
+
+		self.updtxt( v )
 	end
 
 	return self

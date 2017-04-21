@@ -27,7 +27,7 @@ function Blink(
 			animTimer.TaskOnceRemove( fade )
 		end
 
-		parent_update( val )
+		self.updtxt( val )
 	end
 
 	-- Overloading
@@ -40,8 +40,8 @@ function Blink(
 	end
 
 	function self.update( v, keep )
-		if keep == true then
-			parent_update(v)
+		if keep == true then	-- Only refresh a subsurface
+			self.updtxt(v)
 			return
 		end
 			
