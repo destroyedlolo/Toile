@@ -7,7 +7,6 @@ function MQTTDisplay(
 )
 --[[ known options  :
 --	vfunction : validation function
---	gradient : gradient to colorize
 --
 --	+ options supported by MQTTinput
 --]]
@@ -19,10 +18,6 @@ function MQTTDisplay(
 
 	function self.update()
 		local v = self.get()
-
-		if opts.gradient then
-			srf.setColorRGB( opts.gradient.findgradientcolor(v) )
-		end
 
 		srf.update(v)
 	end
