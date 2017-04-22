@@ -15,6 +15,7 @@ function GfxArea(
 --	heverylines = { { val, col }, ... } : draw a line every val'th value
 --	vlinesH = col : draw a line every hour.
 --	vlinesD = col : draw a line every day.
+--	min_delta : minimum delta b/w min and max value
 --]]
 	if not opts then
 		opts = {}
@@ -67,6 +68,13 @@ function GfxArea(
 		if amin then
 			if amin < min then
 				min = amin
+			end
+		end
+		if opts.min_delta then
+			if max - min < opts.min_delta then
+				local m = (max + min)/2
+				min = m - opts.min_delta/2
+				max = m + opts.min_delta/2
 			end
 		end
 	
