@@ -28,7 +28,7 @@ print("Calling", k, tbl[k] )
 	end
 
 	function self.ColorApply()	-- apply stored color
-		srf:SetColor( sr,sg,sb,sa )
+		self.get():SetColor( sr,sg,sb,sa )
 	end
 
 	function self.setColor( c )
