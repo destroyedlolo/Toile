@@ -12,7 +12,8 @@ function GfxArea(
 --	align : how to align the graphic (LEFT by default, RIGHT known also)
 --	stretch : if not null, enlarge the graphic to fit surface width (force left alignment)
 --	hlines = { { val, col }, ... } : draw a line for specified value
---	heverylines = { { val, col }, ... } : draw a line every val'th value
+--	heverylines = { { val, col [,limit] }, ... } : draw a line every val'th value
+--		if limit provided, lines are drawn only if max-min < limit
 --	vlinesH = col : draw a line every hour.
 --	vlinesD = col : draw a line every day.
 --	min_delta : minimum delta b/w min and max value
@@ -97,9 +98,18 @@ function GfxArea(
 			--
 		if opts.heverylines then
 			for _,v in ipairs( opts.heverylines ) do
-				self.setColor( v[2] )
-				for y = math.ceil(min/v[1])*v[1], math.floor(max/v[1])*v[1], v[1] do
-					self.get():DrawLine(0,  h - (y-min)*sy, self.get():GetWidth(), h - (y-min)*sy)
+				local draw = true
+				if v[3] then
+					if max - min >= v[3] then
+						draw = false
+					end
+				end
+
+				if draw == true then
+					self.setColor( v[2] )
+					for y = math.ceil(min/v[1])*v[1], math.floor(max/v[1])*v[1], v[1] do
+						self.get():DrawLine(0,  h - (y-min)*sy, self.get():GetWidth(), h - (y-min)*sy)
+					end
 				end
 			end
 		end
