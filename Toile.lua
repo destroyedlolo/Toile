@@ -1,10 +1,10 @@
-TOILE_VERSION=0.1402
+TOILE_VERSION=0.1500
 
 -- Ensure we're not using obsolete version
 assert( SELENE_VERSION >= 3.1400, "HDB requires at least Selene v3.14.00" )
 
 -- compatibility with newer Lua
-local unpack = unpack or table.unpack
+-- local unpack = unpack or table.unpack
 
 
 -- modules helpers
@@ -34,6 +34,7 @@ end
 local info = debug.getinfo(1,'S');
 local whereiam = string.match(info.source, "@(.-)([^\\/]-%.?([^%.\\/]*))$")
 
+SelLog.log('*M* Loading Toile v'.. TOILE_VERSION ..' ...' )
 loaddir(whereiam, 'Supports')
 animTimer = bipTimer(.25)	-- Animation timer
 
