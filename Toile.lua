@@ -34,7 +34,7 @@ end
 local info = debug.getinfo(1,'S');
 local whereiam = string.match(info.source, "@(.-)([^\\/]-%.?([^%.\\/]*))$")
 
-SelLog.log('*M* Loading Toile v'.. TOILE_VERSION ..' ...' )
+SelLog.log('Loading Toile v'.. TOILE_VERSION ..' ...' )
 loaddir(whereiam, 'Supports')
 animTimer = bipTimer(.25)	-- Animation timer
 
