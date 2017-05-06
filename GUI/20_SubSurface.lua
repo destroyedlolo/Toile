@@ -1,4 +1,4 @@
-require("tostring")
+-- require("tostring")
 
 function SubSurface(parent_surface, x,y,sx,sy )
 	local self = {}
@@ -9,7 +9,7 @@ function SubSurface(parent_surface, x,y,sx,sy )
 	local sr,sg,sb,sa -- stored color
 
 	-- methods
-
+--[[
 	-- EXPERIMENTAL
 	-- Export Selenite's methods
 	-- to this object
@@ -22,6 +22,7 @@ print("Calling", k, tbl[k] )
 	}
 	setmetatable( self, meta )
 	-- EXPERIMENTAL
+--]]
 
 	function self.get()
 		return srf
