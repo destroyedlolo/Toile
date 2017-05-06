@@ -8,7 +8,7 @@ function PopUp(
 --	opacity : window's opacity
 --	bgcolor : background color (default = COL_BLACK)
 --	bordercolor : color for window's border (default = COL_GREY)
---	keysactions : Active keys actions table
+--	keysactions : name of the Active KeysActions table
 --]]
 	if not opts then
 		opts = {}
@@ -23,13 +23,11 @@ function PopUp(
 		opts.bordercolor = COL_GREY
 	end
 
-	self = {}
 
 	local window = layer:CreateWindow(winparams)
 	window:SetOpacity(0xff)	-- Make the window visible
 	local wsrf = window:GetSurface()
 	local w,h = wsrf:GetSize()
-	local oldKA
 
 		-- Draw borders
 	wsrf:Clear( opts.bgcolor.get() )
@@ -37,7 +35,11 @@ function PopUp(
 	wsrf:DrawRectangle(0,0, w,h)
 	wsrf:Flip(SelSurface.FlipFlagsConst("NONE"))
 
+		-- work area
+	local self = SubSurface( wsrf, 3,3, w-6, h-6 )
+
 		-- manage keysactions
+	local oldKA
 	function self.setKeysActions( myKA )
 		assert( opts.keysactions, "keysactions MUST be present if setKeysActions() is used")
 		if not oldKA then	-- Save original one
@@ -46,10 +48,6 @@ function PopUp(
 		_G[opts.keysactions] = myKA
 	end
 		
-	function self.get()
-		return wsrf
-	end
-
 	function self.close()
 		if oldKA then
 			_G[opts.keysactions] = oldKA
