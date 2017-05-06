@@ -47,6 +47,21 @@ function vsList(
 		end
 	end
 
+		-- Manage selection
+	function self.selprev()
+		if selected > 1 then
+			selected = selected - 1
+		end
+		self.Update()
+	end
+
+	function self.selnext()
+		if selected < #list then
+			selected = selected + 1
+		end
+		self.Update()
+	end
+
 	self.Update()
 	return self
 end
