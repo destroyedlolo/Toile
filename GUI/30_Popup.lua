@@ -25,7 +25,7 @@ function PopUp(
 
 
 	local window = layer:CreateWindow(winparams)
-	window:SetOpacity(0xff)	-- Make the window visible
+	window:SetOpacity(opts.opacity)	-- Make the window visible
 	local wsrf = window:GetSurface()
 	local w,h = wsrf:GetSize()
 
