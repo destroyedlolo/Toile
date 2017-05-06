@@ -44,6 +44,7 @@ function vsList(
 				self.setColor( opts.unselcolor )
 			end
 			self.DrawString( v[1] )
+			self.SmartCR()
 		end
 	end
 
