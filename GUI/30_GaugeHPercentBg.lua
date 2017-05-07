@@ -23,12 +23,12 @@ function GaugeHPercentBg(
 	function self.Draw( v )
 		self.Clear()
 
-		self.get():SetClipS(0,0, self.get():GetWidth()*v/100, self.get():GetHeight())
+		self.get():SetClipS(0,0, self.get():GetWidth()*v/100, self.get():GetHight())
 		self.get():StretchBlit(degSrf)
 	
 		if bcolor then
 			self.get():SetClip()
-			self.get():DrawRectangle(0,0, self.get():GetWidth(), self.get():GetHeight())
+			self.get():DrawRectangle(0,0, self.get():GetWidth(), self.get():GetHight())
 		end
 
 		self.refresh()

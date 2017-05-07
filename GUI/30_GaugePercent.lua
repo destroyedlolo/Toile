@@ -29,14 +29,14 @@ function GaugePercent(
 		
 		self.ColorApply()	-- restore foreground color (if changed while drawing border)
 		if not opts.vertical then
-			self.get():FillRectangle( 0,0, self.get():GetWidth()*v/100, self.get():GetHeight() )
+			self.get():FillRectangle( 0,0, self.get():GetWidth()*v/100, self.get():GetHight() )
 		else
-			self.get():FillRectangle( 0,self.get():GetHeight()*(100-v)/100, self.get():GetWidth(), self.get():GetHeight() )
+			self.get():FillRectangle( 0,self.get():GetHight()*(100-v)/100, self.get():GetWidth(), self.get():GetHight() )
 		end
 
 		if opts.border_color then
 			self.get():SetColor( opts.border_color.get() )
-			self.get():DrawRectangle(0,0, self.get():GetWidth(), self.get():GetHeight())
+			self.get():DrawRectangle(0,0, self.get():GetWidth(), self.get():GetHight())
 		end
 	
 		self.refresh()

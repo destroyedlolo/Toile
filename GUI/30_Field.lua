@@ -44,7 +44,7 @@ function Field(
 	self.setColor( color )
 
 	-- methods
-	function self.getHeight()
+	function self.getHight()
 		return font:GetHeight()
 	end
 

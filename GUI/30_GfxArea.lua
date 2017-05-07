@@ -83,7 +83,7 @@ function GfxArea(
 			self.ownsrf():Clear( bgcolor.get() ) -- Ensure empty surface if nothing as to be displayed
 			return
 		end
-		local h = self.get():GetHeight()-1
+		local h = self.get():GetHight()-1
 		local sy = h/(max-min) -- vertical scale
 		local sx = self.get():GetWidth()/data:GetSize()
 		if opts.stretch then
@@ -142,7 +142,7 @@ function GfxArea(
 					local hr = os.date('%H',t)
 					if ansH and ansH ~= hr then
 						self.setColor( opts.vlinesH )
-						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHeight())
+						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHight())
 						self.setColor( color )
 					end
 					ansH = hr
@@ -152,7 +152,7 @@ function GfxArea(
 					local d = os.date('%d',t)
 					if ansD and ansD ~= d then
 						self.setColor( opts.vlinesD )
-						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHeight())
+						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHight())
 						self.setColor( color )
 					end
 					ansD = d
