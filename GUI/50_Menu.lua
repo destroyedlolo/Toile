@@ -30,26 +30,25 @@ function Menu(
 	opts.titlecolor = opts.titlecolor or opts.selcolor
 
 	local w,h = 0,0	-- computed size
+	local offy = 0	-- where to display the menu
 	if opts.title then
 		opts.titlefont = opts.titlefont or font
 		w = math.max( w, opts.titlefont:StringWidth( opts.title ) )
-		h = h + opts.titlefont:GetHeight()
+		h = h + opts.titlefont:GetHeight() + 15
+
+		offy = h
 	end
-	
+	for i,v in ipairs( list ) do
+		w = math.max( w, font:StringWidth(v[1]) )
+		h = h + font:GetHeight()
+	end
+
 	if not winparams.size then	-- compute size if not provided
 		winparams.size = { w+6, h+6 }
 	end
 
-self = {}
 
 	local popup = PopUp( winparams, opts )
-
-	self.setKeysActions = popup.setKeysActions
-	self.close = popup.close
-	
-	function self.getContenaire()
-		return popup
-	end
 
 	-- Draw the title
 	if opts.title then
@@ -57,6 +56,16 @@ self = {}
 		popup.get():SetFont( opts.titlefont )
 		popup.get():DrawString( opts.title, 0,0 )
 		popup.refresh()
+	end
+
+	-- Items list
+	self = vsList( popup, 0, offy, w, list, font, opts )
+
+	self.setKeysActions = popup.setKeysActions
+	self.close = popup.close
+	
+	function self.getContenaire()
+		return popup
 	end
 
 	return self
