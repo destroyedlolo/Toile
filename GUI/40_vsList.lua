@@ -12,6 +12,7 @@ function vsList(
 --	unselcolor : color for unselected entries (default = COL_LIGHTGREY)
 --	selcolor :  color for selected entry (default = COL_WHITE)
 --	default : default selected item (default = 1)
+--	userdata : object to be passed to each and every action functions
 --]]
 	if not opts then
 		opts = {}
@@ -39,7 +40,7 @@ function vsList(
 				self.setColor( opts.unselcolor )
 			end
 			self.DrawString( v[1] )
-			self.SmartCR()
+			self.CR()
 		end
 	end
 
@@ -56,6 +57,12 @@ function vsList(
 			selected = selected + 1
 		end
 		self.Update()
+	end
+
+	function self.action()
+		if list[selected][2] then
+			list[selected][2]( prt )
+		end
 	end
 
 	self.Update()
