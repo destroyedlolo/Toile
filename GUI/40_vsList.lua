@@ -16,15 +16,10 @@ function vsList(
 	if not opts then
 		opts = {}
 	end
-	if not opts.bgcolor then
-		opts.bgcolor = COL_BLACK
-	end
-	if not opts.unselcolor then
-		opts.unselcolor = COL_LIGHTGREY
-	end
-	if not opts.selcolor then
-		opts.selcolor = COL_WHITE
-	end
+		-- Caution, overwriten in Menu
+	opts.bgcolor = opts.bgcolor or COL_BLACK
+	opts.unselcolor = opts.unselcolor or COL_LIGHTGREY
+	opts.selcolor = opts.selcolor or COL_WHITE	
 
 	local selected = opts.default or 1	-- selected entry
 
