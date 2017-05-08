@@ -13,16 +13,10 @@ function PopUp(
 	if not opts then
 		opts = {}
 	end
-	if not opts.opacity then
-		opts.opacity = 0xff
-	end
-	if not opts.bgcolor then
-		opts.bgcolor = COL_BLACK
-	end
-	if not opts.bordercolor then
-		opts.bordercolor = COL_GREY
-	end
-
+	opts.opacity = opts.opacity or 0xff
+	opts.bgcolor = opts.bgcolor or COL_BLACK
+	opts.bordercolor = opts.bordercolor or COL_GREY
+	winparams.stacking =  winparams.stacking or SelWindow.StackingConst('UPPER')
 
 	local window = layer:CreateWindow(winparams)
 	window:SetOpacity(opts.opacity)	-- Make the window visible
