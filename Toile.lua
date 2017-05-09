@@ -1,7 +1,7 @@
 TOILE_VERSION=0.1803
 
 -- Ensure we're not using obsolete version
-assert( SELENE_VERSION >= 3.1806, "HDB requires at least Selene v3.18.06" )
+assert( SELENE_VERSION >= 3.1807, "HDB requires at least Selene v3.18.07" )
 
 -- compatibility with newer Lua
 -- local unpack = unpack or table.unpack
