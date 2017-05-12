@@ -17,6 +17,8 @@ function GfxArea(
 --	vlinesH = col : draw a line every hour.
 --	vlinesD = col : draw a line every day.
 --	min_delta : minimum delta b/w min and max value
+--
+--	noclear : don't call Clear() after FrozeUnder() - for gfx debuging purposes -
 --]]
 	if not opts then
 		opts = {}
@@ -38,6 +40,11 @@ function GfxArea(
 		back = self.get():clone()
 		mask = SelSurface:create { size = { sw,sh }, pixelformat=SelSurface.PixelFormatConst('ARGB') }
 		mask:SetColor( color.get() )
+
+		if not opts.noclear then
+			self.ownsrf():Clear( bgcolor.get() )
+--			self.refresh()
+		end
 	end
 
 	self.ownsrf = self.get
