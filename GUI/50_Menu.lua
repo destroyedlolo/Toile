@@ -47,7 +47,6 @@ function Menu(
 		winparams.size = { w+6, h+6 }
 	end
 
-	local self = {}
 	local popup = PopUp( winparams, opts )
 
 	-- Draw the title
@@ -58,34 +57,14 @@ function Menu(
 		popup.refresh()
 	end
 
-	function self.get()
-		return popup.get()
-	end
-
 	-- Items list
-	local vsl = vsList( self, 0, offy, w, list, font, opts )
-
-	self.selnext = vsl.selnext
-	self.selprev = vsl.selprev
-	self.action = vsl.action
+	local self = vsList( popup, 0, offy, w, list, font, opts )
 
 	self.setKeysActions = popup.setKeysActions
-	function self.close() 
-		popup.close()
-		if opts.userdata then
-			if opts.userdata.refresh then	-- Force refresh (due to a graphical bug within vsList
-				opts.userdata.refresh()
-			end
-		end
-	end
+	self.close = popup.close
 	
 	function self.getContenaire()
 		return popup
-	end
-
-	function self.refresh()
-		popup.refresh()
-		vsl.Update()
 	end
 
 	return self
