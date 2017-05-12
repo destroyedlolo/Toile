@@ -34,13 +34,15 @@ function vsList(
 	function self.Update()
 		self.Clear()
 		for i,v in ipairs( list ) do
+			if i ~= 1 then
+				self.CR()
+			end
 			if i == selected then
 				self.setColor( opts.selcolor )
 			else
 				self.setColor( opts.unselcolor )
 			end
 			self.DrawString( v[1] )
-			self.CR()
 		end
 	end
 
