@@ -11,7 +11,7 @@ function vsList(
 --	bgcolor : background color (default = COL_BLACK)
 --	unselcolor : color for unselected entries (default = COL_LIGHTGREY)
 --	selcolor :  color for selected entry (default = COL_WHITE)
---	default : default selected item (default = 1)
+--	default : default selected value (default = 1st one)
 --	userdata : object to be passed to each and every action functions
 --]]
 	if not opts then
@@ -22,7 +22,14 @@ function vsList(
 	opts.unselcolor = opts.unselcolor or COL_LIGHTGREY
 	opts.selcolor = opts.selcolor or COL_WHITE	
 
-	local selected = opts.default or 1	-- selected entry
+	local selected = 1	-- selected entry
+	if opts.default then
+		for i,v in ipairs( list ) do
+			if v[1] == opts.default then
+				selected = i
+			end
+		end
+	end
 
 	local self = TextArea( prt.get(),
 		x,y, w, font:GetHeight() * #list,
