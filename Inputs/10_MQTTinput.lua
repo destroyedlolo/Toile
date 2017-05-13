@@ -4,6 +4,9 @@ function MQTTinput(aname, atpc, afunc, opts)
 --[[ known options :
 --	condition - condition to report activities
 --]]
+	if not aname then	-- The name is the topic if not set
+		aname = atpc
+	end
 	if not opts then
 		opts = {}
 	end
