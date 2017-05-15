@@ -73,6 +73,9 @@ function GfxArea(
 			--
 
 		local min,max = data:MinMax()
+		if not min then	-- Nothing to display
+			return
+		end
 		if amin then
 			if amin < min then
 				min = amin
