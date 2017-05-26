@@ -1,4 +1,4 @@
-TOILE_VERSION=0.2000
+TOILE_VERSION=0.2001
 
 -- Ensure we're not using obsolete version
 assert( SELENE_VERSION >= 3.1807, "HDB requires at least Selene v3.18.07" )
