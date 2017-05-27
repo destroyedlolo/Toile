@@ -121,16 +121,15 @@ function MQTTCounterStatGfx(
 				if dt[years[i]][m] then
 					y = 0
 					if dt[years[i]][m]['consomation_HC'] then
-						y = dt[years[i]][m]['consomation_HC'] * sy
+						y = math.ceil(dt[years[i]][m]['consomation_HC'] * sy)
 						self.setColor(opts.consumptionHCborder)
 						self.get():FillRectangle( x, oy-y, bw, y )
 					end
 					if dt[years[i]][m]['consomation_HP'] then
 						self.setColor(opts.consumptionHPborder)
-						self.get():FillRectangle( x, oy - y - dt[years[i]][m]['consomation_HP'] * sy, 
-							bw, dt[years[i]][m]['consomation_HP'] * sy
-						)
-						y = y + dt[years[i]][m]['consomation_HP'] * sy
+						local y2 = math.ceil(dt[years[i]][m]['consomation_HP'] * sy)
+						self.get():FillRectangle( x, oy - y - y2, bw, y2 )
+						y = y + y2
 					end
 
 					if opts.consumption_border then
