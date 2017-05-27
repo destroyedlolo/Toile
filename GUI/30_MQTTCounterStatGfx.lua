@@ -30,6 +30,9 @@ function MQTTCounterStatGfx(
 --					(default = COL_RED)
 --
 --	maxyears : how many years to display at a maximum
+--	yearXoffset : offset for ancient years (default = 5) 
+--	yearYoffset : offset for ancient years (default = 5)
+--	barrespace : space b/w barres (default = 5)
 --]]
 	if not opts then
 		opts = {}
@@ -38,11 +41,15 @@ function MQTTCounterStatGfx(
 	opts.productioncolor = opts.productioncolor or COL_GREEN
 	opts.consumptionHCborder = opts.consumptionHCborder or COL_ORANGE
 	opts.consumptionHPborder = opts.consumptionHPborder or COL_RED
+	opts.yearXoffset = opts.yearXoffset or 5
+	opts.yearYoffset = opts.yearYoffset or 5
+	opts.barrespace = opts.barrespace or 5
 
 	local self = SubSurface(psrf, sx,sy, sw,sh )
 	local mqtttp = MQTTinput(name, topic)
 	local dt = {}
-	local nyears -- Number of years stored
+	local years = {} -- Years stored
+	local maxv -- maximum value to display
 
 	function self.Clear()
 		self.get():Clear( opts.bgcolor.get() )
@@ -54,14 +61,17 @@ function MQTTCounterStatGfx(
 
 	function self.load( sdt )	-- load from a string
 		dt = {}
-		nyears = 0
+		years = {}
+		maxv = 0
 
 		for l in (sdt.."\n"):gmatch"(.-)\n" do
 			local name, year, month, val = string.match( l, '([%w%_]+),(%d+),(%d+),(%d+)')
+			month = tonumber(month)
+
 			if val then
 				if not dt[year] then
 					dt[year] = {}
-					nyears = nyears + 1
+					table.insert( years, year )
 				end
 				if not dt[year][month] then
 					dt[year][month]={}
@@ -69,17 +79,53 @@ function MQTTCounterStatGfx(
 				dt[year][month][name] = val
 			end
 		end
+		table.sort(years, function(a,b) return a>b end)
+		if opts.maxyears then	-- removing surplus years 
+			while( #years > opts.maxyears ) do
+				table.remove(years)
+			end
+		end
 	end
 
 	function self.update( )	-- Updates graphics
 		self.Clear()
 		local w,h = sw, sh
+		local ox,oy = 0,h	-- origin of graphics
 
 		if opts.bordercolor then
 			w = w - 4
 			h = h - 4
+			ox,oy = 2,h-2
 		end
 
+		if maxv == 0 then -- Find the highest value
+			for _,year in ipairs(years) do	-- Loop in years
+				for _, v in pairs( dt[year] ) do -- Loop in months
+					maxv = math.max( maxv, v['production_BASE'], 
+						(v['consomation_HC'] or 0) + (v['consomation_HP'] or 0)
+					)
+				end
+			end
+		end
+
+			-- Offsets
+		local sx = w / 12
+		local bw = sx - opts.barrespace - #years*opts.yearXoffset	-- Barres' width
+		local sy = maxv / (h - #years*opts.yearYoffset)
+
+			-- Drawing
+		for i = #years, 1, -1 do
+			for m = 1, 12 do
+				if dt[years[i]][m] then 
+					self.setColor(opts.consumptionHCborder)
+					self.get():DrawRectangle( ox, oy - dt[years[i]][m]['consomation_HC'] * sy, 
+						bw, dt[years[i]][m]['consomation_HC'] * sy
+					)
+print(ox, oy - dt[years[i]][m]['consomation_HC'] * sy, bw, dt[years[i]][m]['consomation_HC'] * sy )
+				end
+				ox = ox + sx
+			end
+		end
 	end
 
 	local function rcvdt()	-- MQTT data received
