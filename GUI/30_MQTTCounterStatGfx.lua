@@ -95,7 +95,7 @@ function MQTTCounterStatGfx(
 		if opts.bordercolor then
 			w = w - 4
 			h = h - 4
-			ox,oy = 2,h
+			ox,oy = 2, h - opts.yearYoffset*#years
 		end
 
 		if maxv == 0 then -- Find the highest value
@@ -123,19 +123,19 @@ function MQTTCounterStatGfx(
 					if dt[years[i]][m]['consomation_HC'] then
 						y = dt[years[i]][m]['consomation_HC'] * sy
 						self.setColor(opts.consumptionHCborder)
-						self.get():FillRectangle( x, oy - y, bw, y )
+						self.get():FillRectangle( x, oy-y, bw, y )
 					end
 					if dt[years[i]][m]['consomation_HP'] then
 						self.setColor(opts.consumptionHPborder)
-						self.get():FillRectangle( x, y + oy - dt[years[i]][m]['consomation_HP'] * sy, 
-							bw, y + dt[years[i]][m]['consomation_HP'] * sy
+						self.get():FillRectangle( x, oy - y - dt[years[i]][m]['consomation_HP'] * sy, 
+							bw, dt[years[i]][m]['consomation_HP'] * sy
 						)
 						y = y + dt[years[i]][m]['consomation_HP'] * sy
 					end
 
 					if opts.consumption_border then
 						self.setColor(opts.consumption_border)
-						self.get():DrawRectangle( x, oy, bw, y )
+						self.get():DrawRectangle( x, oy-y, bw, y )
 					end
 				end
 				x = x + sx
