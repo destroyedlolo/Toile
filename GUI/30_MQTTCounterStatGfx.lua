@@ -33,17 +33,19 @@ function MQTTCounterStatGfx(
 --	yearXoffset : offset for ancient years (default = 5) 
 --	yearYoffset : offset for ancient years (default = 5)
 --	barrespace : space b/w barres (default = 5)
+--	production_offset : put some space for backgroup consomation (default = 3)
 --]]
 	if not opts then
 		opts = {}
 	end
 	opts.bgcolor = opts.bgcolor or COL_GFXBG
 	opts.productioncolor = opts.productioncolor or COL_GREEN
-	opts.consumptionHCborder = opts.consumptionHCborder or COL_ORANGE
-	opts.consumptionHPborder = opts.consumptionHPborder or COL_RED
+	opts.consumptionHCcolor = opts.consumptionHCcolor or COL_ORANGE
+	opts.consumptionHPcolor = opts.consumptionHPcolor or COL_RED
 	opts.yearXoffset = opts.yearXoffset or 5
 	opts.yearYoffset = opts.yearYoffset or 5
 	opts.barrespace = opts.barrespace or 5
+	opts.production_offset = production_offset or 3
 
 	local self = SubSurface(psrf, sx,sy, sw,sh )
 	local mqtttp = MQTTinput(name, topic)
@@ -122,11 +124,11 @@ function MQTTCounterStatGfx(
 					y = 0
 					if dt[years[i]][m]['consomation_HC'] then
 						y = math.ceil(dt[years[i]][m]['consomation_HC'] * sy)
-						self.setColor(opts.consumptionHCborder)
+						self.setColor(opts.consumptionHCcolor)
 						self.get():FillRectangle( x, oy-y, bw, y )
 					end
 					if dt[years[i]][m]['consomation_HP'] then
-						self.setColor(opts.consumptionHPborder)
+						self.setColor(opts.consumptionHPcolor)
 						local y2 = math.ceil(dt[years[i]][m]['consomation_HP'] * sy)
 						self.get():FillRectangle( x, oy - y - y2, bw, y2 )
 						y = y + y2
@@ -136,6 +138,14 @@ function MQTTCounterStatGfx(
 						self.setColor(opts.consumption_border)
 						self.get():DrawRectangle( x, oy-y, bw, y )
 					end
+
+--[[
+					if dt[years[i]][m]['production_BASE'] then
+						y = math.ceil(dt[years[i]][m]['production_BASE'] * sy)
+						self.setColor(opts.consumptionHCborder)
+						self.get():FillRectangle( x, oy-y, bw, y )
+					end
+--]]
 				end
 				x = x + sx
 			end
