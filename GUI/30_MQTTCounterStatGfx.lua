@@ -95,7 +95,7 @@ function MQTTCounterStatGfx(
 		if opts.bordercolor then
 			w = w - 4
 			h = h - 4
-			ox,oy = 2,h-2
+			ox,oy = 2,h
 		end
 
 		if maxv == 0 then -- Find the highest value
@@ -111,20 +111,36 @@ function MQTTCounterStatGfx(
 			-- Offsets
 		local sx = w / 12
 		local bw = sx - opts.barrespace - #years*opts.yearXoffset	-- Barres' width
-		local sy = maxv / (h - #years*opts.yearYoffset)
+		local sy = (h - #years*opts.yearYoffset) / maxv
 
 			-- Drawing
 		for i = #years, 1, -1 do
+			local x = ox + i*opts.yearXoffset
 			for m = 1, 12 do
-				if dt[years[i]][m] then 
-					self.setColor(opts.consumptionHCborder)
-					self.get():DrawRectangle( ox, oy - dt[years[i]][m]['consomation_HC'] * sy, 
-						bw, dt[years[i]][m]['consomation_HC'] * sy
-					)
-print(ox, oy - dt[years[i]][m]['consomation_HC'] * sy, bw, dt[years[i]][m]['consomation_HC'] * sy )
+				local y
+				if dt[years[i]][m] then
+					y = 0
+					if dt[years[i]][m]['consomation_HC'] then
+						y = dt[years[i]][m]['consomation_HC'] * sy
+						self.setColor(opts.consumptionHCborder)
+						self.get():FillRectangle( x, oy - y, bw, y )
+					end
+					if dt[years[i]][m]['consomation_HP'] then
+						self.setColor(opts.consumptionHPborder)
+						self.get():FillRectangle( x, y + oy - dt[years[i]][m]['consomation_HP'] * sy, 
+							bw, y + dt[years[i]][m]['consomation_HP'] * sy
+						)
+						y = y + dt[years[i]][m]['consomation_HP'] * sy
+					end
+
+					if opts.consumption_border then
+						self.setColor(opts.consumption_border)
+						self.get():DrawRectangle( x, oy, bw, y )
+					end
 				end
-				ox = ox + sx
+				x = x + sx
 			end
+			oy = oy + opts.yearYoffset
 		end
 	end
 
