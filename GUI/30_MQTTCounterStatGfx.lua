@@ -139,13 +139,15 @@ function MQTTCounterStatGfx(
 						self.get():DrawRectangle( x, oy-y, bw, y )
 					end
 
---[[
 					if dt[years[i]][m]['production_BASE'] then
 						y = math.ceil(dt[years[i]][m]['production_BASE'] * sy)
-						self.setColor(opts.consumptionHCborder)
-						self.get():FillRectangle( x, oy-y, bw, y )
+						self.setColor(opts.productioncolor)
+						self.get():FillRectangle( x + opts.production_offset, oy-y, bw - 2*opts.production_offset, y )
+						if opts.production_border then
+							self.setColor(opts.production_border)
+							self.get():DrawRectangle( x + opts.production_offset, oy-y, bw - 2*opts.production_offset, y )
+						end
 					end
---]]
 				end
 				x = x + sx
 			end
