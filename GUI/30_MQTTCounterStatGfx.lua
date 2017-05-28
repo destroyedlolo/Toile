@@ -45,7 +45,7 @@ function MQTTCounterStatGfx(
 	opts.yearXoffset = opts.yearXoffset or 5
 	opts.yearYoffset = opts.yearYoffset or 5
 	opts.barrespace = opts.barrespace or 5
-	opts.production_offset = production_offset or 3
+	opts.production_offset = opts.production_offset or 3
 
 	local self = SubSurface(psrf, sx,sy, sw,sh )
 	local mqtttp = MQTTinput(name, topic)
@@ -114,6 +114,10 @@ function MQTTCounterStatGfx(
 		local sx = w / 12
 		local bw = sx - opts.barrespace - #years*opts.yearXoffset	-- Barres' width
 		local sy = (h - #years*opts.yearYoffset) / maxv
+		local bwp = bw - 2*opts.production_offset	--Production barre width
+		if bwp < bw - opts.yearXoffset then
+			bwp = bw - opts.yearXoffset
+		end
 
 			-- Drawing
 		for i = #years, 1, -1 do
@@ -142,10 +146,10 @@ function MQTTCounterStatGfx(
 					if dt[years[i]][m]['production_BASE'] then
 						y = math.ceil(dt[years[i]][m]['production_BASE'] * sy)
 						self.setColor(opts.productioncolor)
-						self.get():FillRectangle( x + opts.production_offset, oy-y, bw - 2*opts.production_offset, y )
+						self.get():FillRectangle( x + opts.production_offset, oy-y, bwp, y )
 						if opts.production_border then
 							self.setColor(opts.production_border)
-							self.get():DrawRectangle( x + opts.production_offset, oy-y, bw - 2*opts.production_offset, y )
+							self.get():DrawRectangle( x + opts.production_offset, oy-y, bwp, y )
 						end
 					end
 				end
