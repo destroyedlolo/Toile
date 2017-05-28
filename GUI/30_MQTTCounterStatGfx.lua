@@ -32,6 +32,7 @@ function MQTTCounterStatGfx(
 --	maxyears : how many years to display at a maximum
 --	yearXoffset : offset for ancient years (default = 5) 
 --	yearYoffset : offset for ancient years (default = 5)
+--	fadeyears ; percentage of color fading
 --	barrespace : space b/w barres (default = 5)
 --	production_offset : put some space for backgroup consomation (default = 3)
 --]]
@@ -46,6 +47,7 @@ function MQTTCounterStatGfx(
 	opts.yearYoffset = opts.yearYoffset or 5
 	opts.barrespace = opts.barrespace or 5
 	opts.production_offset = opts.production_offset or 3
+	opts.fadeyears = opts.fadeyears or 0
 
 	local self = SubSurface(psrf, sx,sy, sw,sh )
 	local mqtttp = MQTTinput(name, topic)
@@ -128,11 +130,11 @@ function MQTTCounterStatGfx(
 					y = 0
 					if dt[years[i]][m]['consomation_HC'] then
 						y = math.ceil(dt[years[i]][m]['consomation_HC'] * sy)
-						self.setColor(opts.consumptionHCcolor)
+						self.setColorRGB( opts.consumptionHCcolor.fade( 100 - opts.fadeyears*(i-1) ) )
 						self.get():FillRectangle( x, oy-y, bw, y )
 					end
 					if dt[years[i]][m]['consomation_HP'] then
-						self.setColor(opts.consumptionHPcolor)
+						self.setColorRGB( opts.consumptionHPcolor.fade( 100 - opts.fadeyears*(i-1) ) )
 						local y2 = math.ceil(dt[years[i]][m]['consomation_HP'] * sy)
 						self.get():FillRectangle( x, oy - y - y2, bw, y2 )
 						y = y + y2
@@ -145,7 +147,7 @@ function MQTTCounterStatGfx(
 
 					if dt[years[i]][m]['production_BASE'] then
 						y = math.ceil(dt[years[i]][m]['production_BASE'] * sy)
-						self.setColor(opts.productioncolor)
+						self.setColorRGB( opts.productioncolor.fade( 100 - opts.fadeyears*(i-1) ) )
 						self.get():FillRectangle( x + opts.production_offset, oy-y, bwp, y )
 						if opts.production_border then
 							self.setColor(opts.production_border)
