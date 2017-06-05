@@ -26,7 +26,7 @@ function GfxArea(
 	if opts.align ~= ALIGN_RIGHT or opts.stretch then
 		opts.align = ALIGN_LEFT
 	end
-	
+
 	local self = SubSurface(psrf, sx,sy, sw,sh )
 	self.get():SetDrawingFlags( SelSurface.DrawingFlagsConst('BLEND') )
 	self.get():SetRenderOptions( SelSurface.RenderOptionsFlagsConst('ANTIALIAS') )

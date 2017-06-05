@@ -12,6 +12,7 @@ function MQTTStoreGfx(
 --		(usefull if Max overlap gfx with 'frozen under')
 --	smax : max surface
 --	smin : min surface
+--	group : groups data by 'group' seconds
 --
 --	+ options supported by MQTTinput
 --]]
@@ -19,7 +20,14 @@ function MQTTStoreGfx(
 		opts = {}
 	end
 
-	local dt = SelTimedCollection.create( sgfx.get():GetWidth() )
+	local dt
+	if opts.group then
+print "***** Groupé"
+		dt = SelTimedCollection.create( sgfx.get():GetWidth(), opts.group )
+	else
+print "***** Pas groupé"
+		dt = SelTimedCollection.create( sgfx.get():GetWidth() )
+	end
 	local ansmax, ansmin
 
 	local self = MQTTDisplay( name, topic, srf, opts )
