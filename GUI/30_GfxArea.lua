@@ -144,7 +144,13 @@ function GfxArea(
 		self.setColor( color )
 
 		local ansH,ansD
-		for v,t in data:iData() do
+		for v,t,_ in data:iData() do
+			local vmax
+			if _ then
+				vmax = t
+				t = _
+			end
+
 			if y then
 				x = x+1
 
@@ -168,7 +174,11 @@ function GfxArea(
 					ansD = d
 				end
 
-				self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
+				if vmax then
+					self.get():DrawLine(x*sx, h - (v-min)*sy, x*sx, h - (vmax-min)*sy)
+				else
+					self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
+				end
 			end
 			y = v 
 		end

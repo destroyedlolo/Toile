@@ -22,10 +22,8 @@ function MQTTStoreGfx(
 
 	local dt
 	if opts.group then
-print "***** Groupé"
-		dt = SelTimedCollection.create( sgfx.get():GetWidth(), opts.group )
+		dt = SelTimedWindowCollection.create( sgfx.get():GetWidth(), opts.group )
 	else
-print "***** Pas groupé"
 		dt = SelTimedCollection.create( sgfx.get():GetWidth() )
 	end
 	local ansmax, ansmin
