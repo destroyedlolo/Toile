@@ -17,9 +17,9 @@ function MQTTDisplay(
 	local self = MQTTinput( name, topic, opts.vfunction, opts)
 
 	function self.update()
-		local v = self.get()
-
-		srf.update(v)
+		if srf then
+			srf.update(self.get())
+		end
 	end
 
 	-- init
