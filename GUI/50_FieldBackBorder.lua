@@ -9,8 +9,10 @@ function FieldBackBorder(
 )
 --[[ known options  :
 --	ndecimal : round to ndecimal
+--	keepbackground : don't clear background
 --
 --	TODO : all Field's need to be implemented
+--	(gradient, ...) 
 --]]
 	if not opts then
 		opts = {}
@@ -18,7 +20,7 @@ function FieldBackBorder(
 
 		-- Add some room for the border
 	if not opts.width then
-		opts.width = font:StringWidth( ctxt ) + 4
+		opts.width = font:StringWidth( opts.sample_text ) + 4
 	else
 		opts.width = opts.width + 4
 	end
@@ -34,8 +36,13 @@ function FieldBackBorder(
 		if opts.ndecimal then
 			v = string.format("%." .. (opts.ndecimal or 0) .. "f", tonumber(v))
 		end
+		if opts.suffix then
+			v = v .. opts.suffix
+		end
 
-		self.Clear()
+		if not opts.keepbackground then
+			self.Clear()
+		end
 
 		-- draw borders
 		self.get():SetColor( 0x00, 0x00, 0x00, 0xff)	-- Temporary set to black
