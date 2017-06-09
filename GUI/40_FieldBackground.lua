@@ -7,13 +7,22 @@ function FieldBackground(
 	color,	-- initial foreground color
 	opts 	-- See Field for known options
 )
+--[[ known options  :
+--]]
+
 	local self = Field( psrf, x,y, font, color, opts )
 
-	local back = self.get():clone()
+	local back
+	
+	function self.KeepBackground()
+		back = self.get():clone()
+	end
 
 	function self.Clear()
 		self.get():restore(back)
 	end
+
+	self.KeepBackground()
 
 	return self
 end
