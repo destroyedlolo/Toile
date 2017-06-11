@@ -17,7 +17,10 @@ function ImagesCollection(
 
 	function self.getImg( id )
 		if not Imgs[ id ] then
-			local t = SelImage.create( dir .. id .. '.png' )
+			local t,err = SelImage.create( dir .. id .. '.png' )
+			if not t then
+				error(dir .. id .. '.png : ' .. err)
+			end
 			if not opts.transparent then
 				Imgs[ id ] = t
 			else
