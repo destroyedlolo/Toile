@@ -56,6 +56,10 @@ function GfxArea(
 		end
 	end
 
+	function self.getAfter()
+		return sx+sw, sy
+	end
+
 	function self.Clear()
 		if mask ~= 0 then
 			self.ownsrf():restore(back)
