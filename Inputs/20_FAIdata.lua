@@ -9,13 +9,14 @@ function FAIdata( name,
 	opts
 )
 --[[ known options  :
+--	watchdog : watchdog associated to this topic
 --]]
 
 	if not opts then
 		opts = {}
 	end
 
-	local self = MQTTinput( name, TCapacity )
+	local self = MQTTinput( name, TCapacity, nil, opts )
 	local tv = MQTTinput( name .. 'TV', TTV )
 	local internet = MQTTinput( name .. 'Int', TInternet )
 

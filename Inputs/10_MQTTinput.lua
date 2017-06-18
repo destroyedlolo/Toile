@@ -3,6 +3,7 @@
 function MQTTinput(aname, atpc, afunc, opts)
 --[[ known options :
 --	condition - condition to report activities
+--	watchdog : watchdog associated to this topic
 --]]
 	if not aname then	-- The name is the topic if not set
 		aname = atpc
@@ -11,7 +12,7 @@ function MQTTinput(aname, atpc, afunc, opts)
 		opts = {}
 	end
 
-	local self = MQTTdata(aname, atpc)
+	local self = MQTTdata(aname, atpc, opts)
 
 	-- Private fields
 	local tasks = {}
@@ -79,7 +80,7 @@ function MQTTinput(aname, atpc, afunc, opts)
 		afunc = rcvdt
 	end
 
-	table.insert( Topics, { topic=atpc, func=afunc, trigger=self.received, trigger_once=true } )
+	table.insert( Topics, { topic=atpc, func=afunc, trigger=self.received, trigger_once=true, watchdog=opts.watchdog } )
 
 	return self
 end
