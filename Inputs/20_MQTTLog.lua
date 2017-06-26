@@ -1,11 +1,11 @@
 -- Generic class to handle incoming logs
 
-function MQTTLog(aname, atpc,	-- 1st topic
-	srf,	-- where to display, must have a method Display(txt,udt)
+function _MQTTLog(aname, atpc,	-- 1st topic
+	srf,	-- where to display, must have a method Display(txt,user_dt)
 	opts)
 --[[ known options :
 --]]
-	local fifo = SelFIFO.create()
+	local fifo = SelFIFO.Create(aname)
 	local tpu = {}	-- Link b/w topic and userdata
 
 	local pushmsg	-- early defintion for callback function
@@ -13,12 +13,14 @@ function MQTTLog(aname, atpc,	-- 1st topic
 		function () pushmsg() end, -- call the callback defined afterward
 	opts)
 
-	function self.fifoname()
-		return 'toto' -- name of this fifo, can't be a variable
+	function self.fifoname()	-- function to be redefined to declare topic name
+		return nil -- name of this fifo, can't be a variable
 	end
 
 	pushmsg = function (topic, data)
-print("aname", self.fifoname())
+		local fifo = SelFIFO.Find(self.fifoname())
+print(self.fifoname(), fifo)
+		fifo:dump()
 		fifo:Push( data, tpu[topic] )
 		return true
 	end
@@ -33,6 +35,21 @@ print("aname", self.fifoname())
 
 	tpu[atpc] = 0
 	self.TaskOnceAdd( display )
+
+	return self
+end
+
+function MQTTLog( aname, atpc,	-- 1st topic
+	srf, -- where to display
+	opts )
+--[[ known options :
+--]]
+
+	local self = _MQTTLog(aname, atpc, srf, opts )
+
+	function self.fifoname()
+		return aname
+	end
 
 	return self
 end
