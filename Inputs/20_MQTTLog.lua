@@ -10,7 +10,7 @@ function _MQTTLog(aname, atpc,	-- 1st topic
 
 	local pushmsg	-- early defintion for callback function
 	local self = MQTTinput(aname, atpc, 
-		function () pushmsg() end, -- call the callback defined afterward
+		function (t,m) pushmsg(t,m); return true end, -- call the callback defined afterward
 	opts)
 
 	function self.fifoname()	-- function to be redefined to declare topic name
@@ -19,17 +19,14 @@ function _MQTTLog(aname, atpc,	-- 1st topic
 
 	pushmsg = function (topic, data)
 		local fifo = SelFIFO.Find(self.fifoname())
-print(self.fifoname(), fifo)
-		fifo:dump()
-		fifo:Push( data, tpu[topic] )
-		return true
+		Selene.SelFIFOPush(fifo, data, tpu[topic])
 	end
 
 	local function display()
 		while true do
-		local t,f = fifo:Pop()
-		if not t then break end
-		srf.Display( t,f )
+			local t,f = fifo:Pop()
+			if not t then break end
+			srf.Display( t,f )
 		end
 	end
 
