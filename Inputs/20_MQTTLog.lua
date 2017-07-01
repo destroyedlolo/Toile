@@ -20,20 +20,20 @@ function _MQTTLog(aname, atpc,	-- 1st topic
 		return nil	-- lookup table to get user data for a topic
 	end	
 
-	pushmsg = function (topic, data)
+	function self.RecvMsg(topic, data)
 		local fifo = SelFIFO.Find(self.fifoname())
 		SelFIFO.Push2FIFO(fifo, data, self.topic2udata(topic))
 	end
-
-	local function display()
+	pushmsg = self.RecvMsg
+	
+	function self.DisplayCallBack()	-- callback to display stored values
 		while true do
 			local t,f = fifo:Pop()
 			if not t then break end
 			srf.Display( t,f )
 		end
 	end
-
-	self.TaskOnceAdd( display )
+	self.TaskOnceAdd( self.DisplayCallBack )
 
 	return self
 end
@@ -63,3 +63,16 @@ function MQTTLog( aname, atpc,	-- 1st topic
 
 	return self
 end
+
+--[[ Example usage :
+
+1/ Create the primary message logger
+
+	local log = MQTTLog('marcel', 'Marcel.prod/Log/Information', Notification)
+
+2/ Add another topic to it
+
+	MQTTinput( 'message', 'messages2', log.RecvMsg, {taskonce = log.DisplayCallBack } )
+
+--]]
+
