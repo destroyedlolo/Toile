@@ -4,6 +4,8 @@ function MQTTinput(aname, atpc, afunc, opts)
 --[[ known options :
 --	condition - condition to report activities
 --	watchdog : watchdog associated to this topic
+--	task : a task to be added in tasks table
+--	taskonce : a function to be added in tasksonce table
 --]]
 	if not aname then	-- The name is the topic if not set
 		aname = atpc
@@ -42,6 +44,9 @@ function MQTTinput(aname, atpc, afunc, opts)
 			return
 		end
 	end
+	if opts.task then
+		self.TaskAdd(opts.task)
+	end
 
 	function self.TaskRemove( func )
 		TableTaskRemove( tasks, func )
@@ -56,6 +61,9 @@ function MQTTinput(aname, atpc, afunc, opts)
 			SelLog.log("*E* MQTTinput.TaskAdd( NULL )")
 			return
 		end
+	end
+	if opts.taskonce then
+		self.TaskOnceAdd( opts.taskonce )
 	end
 
 	function self.TaskOnceRemove( func )
