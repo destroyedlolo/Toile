@@ -19,7 +19,7 @@ function _MQTTLog(aname, atpc,	-- 1st topic
 
 	pushmsg = function (topic, data)
 		local fifo = SelFIFO.Find(self.fifoname())
-		Selene.SelFIFOPush(fifo, data, tpu[topic])
+		SelFIFO.Push2FIFO(fifo, data, tpu[topic])
 	end
 
 	local function display()
