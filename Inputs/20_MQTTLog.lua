@@ -67,10 +67,12 @@ function MQTTLog( aname, atpc,	-- 1st topic
 		t2u[ tpc ] = opts.udata or 0
 		opts.taskonce = self.DisplayCallBack
 
-		return MQTTinput( 'message', 'messages2', self.RecvMsg, opts)
+		return MQTTinput( name, tpc, self.RecvMsg, opts)
 	end
 
 	function self.topic2udata(t)
+-- print('>>>', t, t2u[t])
+-- for k,v in pairs(t2u) do print('.','"'..k..'"',v) end
 		return t2u[t]
 	end
 
