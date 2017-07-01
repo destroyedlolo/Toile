@@ -29,6 +29,14 @@ function MQTTinput(aname, atpc, afunc, opts)
 		SelShared.set( self.getName(), v )
 	end
 
+	function self.TaskSubmit()
+		SubTasks( tasks )
+	end
+
+	function self.TaskOnceSubmit()
+		SubTasks( tasksonce, true )
+	end
+
 	function self.received()
 		self.TaskSubmit()
 		self.TaskOnceSubmit()
@@ -52,10 +60,6 @@ function MQTTinput(aname, atpc, afunc, opts)
 		TableTaskRemove( tasks, func )
 	end
 
-	function self.TaskSubmit()
-		SubTasks( tasks )
-	end
-
 	function self.TaskOnceAdd( func )
 		if TableTasksAdd( tasksonce, func ) == false then
 			SelLog.log("*E* MQTTinput.TaskAdd( NULL )")
@@ -68,10 +72,6 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 	function self.TaskOnceRemove( func )
 		TableTaskRemove( tasksonce, func )
-	end
-
-	function self.TaskOnceSubmit()
-		SubTasks( tasksonce, true )
 	end
 
 	function self.list()

@@ -68,7 +68,7 @@ function MQTTLog( aname, atpc,	-- 1st topic
 		opts.udata = opts.udata or 0
 		opts.taskonce = self.DisplayCallBack
 
-		return MQTTinput( name, tpc, function (t,d) self.RecvMsg(d, opts.udata) end, opts)
+		return MQTTinput( name, tpc, function (t,d) self.RecvMsg(d, opts.udata); return true end, opts)
 	end
 
 	return self
