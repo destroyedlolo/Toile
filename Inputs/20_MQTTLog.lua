@@ -40,21 +40,34 @@ end
 
 function MQTTLog( aname, atpc,	-- 1st topic
 	srf, -- where to display
-	opts )
+	aopts )
 --[[ known options :
 		udata = userdata for provided atpc (default : 0)
 --]]
-	if not opts then
-		opts = {}
+	if not aopts then
+		aopts = {}
 	end
 
 	local t2u = {}	-- Lookup table b/w topic and userdata
-	t2u[ atpc ] = opts.udata or 0
+	t2u[ atpc ] = aopts.udata or 0
 
-	local self = _MQTTLog(aname, atpc, srf, opts )
+	local self = _MQTTLog(aname, atpc, srf, aopts )
 
 	function self.fifoname()
 		return aname
+	end
+
+	function self.RegisterTopic( name, tpc, opts )
+--[[ known options :
+		udata = userdata for provided atpc (default : 0)
+--]]
+		if not opts then
+			opts = {}
+		end
+		t2u[ tpc ] = opts.udata or 0
+		opts.taskonce = self.DisplayCallBack
+
+		return MQTTinput( 'message', 'messages2', self.RecvMsg, opts)
 	end
 
 	function self.topic2udata(t)
@@ -72,7 +85,7 @@ end
 
 2/ Add another topic to it
 
-	MQTTinput( 'message', 'messages2', log.RecvMsg, {taskonce = log.DisplayCallBack } )
+	log.RegisterTopic( 'message', 'messages2', { udata=1 } )
 
 --]]
 
