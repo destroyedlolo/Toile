@@ -2,9 +2,8 @@
 
 function _MQTTLog(aname, atpc,	-- 1st topic
 	srf,	-- where to display, must have a method Display(txt,user_dt)
-	opts)
---[[ known options :
---]]
+	opts	-- Come from MQTTLog
+)
 	local fifo = SelFIFO.Create(aname)
 
 	local pushmsg	-- early defintion for callback function
@@ -16,15 +15,15 @@ function _MQTTLog(aname, atpc,	-- 1st topic
 		return nil -- name of this fifo
 	end
 
-	function self.topic2udata()	-- function to be redefined to lookup userdata from a topic
-		return nil	-- lookup table to get user data for a topic
+	function self.udata()
+		return nil	-- return userdata for atpc
 	end	
 
-	function self.RecvMsg(topic, data)
+	function self.RecvMsg(data, udt)
 		local fifo = SelFIFO.Find(self.fifoname())
-		SelFIFO.Push2FIFO(fifo, data, self.topic2udata(topic))
+		SelFIFO.Push2FIFO(fifo, data, udt)
 	end
-	pushmsg = self.RecvMsg
+	pushmsg = function(t,d) self.RecvMsg(d, self.udata()) end
 	
 	function self.DisplayCallBack()	-- callback to display stored values
 		while true do
@@ -47,14 +46,16 @@ function MQTTLog( aname, atpc,	-- 1st topic
 	if not aopts then
 		aopts = {}
 	end
-
-	local t2u = {}	-- Lookup table b/w topic and userdata
-	t2u[ atpc ] = aopts.udata or 0
+	aopts.udata = aopts.udata or 0
 
 	local self = _MQTTLog(aname, atpc, srf, aopts )
 
 	function self.fifoname()
 		return aname
+	end
+
+	function self.udata()
+		return aopts.udata
 	end
 
 	function self.RegisterTopic( name, tpc, opts )
@@ -64,16 +65,10 @@ function MQTTLog( aname, atpc,	-- 1st topic
 		if not opts then
 			opts = {}
 		end
-		t2u[ tpc ] = opts.udata or 0
+		opts.udata = opts.udata or 0
 		opts.taskonce = self.DisplayCallBack
 
-		return MQTTinput( name, tpc, self.RecvMsg, opts)
-	end
-
-	function self.topic2udata(t)
--- print('>>>', t, t2u[t])
--- for k,v in pairs(t2u) do print('.','"'..k..'"',v) end
-		return t2u[t]
+		return MQTTinput( name, tpc, function (t,d) self.RecvMsg(d, opts.udata) end, opts)
 	end
 
 	return self
