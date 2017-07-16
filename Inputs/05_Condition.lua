@@ -8,6 +8,7 @@ function Condition (
 --[[ known options :
 --	ok_color - color to report ok
 --	issue_color - color to report issue
+--	autorecover - automatically recover error on ping
 --]]
 	if not opts then
 		opts = {}
@@ -37,6 +38,9 @@ function Condition (
 			self.TaskOnceAdd(self.turnoff)
 		else	-- Error condition
 			srf.Update( opts.issue_color )
+			if opts.autorecover then
+				status = 0
+			end
 		end
 	end
 
