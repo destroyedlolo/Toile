@@ -19,9 +19,21 @@ function Condition (
 	if not opts.issue_color then
 		opts.issue_color = COL_ORANGE
 	end
+	if not keep then
+		keep = 0
+	end
 
-	local self = bipTimer( keep )
 	local status
+
+	local self
+	if keep then
+		self = bipTimer( keep )
+	else
+		self = {
+			TaskOnceAdd = function () end,
+			TaskOnceRemove = function () end
+		}
+	end
 
 	function self.turnoff() -- Timeout to report condition
 		status = 0
