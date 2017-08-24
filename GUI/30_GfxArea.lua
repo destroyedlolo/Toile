@@ -150,7 +150,7 @@ function GfxArea(
 		local ansH,ansD
 		for v,t,_ in data:iData() do
 			local vmax
-			if _ then
+			if _ then	-- 2 values provided
 				vmax = t
 				t = _
 			end
@@ -178,9 +178,9 @@ function GfxArea(
 					ansD = d
 				end
 
-				if vmax then
+				if vmax then -- Draw couple data
 					self.get():DrawLine(x*sx, h - (v-min)*sy, x*sx, h - (vmax-min)*sy)
-				else
+				else		-- Draw single data
 					self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
 				end
 			end
