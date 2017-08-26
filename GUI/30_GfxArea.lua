@@ -17,6 +17,9 @@ function GfxArea(
 --	vlinesH = col : draw a line every hour.
 --	vlinesD = col : draw a line every day.
 --	min_delta : minimum delta b/w min and max value
+--	mode : drawing mode
+--		- 'delta' : draw min-max
+--		- default or 'range' : min/max range
 --
 --	noclear : don't call Clear() after FrozeUnder() - for gfx debuging purposes -
 --]]
@@ -25,6 +28,9 @@ function GfxArea(
 	end
 	if opts.align ~= ALIGN_RIGHT or opts.stretch then
 		opts.align = ALIGN_LEFT
+	end
+	if not opts.mode then
+		opts.mode = 'range'
 	end
 
 	local self = SubSurface(psrf, sx,sy, sw,sh )
@@ -76,7 +82,13 @@ function GfxArea(
 			-- Calculate scales
 			--
 
-		local min,max = data:MinMax()
+		local min,max
+		if opts.mode == 'delta' then
+			min,max = data:DiffMinMax()
+		else
+			min,max = data:MinMax()
+		end
+	
 		if not min then	-- Nothing to display
 			return
 		end
@@ -179,12 +191,17 @@ function GfxArea(
 				end
 
 				if vmax then -- Draw couple data
-					self.get():DrawLine(x*sx, h - (v-min)*sy, x*sx, h - (vmax-min)*sy)
+					if opts.mode == 'delta' then
+						v = vmax - v
+						self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
+					else
+						self.get():DrawLine(x*sx, h - (v-min)*sy, x*sx, h - (vmax-min)*sy)
+					end
 				else		-- Draw single data
 					self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
 				end
 			end
-			y = v 
+			y = v
 		end
 
 		if mask ~= 0 then	-- Apply the mask
