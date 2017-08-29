@@ -40,6 +40,10 @@ function GfxArea(
 	local mask = 0	-- invalid
 	local back
 
+	function self.getMode()
+		return opts.mode
+	end
+
 	function self.FrozeUnder()	
 		-- The current content of the surface will be "under" our graphic
 		self.refresh() -- Ensure the background is fresh
