@@ -56,7 +56,7 @@ function Condition (
 		end
 	end
 
-	function self.clear( recurcif )
+	function self.clear()
 		status = 0
 		self.Update()
 	end
@@ -74,16 +74,21 @@ function Condition (
 		self.Update()
 	end
 
-	function self.force_ok()
-		status = - 1
-		self.Update()
-	end
-
 	function self.issue_corrected()
 		status = status - 1
 		if status < 0 then
 			status = 0
 		end
+		self.Update()
+	end
+
+	function self.force_ok()
+		status = - 1
+		self.Update()
+	end
+
+	function self.force_issue()
+		status = 1
 		self.Update()
 	end
 
