@@ -56,6 +56,10 @@ function Condition (
 		end
 	end
 
+	function self.setColor( c )
+		srf.Update(c)
+	end
+
 	function self.clear()
 		status = 0
 		self.Update()
