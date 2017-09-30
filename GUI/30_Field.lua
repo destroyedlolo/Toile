@@ -102,11 +102,6 @@ print("*I* init Watchdog")
 		self.Clear()
 		self.DrawStringOff(v, 0,0)
 		self.refresh()
-
-		if opts.timeout then
-print("*I* reset Watchdog")
-			wdcnt = opts.timeout
-		end
 	end
 
 	function self.update( v )
@@ -115,6 +110,11 @@ print("*I* reset Watchdog")
 		end
 
 		self.updtxt( v )
+
+		if opts.timeout then
+print("*I* reset Watchdog")
+			wdcnt = opts.timeout
+		end
 	end
 
 	return self
