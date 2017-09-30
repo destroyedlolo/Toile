@@ -18,6 +18,9 @@ function Field(
 --	suffix : string to add to the value (i.e. : unit)
 --	gradient : gradient to colorize
 --
+--	timeout : force to timeoutcolor after timeout seconds without update
+--	timeoutcolor : color to force to (default COL_DARKRED)
+--
 --	At last one of sample_text or width MUST be provided
 --]]
 	if not opts then
@@ -34,6 +37,9 @@ function Field(
 	if not opts.bgcolor then
 		opts.bgcolor = COL_BLACK
 	end
+	if not opts.timeoutcolor then
+		opts.timeoutcolor = COL_DARKRED
+	end
 
 	if opts.align == ALIGN_FRIGHT then
 		x = x - opts.width
@@ -42,6 +48,24 @@ function Field(
 	local self = SubSurface(psrf, x,y, opts.width, opts.height )
 	self.get():SetFont( font )
 	self.setColor( color )
+
+		-- Handle watchdog
+	local wdcnt	-- Watchdog counter
+	local function watchdog()
+		if wdcnt > 0 then
+print("*I* Watchdog : ", wdcnt)
+			wdcnt = wdcnt - 1
+			if wdcnt == 0 then
+print("*I* !!!! Watchdog")
+			end
+		end
+	end
+
+	if opts.timeout then
+print("*I* init Watchdog")
+		wdTimer.TaskOnceAdd(watchdog)
+		wdcnt = opts.timeout
+	end
 
 	-- methods
 	function self.getHight()
@@ -78,6 +102,11 @@ function Field(
 		self.Clear()
 		self.DrawStringOff(v, 0,0)
 		self.refresh()
+
+		if opts.timeout then
+print("*I* reset Watchdog")
+			wdcnt = opts.timeout
+		end
 	end
 
 	function self.update( v )

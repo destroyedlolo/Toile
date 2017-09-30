@@ -1,4 +1,4 @@
-TOILE_VERSION=0.2704
+TOILE_VERSION=0.2800
 
 -- Ensure we're not using obsolete version
 assert( SELENE_VERSION >= 3.2013, "HDB requires at least Selene v3.20.13" )
@@ -37,6 +37,7 @@ local whereiam = string.match(info.source, "@(.-)([^\\/]-%.?([^%.\\/]*))$")
 SelLog.log('Loading Toile v'.. TOILE_VERSION ..' ...' )
 loaddir(whereiam, 'Supports')
 animTimer = bipTimer(.25)	-- Animation timer
+wdTimer = bipTimer(1)	-- Wathdog timer
 
 loaddir(whereiam, 'Inputs')
 loaddir(whereiam, 'GUI')
