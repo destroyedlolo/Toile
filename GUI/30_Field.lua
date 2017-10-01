@@ -50,13 +50,33 @@ function Field(
 	self.setColor( color )
 
 		-- Handle watchdog
+	function self.updtxt2( v )
+print('updtxt2')
+		if opts.ndecimal then
+			v = string.format("%." .. (opts.ndecimal or 0) .. "f", tonumber(v))
+		end
+		if opts.suffix then
+			v = v .. opts.suffix
+		end
+		self.Clear()
+		self.DrawStringOff(v, 0,0)
+		self.refresh()
+	end
+
+	self.updtxt = function () end -- forward definition
 	local wdcnt	-- Watchdog counter
+	local val	-- stored value
 	local function watchdog()
 		if wdcnt > 0 then
 print("*I* Watchdog : ", wdcnt)
 			wdcnt = wdcnt - 1
 			if wdcnt == 0 then
 print("*I* !!!! Watchdog")
+				self.setColor(COL_RED)
+				if val then
+print("*I* !!!! fade")
+					self.updtxt2( val )
+				end
 			end
 		end
 	end
@@ -105,8 +125,11 @@ print("*I* init Watchdog")
 	end
 
 	function self.update( v )
+		val = v
 		if opts.gradient then
 			self.setColorRGB( opts.gradient.findgradientcolor(v) )
+		else
+			self.setColor(color)
 		end
 
 		self.updtxt( v )
