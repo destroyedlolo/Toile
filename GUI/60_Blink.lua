@@ -13,6 +13,7 @@ function Blink(
 	local val -- value to display
 	local cur_r,cur_g,cur_b,cur_a -- Current color
 	local cons_r,cons_g,cons_b,cons_a -- Consign color
+	local fading = false -- are we fading
 
 	local function fade()
 		cur_r = math.max( cons_r, cur_r - 20 )
@@ -25,6 +26,7 @@ function Blink(
 		else
 			parent_setColorRGB( cons_r, cons_g, cons_b, cons_a )
 			animTimer.TaskOnceRemove( fade )
+			fading = false
 		end
 
 		self.updtxt( val )
@@ -33,10 +35,16 @@ function Blink(
 	-- Overloading
 	function self.setColor( color )
 		cons_r,cons_g,cons_b,cons_a = color.get()
+		if fading == false then
+			parent_setColor( color )
+		end
 	end
 
 	function self.setColorRGB( r,g,b,a )
 		cons_r,cons_g,cons_b,cons_a = r,g,b,a
+		if fading == false then
+			parent_setColorRGB( r,g,b,a )
+		end
 	end
 
 	function self.update( v, keep )
@@ -50,6 +58,7 @@ function Blink(
 		parent_setColorRGB( cur_r,cur_g,cur_b,cur_a )
 		parent_update(v)
 
+		fading = true
 		animTimer.TaskOnceAdd( fade )
 	end
 
