@@ -51,11 +51,11 @@ function Field(
 
 		-- Handle watchdog
 	self.updtxt = function () end -- forward definition
-	local wdcnt	-- Watchdog counter
+	self.wdcnt=0	-- Watchdog counter
 	local val	-- stored value
 	local function watchdog()
-		if wdcnt > 0 then
-			wdcnt = wdcnt - 1
+		if self.wdcnt > 0 then
+			self.wdcnt = self.wdcnt - 1
 			if wdcnt == 0 then
 				self.setColor(opts.timeoutcolor)
 				if val then
@@ -67,7 +67,7 @@ function Field(
 
 	if opts.timeout then
 		wdTimer.TaskOnceAdd(watchdog)
-		wdcnt = opts.timeout
+		self.wdcnt = opts.timeout
 	end
 
 	-- methods
@@ -118,7 +118,7 @@ function Field(
 		self.updtxt( v )
 
 		if opts.timeout then
-			wdcnt = opts.timeout
+			self.wdcnt = opts.timeout
 		end
 	end
 
