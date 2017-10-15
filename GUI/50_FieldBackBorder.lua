@@ -55,10 +55,7 @@ function FieldBackBorder(
 		self.DrawStringOff(v, 1,1)
 
 		self.refresh()
-
-		if opts.timeout then
-			self.wdcnt = opts.timeout
-		end
+		self.ping()
 	end
 
 	return self
