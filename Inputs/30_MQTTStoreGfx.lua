@@ -13,6 +13,7 @@ function MQTTStoreGfx(
 --	smax : max surface
 --	smin : min surface
 --	group : groups data by 'group' seconds
+--	rangeMin, rangeMax : reject data outside range
 --
 --	+ options supported by MQTTinput
 --]]
@@ -32,6 +33,16 @@ function MQTTStoreGfx(
 
 	local function adddt( )
 		local v = self.get()	-- Retrieve last arrived data
+		if opts.rangeMin then
+			if v < opts.rangeMin then
+				return;
+			end
+		end
+		if opts.rangeMax then
+			if v > opts.rangeMax then
+				return;
+			end
+		end
 		dt:Push(v)
 	end
 
