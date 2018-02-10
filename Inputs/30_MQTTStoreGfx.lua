@@ -32,7 +32,8 @@ function MQTTStoreGfx(
 	local self = MQTTDisplay( name, topic, srf, opts )
 
 	local function adddt( )
-		local v = self.get()	-- Retrieve last arrived data
+		local v = tonumber(self.get())	-- Retrieve last arrived data
+
 		if opts.rangeMin then
 			if v < opts.rangeMin then
 				return;
