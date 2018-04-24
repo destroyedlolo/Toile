@@ -10,9 +10,9 @@ function FieldBackBorder(
 --[[ known options  :
 --	ndecimal : round to ndecimal
 --	keepbackground : don't clear background
+--	gradient : gradient to colorize
 --
 --	TODO : all Field's need to be implemented
---	(gradient, ...) 
 --]]
 	if not opts then
 		opts = {}
@@ -33,6 +33,7 @@ function FieldBackBorder(
 	local self = FieldBackground( psrf, x-2,y-2, font, color, opts )
 
 	function self.update(v)
+		local val=v
 		if opts.ndecimal then
 			v = string.format("%." .. (opts.ndecimal or 0) .. "f", tonumber(v))
 		end
@@ -51,7 +52,13 @@ function FieldBackBorder(
 		self.DrawStringOff(v, 4,0)
 		self.DrawStringOff(v, 4,4)
 
-		self.ColorApply()	-- Draw at requested color
+		if opts.gradient then
+			self.setColorRGB( opts.gradient.findgradientcolor(val) )
+		else
+			self.setColor(color)
+		end
+
+--		self.ColorApply()	-- Draw at requested color
 		self.DrawStringOff(v, 1,1)
 
 		self.refresh()
