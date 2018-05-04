@@ -23,9 +23,9 @@ function MQTTStoreGfx(
 
 	local dt
 	if opts.group then
-		dt = SelTimedWindowCollection.create( sgfx.get():GetWidth(), opts.group )
+		dt = SelTimedWindowCollection.Create( sgfx.get():GetWidth(), opts.group )
 	else
-		dt = SelTimedCollection.create( sgfx.get():GetWidth() )
+		dt = SelTimedCollection.Create( sgfx.get():GetWidth() )
 	end
 	local ansmax, ansmin
 
