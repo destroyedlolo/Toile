@@ -29,7 +29,7 @@ function bipTimer(
 		SubTasks( tasksonce )
 	end
 
-	timer, err = SelTimer.create { when=itv, interval=itv, ifunc=bip, clockid=SelTimer.ClockModeConst("CLOCK_MONOTONIC") }
+	timer, err = SelTimer.Create { when=itv, interval=itv, ifunc=bip, clockid=SelTimer.ClockModeConst("CLOCK_MONOTONIC") }
 
 	return self
 end
