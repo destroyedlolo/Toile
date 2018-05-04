@@ -13,7 +13,9 @@ function MQTTinput(aname, atpc, afunc, opts)
 	if not opts then
 		opts = {}
 	end
+	SelShared.Set("$$name$$" .. atpc, aname)	-- Save the name for this topic
 
+	
 	local self = MQTTdata(aname, atpc, opts)
 
 	-- Private fields
@@ -22,11 +24,11 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 	-- methods
 	function self.get()
-		return SelShared.get( self.getName() )
+		return SelShared.Get( self.getName() )
 	end
 
 	function self.set( v )
-		SelShared.set( self.getName(), v )
+		SelShared.Set( self.getName(), v )
 	end
 
 	function self.TaskSubmit()
@@ -80,7 +82,8 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 	-- initialiser
 	local function rcvdt(tp, v)
-		self.set( v )
+		local name = SelShared.Get("$$name$$" .. tp)
+		SelShared.Set( name, v )
 		return true
 	end
 
