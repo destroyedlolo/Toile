@@ -162,7 +162,7 @@ function MQTTCounterStatGfx(
 	end
 
 	local function rcvdt()	-- MQTT data received
-		self.load( SelShared.get(name) )
+		self.load( SelShared.Get(name) )
 		self.update()
 	end
 	mqtttp.TaskOnceAdd( rcvdt )
