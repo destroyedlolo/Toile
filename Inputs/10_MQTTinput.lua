@@ -24,7 +24,8 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 	-- methods
 	function self.get()
-		return SelShared.Get( self.getName() )
+		return SelShared.Get( SelShared.Get("$$name$$" .. atpc) )
+--		return SelShared.Get( self.getName() )
 	end
 
 	function self.set( v )
