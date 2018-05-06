@@ -1,41 +1,12 @@
 -- Generic class to handle incoming logs
 
-function _MQTTLog(aname, atpc,	-- 1st topic
-	srf,	-- where to display, must have a method Display(txt,user_dt)
-	opts	-- Come from MQTTLog
-)
-	local fifo = SelFIFO.Create(aname)
-
-	local pushmsg	-- early defintion for callback function
-	local self = MQTTinput(aname, atpc, 
-		function (t,m) pushmsg(t,m); return true end, -- call the callback defined afterward
-	opts)
-
-	function self.fifoname()	-- function to be redefined to declare topic name
-		return nil -- name of this fifo
-	end
-
-	function self.udata()
-		return nil	-- return userdata for atpc
-	end	
-
-	function self.RecvMsg(data, udt)
-		local fifo = SelFIFO.Find(self.fifoname())
-		SelFIFO.Push2FIFO(fifo, data, udt)
-	end
-	pushmsg = function(t,d) self.RecvMsg(d, self.udata()) end
-	
-	function self.DisplayCallBack()	-- callback to display stored values
-		while true do
-			local t,f = fifo:Pop()
-			if not t then break end
-			srf.Display( t,f )
-		end
-	end
-	self.TaskOnceAdd( self.DisplayCallBack )
-
-	return self
-end
+--[[
+--	logs are stored in a FIFO.
+--	Data that have to be shared with the slave thread are stored in a SelShared
+--	as bellow :
+--	$$name$$<topic> - FIFO's name
+--	$$udata$$<topic> - Udata associated with this topic
+--]]
 
 function MQTTLog( aname, atpc,	-- 1st topic
 	srf, -- where to display
@@ -48,18 +19,40 @@ function MQTTLog( aname, atpc,	-- 1st topic
 	end
 	aopts.udata = aopts.udata or 0
 
-	local self = _MQTTLog(aname, atpc, srf, aopts )
+	local fifo = SelFIFO.Create(aname)			-- Create the named fifo
 
-	function self.fifoname()
-		return aname
-	end
+	SelShared.Set("$$udata$$" .. atpc, aopts.udata) -- Share its udata
 
-	function self.udata()
-		return aopts.udata
+		-- Function to be launched at message arrival
+		-- Stored as shared function as called from both main topic
+		-- and additional ones
+	local rcvfunc = SelShared.RegisterSharedFunction( 
+		function (topic, data)
+			local name = SelShared.Get("$$name$$" .. topic)
+			local udata = SelShared.Get("$$udata$$" .. topic)
+
+			local fifo = SelFIFO.Find( name )
+			SelFIFO.Push2FIFO(fifo, data, udata)
+
+			return true	-- Ensure callbacks are called as well
+		end, "MQTTLog rcv function"
+	)
+
+		-- "$$name$$" .. atpc will be created by MQTTinput
+	local self = MQTTinput(aname, atpc, rcvfunc, opts) -- Register initial topic
+
+	function self.DisplayCallBack()	-- callback to display stored values
+		while true do
+			local t,f = fifo:Pop()
+			if not t then break end
+			srf.Display( t,f )
+		end
 	end
+	self.TaskOnceAdd( self.DisplayCallBack )
 
 	function self.RegisterTopic( name, tpc, opts )
---[[ known options :
+--[[ Register an additional topic to this FIFO
+	known options :
 		udata = userdata for provided atpc (default : 0)
 --]]
 		if not opts then
@@ -68,7 +61,7 @@ function MQTTLog( aname, atpc,	-- 1st topic
 		opts.udata = opts.udata or 0
 		opts.taskonce = self.DisplayCallBack
 
-		return MQTTinput( name, tpc, function (t,d) self.RecvMsg(d, opts.udata); return true end, opts)
+		return MQTTinput( name, tpc, rcvfunc, opts)
 	end
 
 	return self
