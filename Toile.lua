@@ -1,7 +1,7 @@
-TOILE_VERSION=2.0002
+TOILE_VERSION=4.0000
 
 -- Ensure we're not using obsolete version
-assert( SELENE_VERSION >= 4.0200, "HDB requires at least Selene v4.02.00" )
+assert( SELENE_VERSION >= 5.0100, "HDB requires at least Selene v5.01.00" )
 
 -- compatibility with newer Lua
 -- local unpack = unpack or table.unpack
@@ -36,9 +36,12 @@ local whereiam = string.match(info.source, "@(.-)([^\\/]-%.?([^%.\\/]*))$")
 
 SelLog.log('Loading Toile v'.. TOILE_VERSION ..' ...' )
 loaddir(whereiam, 'Supports')
-animTimer = bipTimer(.25)	-- Animation timer
 wdTimer = bipTimer(1)	-- Wathdog timer
 
 loaddir(whereiam, 'Inputs')
-loaddir(whereiam, 'GUI')
+
+if SELPLUG_DFB then	-- DirectFB used
+	animTimer = bipTimer(.25)	-- Animation timer
+	loaddir(whereiam, 'DirectFB_GUI')
+end
 
