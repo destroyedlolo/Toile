@@ -1,4 +1,4 @@
-TOILE_VERSION=4.0000
+TOILE_VERSION=4.0100
 
 -- Ensure we're not using obsolete version
 assert( SELENE_VERSION >= 5.0100, "HDB requires at least Selene v5.01.00" )
@@ -25,7 +25,7 @@ function loaddir(path, dir )
 	table.sort(t)
 
 	for _,res in ipairs( t ) do
-		require(dir ..'/'.. res)
+		require('Toile/' .. dir ..'/'.. res)
 		SelLog.log("*L* " .. dir ..'/'.. res .. ' loaded')
 	end
 end
@@ -43,5 +43,7 @@ loaddir(whereiam, 'Inputs')
 if SELPLUG_DFB then	-- DirectFB used
 	animTimer = bipTimer(.25)	-- Animation timer
 	loaddir(whereiam, 'DirectFB_GUI')
+end
+if SELPLUG__OLED then -- OLED used
 end
 
