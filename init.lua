@@ -1,4 +1,4 @@
-TOILE_VERSION=4.0100
+TOILE_VERSION=4.0200
 
 -- Ensure we're not using obsolete version
 assert( SELENE_VERSION >= 5.0100, "HDB requires at least Selene v5.01.00" )
@@ -44,6 +44,7 @@ if SELPLUG_DFB then	-- DirectFB used
 	animTimer = bipTimer(.25)	-- Animation timer
 	loaddir(whereiam, 'DirectFB_GUI')
 end
-if SELPLUG__OLED then -- OLED used
+if SELPLUG_OLED then -- OLED used
+	loaddir(whereiam, 'OLed')
 end
 
