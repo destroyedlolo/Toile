@@ -51,7 +51,7 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 	function self.TaskAdd( func )
 		if TableTasksAdd( tasks, func ) == false then
-			SelLog.log("*E* MQTTinput.TaskAdd( NULL )")
+			SelLog.log('E',"MQTTinput.TaskAdd( NULL )")
 			return
 		end
 	end
@@ -65,7 +65,7 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 	function self.TaskOnceAdd( func )
 		if TableTasksAdd( tasksonce, func ) == false then
-			SelLog.log("*E* MQTTinput.TaskAdd( NULL )")
+			SelLog.log('E',"MQTTinput.TaskAdd( NULL )")
 			return
 		end
 	end
@@ -78,7 +78,7 @@ function MQTTinput(aname, atpc, afunc, opts)
 	end
 
 	function self.list()
-		SelLog.log('*d* '.. self.getName() .. " : Tasks " .. #tasks .. ' / ' .. #tasksonce)
+		SelLog.log('d', self.getName() .. " : Tasks " .. #tasks .. ' / ' .. #tasksonce)
 	end
 
 	-- initialiser

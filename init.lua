@@ -1,4 +1,4 @@
-TOILE_VERSION=4.0200
+TOILE_VERSION=4.0300
 
 -- Ensure we're not using obsolete version
 assert( SELENE_VERSION >= 5.0100, "HDB requires at least Selene v5.01.00" )
@@ -26,7 +26,7 @@ function loaddir(path, dir )
 
 	for _,res in ipairs( t ) do
 		require('Toile/' .. dir ..'/'.. res)
-		SelLog.log("*L* " .. dir ..'/'.. res .. ' loaded')
+		SelLog.log('L', dir ..'/'.. res .. ' loaded')
 	end
 end
 
