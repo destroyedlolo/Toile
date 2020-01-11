@@ -49,8 +49,7 @@ function GfxArea(
 	end
 
 	function self.DrawGfx(data, amin)	-- Draw with data
-		self.decoration()
-	
+		-- Ensure something has to be drawn
 		local min,max
 		if opts.mode == 'delta' then
 			min,max = data:DiffMinMax()
@@ -60,8 +59,7 @@ function GfxArea(
 	
 		if not min then	-- Nothing to display
 			return
-		end
-		if amin then
+		elseif amin then
 			if amin < min then
 				min = amin
 			end
@@ -73,11 +71,11 @@ function GfxArea(
 				max = m + opts.min_delta/2
 			end
 		end
-
 		if max == min then	-- No dynamic data to draw
 			return
 		end
 
+		-- Scales computation
 		local h = sh-1
 		local sy = h/(max-min) -- vertical scale
 		local sx = sw/data:GetSize()
@@ -92,6 +90,7 @@ function GfxArea(
 			-- Drawing
 			--
 
+		self.decoration()
 		local y		-- previous value
 		local x=0	-- x position
 		if opts.align == ALIGN_RIGHT then
