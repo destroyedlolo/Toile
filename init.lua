@@ -1,7 +1,7 @@
-TOILE_VERSION=4.0400
+TOILE_VERSION=5.0000
 
 -- Ensure we're not using obsolete version
-assert( SELENE_VERSION >= 5.0100, "HDB requires at least Selene v5.01.00" )
+assert( SELENE_VERSION >= 6.0000, "HDB requires at least Selene v6.00.00" )
 
 -- compatibility with newer Lua
 -- local unpack = unpack or table.unpack
@@ -40,11 +40,15 @@ wdTimer = bipTimer(1)	-- Wathdog timer
 
 loaddir(whereiam, 'Inputs')
 
-if SELPLUG_DFB then	-- DirectFB used
+if SELPLUG_DRMCairo then	-- DRMCairo used
+	animTimer = bipTimer(.25)	-- Animation timer
+	loaddir(whereiam, 'DRMCairo_GUI')
+elseif SELPLUG_OLED then -- OLED used
+	loaddir(whereiam, 'OLed')
+elseif SELPLUG_DFB then	-- DirectFB used
 	animTimer = bipTimer(.25)	-- Animation timer
 	loaddir(whereiam, 'DirectFB_GUI')
-end
-if SELPLUG_OLED then -- OLED used
-	loaddir(whereiam, 'OLed')
+else
+	error("No graphical layer found")
 end
 
