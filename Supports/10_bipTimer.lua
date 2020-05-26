@@ -16,7 +16,7 @@ function bipTimer(
 
 	function self.TaskOnceAdd( func )
 		if TableTasksAdd( tasksonce, func ) == false then
-			SelLog.log("*E* bipTimer.TaskOnceAdd( NULL )")
+			SelLog.log('E', "bipTimer.TaskOnceAdd( NULL )")
 			return
 		end
 	end
