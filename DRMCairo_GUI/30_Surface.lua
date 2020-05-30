@@ -22,12 +22,20 @@ function Surface(
 	-- Methods
 	----
 	
+	function self.getPhysical()	-- Return the physical playfield
+		return primary_surface
+	end
+		
 	function self.getPos()	-- return the top-left of this surface
 		return srf_x, srf_y
 	end
 
 	function self.getSize()
 		return srf_w, srf_h
+	end
+
+	function self.getDisplayed()
+		return displayed
 	end
 
 	function self.Refresh()
