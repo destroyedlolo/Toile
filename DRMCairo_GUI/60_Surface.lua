@@ -7,7 +7,6 @@ function Surface(
 	srf_x, srf_y,		-- top left position
 	srf_w, srf_h		-- size
 )
---	local sdcsrf,err = SelDCSurface.create(srf_w, srf_h)
 
 	local self = metaSurface( SelDCSurface.create(srf_w, srf_h) )
 
@@ -29,6 +28,29 @@ function Surface(
 
 	function self.getSize()
 		return srf_w, srf_h
+	end
+
+	function self.Refresh()
+		-- refresh content to the parent surface
+
+		if displayed then	-- only if the surface is displayed
+			primary_surface:Blit( self.get(), srf_x, srf_y )
+		end
+	end
+
+	function self.Visibility( putonscreen )
+		-- Change the visibility of this surface
+		-- -> has to be put on screen
+		-- if the surface goes to the screen, it is refreshed
+
+		if displayed == false then	-- otherwise, already on screen : no refresh
+			displayed = putonscreen
+			if putonscreen then
+				self.Refresh()
+			end
+		else
+			displayed = putonscreen
+		end
 	end
 
 	return self
