@@ -23,7 +23,6 @@ function SubSurface(
 		if parent_srf.getDisplayed() then
 			local px, py = parent_srf:getPos()
 			parent_srf.getPhysical():Blit( self.get(), px+srf_x, py+srf_y )
-else print "pas visible"
 		end
 	end
 
