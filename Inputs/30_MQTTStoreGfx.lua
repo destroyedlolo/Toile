@@ -75,23 +75,21 @@ function MQTTStoreGfx(
 	end
 
 	local function updmaxmin()
-		if sgfx then
-			local min,max
-			if sgfx.getMode() == 'delta' then
-				min,max = dt:DiffMinMax()
-			else
-				min,max = dt:MinMax()
-			end
+		local min,max
+		if sgfx and sgfx.getMode() == 'delta' then
+			min,max = dt:DiffMinMax()
+		else
+			min,max = dt:MinMax()
+		end
 
-			if opts.smax and (not ansmax or max ~= ansmax or opts.force_max_refresh) then
-				opts.smax.update( max, ansmax == max)
-				ansmax = max
-			end
+		if opts.smax and (not ansmax or max ~= ansmax or opts.force_max_refresh) then
+			opts.smax.update( max, ansmax == max)
+			ansmax = max
+		end
 
-			if opts.smin and (not ansmin or min ~= ansmin or opts.force_min_refresh) then
-				opts.smin.update( min, ansmin == min)
-				ansmin = min
-			end
+		if opts.smin and (not ansmin or min ~= ansmin or opts.force_min_refresh) then
+			opts.smin.update( min, ansmin == min)
+			ansmin = min
 		end
 	end
 
