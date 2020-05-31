@@ -85,7 +85,7 @@ function Field(
 	----
 
 	function self.getHight()
-		return opts.width
+		return opts.height
 	end
 
 	function self.getAfter()
