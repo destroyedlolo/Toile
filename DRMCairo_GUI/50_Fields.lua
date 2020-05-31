@@ -121,5 +121,23 @@ function Field(
 		self.Refresh()
 	end
 
+	function self.ping()	-- Notify the value has been updated
+		if opts.timeout then
+			wdcnt = opts.timeout
+		end		
+	end
+
+	function self.update( v )	-- Callback when the field has to be updated
+		val = v
+		if opts.gradient then
+			self.setColorRGB( opts.gradient.findgradientcolor(v) )
+		else
+			self.setColor(color)
+		end
+
+		self.updtxt( v )
+		self.ping()
+	end
+
 	return self
 end
