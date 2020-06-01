@@ -4,6 +4,6 @@ It emancipates from my HomeDashBoard project and uses Séléné with a graphical
 
 ## Installation
 
-Clone this package in the directory where you're saving libraries not managed by Luarocks.
+Clone this package in the directory where you're storing libraries not managed by Luarocks.
 For me it's "**/usr/local/lib/lua**" and ensure your LUA_PATH contains 
 ```/usr/local/lib/lua/?.lua;/home/laurent/Projets/?/init.lua
