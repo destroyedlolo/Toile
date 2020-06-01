@@ -70,7 +70,6 @@ function MQTTStoreGfx(
 	function self.updgfx()
 		if sgfx then	-- Only if a gfx surface is provided
 			sgfx.DrawGfx(dt, opts.forced_min)
-			SelShared.PushTask( sgfx.refresh, SelShared.TaskOnceConst("LAST") )
 		end
 	end
 
@@ -98,6 +97,11 @@ function MQTTStoreGfx(
 
 	if opts.smax or opts.smin then
 		self.TaskOnceAdd( updmaxmin )
+	end
+
+		-- Refresh is done at the very end in case of overlaping surfaces
+	if sgfx then	-- Only if a gfx surface is provided
+		self.TaskOnceAdd( sgfx.Refresh )
 	end
 
 	return self

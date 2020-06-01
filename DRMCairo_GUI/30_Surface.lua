@@ -42,7 +42,11 @@ function Surface(
 		-- refresh content to the parent surface
 
 		if displayed then	-- only if the surface is displayed
-			primary_surface:Blit( self.get(), srf_x, srf_y )
+			if type(primary_surface) == "table" then
+				primary_surface.get():Blit( self.get(), srf_x, srf_y )
+			else
+				primary_surface:Blit( self.get(), srf_x, srf_y )
+			end
 		end
 	end
 

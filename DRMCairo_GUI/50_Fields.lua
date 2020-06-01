@@ -15,9 +15,11 @@ function Field(
 --	ndecimal : round to ndecimal
 --	refresh : force refresh even if the data doesn't change
 --		(useful if smax overlap gfx with mask)
+--	ownsurface : it's not a subsurface but a real one that will be blited to
+--		the parent at refresh. Need if it overlaps another one and draws
+--		transparent colors
 --	suffix : string to add to the value (i.e. : unit)
 --	gradient : gradient to colorize
---
 --	timeout : force to timeoutcolor after timeout seconds without update
 --	timeoutcolor : color to force to (default COL_DARKRED)
 --
@@ -55,7 +57,13 @@ function Field(
 		x = x - opts.width
 	end
 
-	local self = SubSurface(psrf, x,y, opts.width, opts.height)
+	local self
+	if opts.ownsurface == true then
+		self = Surface(psrf, x,y, opts.width, opts.height)
+		self.Visibility(true) -- always put on its mother surface as it's not the primary
+	else
+		self = SubSurface(psrf, x,y, opts.width, opts.height)
+	end
 	self.setFont( font )
 	self.setColor( color )
 
