@@ -15,7 +15,6 @@ function SubSurface(
 	----
 	-- Methods
 	----
-
 	function self.Refresh()
 		-- No need to refresh the parent surface, it's the same datafield
 		-- but we have to check if the parent is visible. If so only OUR
@@ -24,6 +23,11 @@ function SubSurface(
 			local px, py = parent_srf:getPos()
 			parent_srf.getPhysical():Blit( self.get(), px+srf_x, py+srf_y )
 		end
+	end
+
+	function self.refresh()	-- During dev
+		print("Call to deprecated refresh()")
+		self.Refresh()
 	end
 
 	return self
