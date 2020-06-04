@@ -45,7 +45,7 @@ function HGauge(
 			if opts.align == ALIGN_RIGHT then
 				self.get():FillRectangle(self.get():GetWidth()*(1-v/100),0, self.get():GetWidth(), self.get():GetHight())
 			else
-				self.get():FillRectangle(0,0, self.get():GetWidth()*(1-v/100), self.get():GetHight())
+				self.get():FillRectangle(0,0, self.get():GetWidth()*v/100, self.get():GetHight())
 			end
 		end
 		if bcolor then
