@@ -29,7 +29,7 @@ function FAIdata( name,
 			srf.update( vcap )
 		end
 
-		if vcap and vtv and vint then
+		if vcap and vtv and vint and gauge then
 			gauge.update( vcap, vtv, vint )
 		end
 	end
