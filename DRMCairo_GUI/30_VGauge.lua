@@ -27,9 +27,9 @@ function VGauge(
 	function self.Draw( v )
 		self.Clear()
 
-		if max then
+		if opts.max then
 			local scale = 100 / (opts.max - opts.min)
-			v = (v-min) * scale
+			v = (v-opts.min) * scale
 			if v < 0 then
 				v = 0
 			elseif v> 100 then
@@ -40,7 +40,7 @@ function VGauge(
 		if not opts.lpattern and gfxcolor then
 			self.setColor( gfxcolor )
 			if opts.ascend then
-				self.get():FillRectangle(0, self.get():GetHight()*v/100, self.get():GetWidth(), self.get():GetHight())
+				self.get():FillRectangle(0, self.get():GetHight()*(1-v/100), self.get():GetWidth(), self.get():GetHight())
 			else
 				self.get():FillRectangle(0,0, self.get():GetWidth(), self.get():GetHight()*v/100)
 			end

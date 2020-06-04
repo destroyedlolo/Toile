@@ -30,9 +30,9 @@ function HGauge(
 	function self.Draw( v )
 		self.Clear()
 
-		if max then
+		if opts.max then
 			local scale = 100 / (opts.max - opts.min)
-			v = (v-min) * scale
+			v = (v-opts.min) * scale
 			if v < 0 then
 				v = 0
 			elseif v> 100 then
