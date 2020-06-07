@@ -55,7 +55,11 @@ function ArcGaugePercent(
 
 			-- For left quarter
 			-- 		0 = PI
-			-- 		100% -> 1 = PI/2
+			-- 		100% -> 1 = 3*PI/2
+			--
+			-- For right quarter
+			-- 		0 = 2*PI
+			-- 		100% -> 1 = 3/2 * PI
 
 		local r = sw
 		if sw > sh then
@@ -63,34 +67,69 @@ function ArcGaugePercent(
 		end
 		r = r-5
 
+		local left = true
+		if opts.align and opts.align == ALIGN_RIGHT then
+			left = nil
+		end
+
 		if tv ~=0 then
 			self.setColor( opts.tvcolor )
-			self.get():DrawArc( sw, sh, r, 
-				math.pi,
-				(1 + tv/2)*math.pi,
-				10 
-			)
+			if left then
+				self.get():DrawArc( sw, sh, r, 
+					math.pi,
+					(1 + tv/2)*math.pi,
+					10 
+				)
+			else
+				self.get():DrawArc( 0, sh, r, 
+					(2-tv/2)*math.pi,
+					2*math.pi,
+					10 
+				)
+			end
 		end
 		if internet ~= 0 then
 			self.setColor( opts.internetcolor )
-			self.get():DrawArc( sw, sh, r,
-				(1 + tv/2)*math.pi, 
-				(1+(tv + internet)/2)*math.pi,
-				10
-			)
+			if left then
+				self.get():DrawArc( sw, sh, r,
+					(1 + tv/2)*math.pi, 
+					(1+(tv + internet)/2)*math.pi,
+					10
+				)
+			else
+				self.get():DrawArc( 0, sh, r, 
+					(2 - (tv + internet)/2)*math.pi,
+					(2-tv/2)*math.pi,
+					10 
+				)
+			end
 		end
 		if opts.emptycolor then
 			self.setColor( opts.emptycolor )
-			self.get():DrawArc( sw, sh, r,
-				(1 + (tv+internet)/2)*math.pi, 
-				3/2*math.pi,
-				10
-			)
+			if left then
+				self.get():DrawArc( sw, sh, r,
+					(1 + (tv+internet)/2)*math.pi, 
+					3/2*math.pi,
+					10
+				)
+			else
+				self.get():DrawArc( 0, sh, r,
+					2*math.pi,
+					(2 - (tv + internet)/2)*math.pi, 
+					10
+				)
+			end
 		end
 		if opts.parts then
 			self.setColor( opts.bgcolor )
-			for i = 0, 1/2, opts.parts do
-				self.get():DrawLine( sw, sh, sw+r*2*math.cos((1+i)*math.pi), sh+r*2*math.sin((1+i)*math.pi),1)
+			if left then
+				for i = 0, 1/2, opts.parts do
+					self.get():DrawLine( sw, sh, sw+r*2 * math.cos((1+i)*math.pi), sh+r*2 * math.sin((1+i)*math.pi),1)
+				end
+			else
+				for i = 0, 1/2, opts.parts do
+					self.get():DrawLine(  0, sh, r*2*math.cos((2-i)*math.pi), sh+r*2*math.sin((2-i)*math.pi),1)
+				end
 			end
 		end
 
