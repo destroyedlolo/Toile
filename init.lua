@@ -1,7 +1,11 @@
 TOILE_VERSION=6.0301
 
 -- Ensure we're not using obsolete version
-assert( SELENE_VERSION >= 6.0009, "HDB requires at least Selene v6.00.09" )
+if SELPLUG_DRMCairo then
+	assert( SELENE_VERSION >= 6.0009, "HDB requires at least Selene v6.00.09" )
+else
+	assert( SELENE_VERSION >= 5.0100, "HDB requires at least Selene v5.01.00" )
+end
 
 -- compatibility with newer Lua
 -- local unpack = unpack or table.unpack
