@@ -81,6 +81,8 @@ function GfxArea(
 		end
 	end
 
+	local pmin, pmax = 0,0	-- Previous collection value
+	local gradient_srf
 	function self.DrawGfx( data, amin )	-- Minimal graphics
 		self.Clear()
 
@@ -128,8 +130,12 @@ function GfxArea(
 			--
 			-- Create background gradient
 			--
-		local gradient_srf
-		if opts.gradient then
+		if opts.gradient and (pmin ~= min or pmax ~= max) then	-- Rethink gradient only if min/max changed
+			pmin = min
+			pmax = max
+			if gradient_srf then
+				gradient_srf:Release()
+			end
 			gradient_srf = SelDCSurface.create( w,h )
 
 				-- Gradient
@@ -259,9 +265,6 @@ function GfxArea(
 		end
 --]]
 
-		if gradient_srf then
-			gradient_srf:Release()
-		end
 	end
 
 	return self
