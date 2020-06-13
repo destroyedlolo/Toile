@@ -20,7 +20,9 @@ function GfxArea(
 --	mode : drawing mode
 --		- 'delta' : draw min-max
 --		- default or 'range' : min/max range
+--	gradient : use a dynmamique gradient behind
 --
+--	From DiretFB version : not yet used
 --	noclear : don't call Clear() after FrozeUnder() - for gfx debuging purposes -
 --]]
 	if not opts then
@@ -113,7 +115,7 @@ function GfxArea(
 			self.ownsrf():Clear( bgcolor.get() ) -- Ensure empty surface if nothing as to be displayed
 			return
 		end
-		local h = self.get():GetHight()-1
+		local w,h = self.get():GetWidth(), self.get():GetHight()-1
 		local sy = h/(max-min) -- vertical scale
 		local sx = self.get():GetWidth()/data:GetSize()
 		if opts.stretch then
@@ -123,7 +125,41 @@ function GfxArea(
 			sx = self.get():GetWidth()/(data:HowMany() - 1) -- -1 as the 1st one doesn't have offset
 		end
 
+			--
+			-- Create background gradient
+			--
+		local gradient_srf
+		if opts.gradient then
+			gradient_srf = SelDCSurface.create( w,h )
 
+				-- Gradient
+			local pat = SelDCPattern.createLinear(0,h, 0,0)
+			pat:addFixPoint( 0, opts.gradient.findgradientcolor(min) )
+			pat:addFixPoint( 1, opts.gradient.findgradientcolor(max) )
+
+			gradient_srf:SetSourcePattern(pat)
+			gradient_srf:FillRectangle(0,0, w,h)
+
+			pat:Release()
+
+				-- Shadow
+			pat = SelDCPattern.createLinear(0,0, w,0)
+			pat:addFixPoint( 0, .2, .2, .2, .9 )
+			pat:addFixPoint( 1, .2, .2, .2, 0 )
+
+			local tspat = SelDCSurface.create( w,h )
+			tspat:SetSourcePattern(pat)
+			tspat:FillRectangle(0,0, w,h)
+
+			pat:Release()
+
+				-- Mix both
+			gradient_srf:SetSourceSurface(tspat)
+			gradient_srf:Paint()
+
+			tspat:Release()
+		end
+	
 			--
 			-- Draw additional gfx
 			--
@@ -162,7 +198,11 @@ function GfxArea(
 			x = self.get():GetWidth() - data:HowMany()*sx
 		end
 
-		self.setColor( color )
+		if gradient_srf then
+			self.get():SetSourceSurface(gradient_srf)
+		else
+			self.setColor( color )
+		end
 
 		local ansH,ansD
 		for v,t,_ in data:iData() do
@@ -178,9 +218,10 @@ function GfxArea(
 				if opts.vlinesH then
 					local hr = os.date('%H',t)
 					if ansH and ansH ~= hr then
+						psrf.get():SaveContext()
 						self.setColor( opts.vlinesH )
 						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHight())
-						self.setColor( color )
+						psrf.get():RestoreContext()
 					end
 					ansH = hr
 				end
@@ -188,9 +229,10 @@ function GfxArea(
 				if opts.vlinesD then
 					local d = os.date('%d',t)
 					if ansD and ansD ~= d then
+						psrf.get():SaveContext()
 						self.setColor( opts.vlinesD )
 						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHight())
-						self.setColor( color )
+						psrf.get():RestoreContext()
 					end
 					ansD = d
 				end
@@ -216,6 +258,10 @@ function GfxArea(
 			self.ownsrf():SetBlittingFlags( SelSurface.BlittingFlagsConst('NONE') )
 		end
 --]]
+
+		if gradient_srf then
+			gradient_srf:Release()
+		end
 	end
 
 	return self
