@@ -44,6 +44,9 @@ function Surface(
 		if displayed then	-- only if the surface is displayed
 			if type(primary_surface) == "table" then
 				primary_surface.get():Blit( self.get(), srf_x, srf_y )
+				if primary_surface.getDisplayed() then
+					primary_surface.Refresh()
+				end
 			else
 				primary_surface:Blit( self.get(), srf_x, srf_y )
 			end
