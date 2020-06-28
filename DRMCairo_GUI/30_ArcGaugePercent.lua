@@ -78,13 +78,13 @@ function ArcGaugePercent(
 				self.get():DrawArc( sw, sh, r, 
 					math.pi,
 					(1 + tv/2)*math.pi,
-					10 
+					10, true
 				)
 			else
 				self.get():DrawArc( 0, sh, r, 
 					(2-tv/2)*math.pi,
 					2*math.pi,
-					10 
+					10, true
 				)
 			end
 		end
