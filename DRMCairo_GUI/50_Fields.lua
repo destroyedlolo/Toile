@@ -19,7 +19,7 @@ function Field(
 --		the parent at refresh. Need if it overlaps another one and draws
 --		transparent colors
 --	suffix : string to add to the value (i.e. : unit)
---	gradient : gradient to colorize
+--	gradient : gradiant to colorize
 --	timeout : force to timeoutcolor after timeout seconds without update
 --	timeoutcolor : color to force to (default COL_DARKRED)
 --
