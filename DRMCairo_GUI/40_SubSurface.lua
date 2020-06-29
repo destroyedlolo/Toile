@@ -15,13 +15,37 @@ function SubSurface(
 	----
 	-- Methods
 	----
-	function self.Refresh()
+	function self.Refresh(
+		clipped -- true if drawing is already restricted
+	)
 		-- No need to refresh the parent surface, it's the same datafield
 		-- but we have to check if the parent is visible. If so only OUR
 		-- area need to be refreshed
 		if parent_srf.getDisplayed() then
+			if clipped then	-- Offset this surface
+				clipped[1] = clipped[1]+srf_x
+				clipped[2] = clipped[2]+srf_y
+			else
+				clipped = { srf_x, srf_y, srf_w, srf_h }
+			end
+			parent_srf.Refresh(clipped)
+
+--[[
+			if not clipped then
+				parent_srf.get():SaveContext()
+				local px, py = parent_srf:getPos()
+				parent_srf.get():SetClipS(px+srf_x, py+srf_y, srf_w, srf_h )
+			end
+			parent_srf.Refresh(true)
+			if not clipped then
+				parent_srf.get():RestoreContext()
+			end
+--]]
+
+--[[
 			local px, py = parent_srf:getPos()
 			parent_srf.getPhysical():Blit( self.get(), px+srf_x, py+srf_y )
+]]
 		end
 	end
 
