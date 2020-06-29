@@ -42,7 +42,6 @@ function Surface(
 		clipped -- Clipping region
 	)
 		-- refresh content to the parent surface
-
 		if displayed then	-- only if the surface is displayed
 			if type(primary_surface) == "table" then
 				primary_surface.get():Blit( self.get(), srf_x, srf_y )
@@ -57,6 +56,8 @@ function Surface(
 				end
 			else
 				if clipped then
+					clipped[1] = clipped[1]+srf_x
+					clipped[2] = clipped[2]+srf_y
 					primary_surface:SaveContext()
 					primary_surface:SetClipS( unpack(clipped) )
 				end

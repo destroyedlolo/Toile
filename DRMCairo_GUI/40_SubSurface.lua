@@ -30,22 +30,6 @@ function SubSurface(
 			end
 			parent_srf.Refresh(clipped)
 
---[[
-			if not clipped then
-				parent_srf.get():SaveContext()
-				local px, py = parent_srf:getPos()
-				parent_srf.get():SetClipS(px+srf_x, py+srf_y, srf_w, srf_h )
-			end
-			parent_srf.Refresh(true)
-			if not clipped then
-				parent_srf.get():RestoreContext()
-			end
---]]
-
---[[
-			local px, py = parent_srf:getPos()
-			parent_srf.getPhysical():Blit( self.get(), px+srf_x, py+srf_y )
-]]
 		end
 	end
 
