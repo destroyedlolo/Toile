@@ -37,35 +37,8 @@ function GfxArea(
 
 	local self = SubSurface(psrf, sx,sy, sw,sh )
 
-	local mask = 0	-- invalid
-	local back
-
 	function self.getMode()
 		return opts.mode
-	end
-
---[[
-	function self.FrozeUnder()	
-		-- The current content of the surface will be "under" our graphic
-		self.refresh() -- Ensure the background is fresh
-		back = self.get():clone()
-		mask = SelSurface:create { size = { sw,sh }, pixelformat=SelSurface.PixelFormatConst('ARGB') }
-		mask:SetColor( color.get() )
-
-		if not opts.noclear then
-			self.ownsrf():Clear( bgcolor.get() )
---			self.refresh()
-		end
-	end
---]]
-
-	self.ownsrf = self.get
-	function self.get()
-		if mask == 0 then
-			return self.ownsrf()
-		else
-			return mask
-		end
 	end
 
 	function self.getAfter()
@@ -73,12 +46,14 @@ function GfxArea(
 	end
 
 	function self.Clear()
-		if mask ~= 0 then
-			self.ownsrf():restore(back)
-			mask:Clear( bgcolor.get() )
-		else
-			self.get():Clear( bgcolor.get() )
+		if psrf.Clear then
+			psrf.get():SaveContext() -- In case of transparency
+			psrf.get():SetClipS(sx,sy, sw,sh )	-- clear only this sub footprint
+			psrf.Clear()
+			psrf.get():RestoreContext()
 		end
+
+		self.get():Clear( bgcolor.get() )	-- Then clear ourself
 	end
 
 	local pmin, pmax = 0,0	-- Previous collection value
@@ -113,10 +88,6 @@ function GfxArea(
 			end
 		end
 
-		if max == min then	-- No dynamic data to draw
-			self.ownsrf():Clear( bgcolor.get() ) -- Ensure empty surface if nothing as to be displayed
-			return
-		end
 		local w,h = self.get():GetWidth(), self.get():GetHight()-1
 		local sy = h/(max-min) -- vertical scale
 		local sx = self.get():GetWidth()/data:GetSize()
@@ -256,14 +227,6 @@ function GfxArea(
 			end
 			y = v
 		end
-
---[[
-		if mask ~= 0 then	-- Apply the mask
-			self.ownsrf():SetBlittingFlags( SelSurface.BlittingFlagsConst('BLEND_ALPHACHANNEL') )
-			self.ownsrf():Blit( mask, nil, 0,0 )
-			self.ownsrf():SetBlittingFlags( SelSurface.BlittingFlagsConst('NONE') )
-		end
---]]
 
 	end
 
