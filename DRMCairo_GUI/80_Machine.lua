@@ -25,7 +25,7 @@ function Machine(
 		sw-self.get():GetStringExtents("53.88")-2, 1,
 		font, COL_GREEN, {
 			gradient = gradiant,
-			timeout = 60,
+			timeout = 65,
 			align = ALIGN_RIGHT,
 			sample_text = "53.23",
 		}
