@@ -1,7 +1,6 @@
 -- Trace data collection
 
 function StoreGfx(
-	srf,	-- surface to display the value (may be nil)
 	sgfx,	-- surface to display the graphic (may be nil, opts.width must be provided)
 	opts
 )
@@ -33,20 +32,6 @@ function StoreGfx(
 	local self = {}
 	local ansmax, ansmin
 
-	function self.adddtv( v )
-		if opts.rangeMin then
-			if v < opts.rangeMin then
-				return;
-			end
-		end
-		if opts.rangeMax then
-			if v > opts.rangeMax then
-				return;
-			end
-		end
-		dt:Push(v)
-	end
-
 	function self.getCollection()
 		return dt
 	end
@@ -73,6 +58,29 @@ function StoreGfx(
 		if opts.smin and (not ansmin or min ~= ansmin or opts.force_min_refresh) then
 			opts.smin.update( min, ansmin == min)
 			ansmin = min
+		end
+	end
+
+	function self.adddtv( v )
+if opts.debug then
+print("adddtv", v)
+end
+		if opts.rangeMin then
+			if v < opts.rangeMin then
+				return;
+			end
+		end
+		if opts.rangeMax then
+			if v > opts.rangeMax then
+				return;
+			end
+		end
+		dt:Push(v)
+
+		self.updgfx()
+		self.updmaxmin()
+		if sgfx then	-- Only if a gfx surface is provided
+			sgfx.Refresh()
 		end
 	end
 
