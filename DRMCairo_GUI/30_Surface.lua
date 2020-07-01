@@ -7,6 +7,9 @@ function Surface(
 	srf_x, srf_y,		-- top left position
 	srf_w, srf_h		-- size
 )
+	if not opts then
+		opts = {}
+	end
 
 	local self = metaSurface( SelDCSurface.create(srf_w, srf_h) )
 
@@ -66,6 +69,8 @@ function Surface(
 					primary_surface:RestoreContext()
 				end
 			end
+elseif opts.debug then
+print("Surface", "not visible")
 		end
 	end
 

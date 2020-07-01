@@ -59,10 +59,10 @@ function Field(
 
 	local self
 	if opts.ownsurface == true then
-		self = Surface(psrf, x,y, opts.width, opts.height)
+		self = Surface(psrf, x,y, opts.width, opts.height, opts)
 		self.Visibility(true) -- always put on its mother surface as it's not the primary
 	else
-		self = SubSurface(psrf, x,y, opts.width, opts.height)
+		self = SubSurface(psrf, x,y, opts.width, opts.height, opts)
 	end
 	self.setFont( font )
 	self.setColor( color )
@@ -136,6 +136,10 @@ function Field(
 	end
 
 	function self.update( v )	-- Callback when the field has to be updated
+if opts.debug then
+print("Field.update", v)
+print("pos >>", x,y)
+end
 		val = v
 		if opts.gradient then
 			self.setColorRGB( opts.gradient.findgradientcolor(v) )

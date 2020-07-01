@@ -3,8 +3,12 @@
 function SubSurface( 
 	parent_srf,			-- Parent surface
 	srf_x, srf_y,		-- top left position
-	srf_w, srf_h		-- size
+	srf_w, srf_h,		-- size
+	opts
 )
+	if not opts then
+		opts = {}
+	end
 
 	local self = metaSurface( parent_srf.get():SubSurface(srf_x,srf_y, srf_w, srf_h) )
 
@@ -29,7 +33,8 @@ function SubSurface(
 				clipped = { srf_x, srf_y, srf_w, srf_h }
 			end
 			parent_srf.Refresh(clipped)
-
+elseif opts.debug then
+print("SubSurface", "parent surface not visible")
 		end
 	end
 
