@@ -56,6 +56,10 @@ function GfxArea(
 		self.get():Clear( bgcolor.get() )	-- Then clear ourself
 	end
 
+	function self.setGradient( g )
+		opts.gradient = g
+	end
+
 	local pmin, pmax = 0,0	-- Previous collection value
 	local gradient_srf
 	function self.DrawGfx( data, amin )	-- Minimal graphics
@@ -86,6 +90,10 @@ function GfxArea(
 				min = m - opts.min_delta/2
 				max = m + opts.min_delta/2
 			end
+		end
+
+		if min == max then
+			return
 		end
 
 		local w,h = self.get():GetWidth(), self.get():GetHight()-1

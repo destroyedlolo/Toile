@@ -16,7 +16,7 @@ function Machine(
 
 	local name
 	local ncpu
-	local gradiant
+	local gradient
 
 	self.setFont( font )	-- Used as well by the Title
 	local offy = self.get():GetFontExtents() + 3
@@ -24,7 +24,7 @@ function Machine(
 	local cpuld = Field( self, 
 		sw-self.get():GetStringExtents("53.88")-2, 1,
 		font, COL_GREEN, {
-			gradient = gradiant,
+			gradient = gradient,
 			timeout = 65,
 			align = ALIGN_RIGHT,
 			sample_text = "53.23",
@@ -34,7 +34,7 @@ function Machine(
 	local srf_trnd = GfxArea( self, 1, offy, sw-2, sh-offy-1, COL_ORANGE, COL_GFXBGT,{
 		align=ALIGN_RIGHT,
 		stretch = 1,
-		gradient = gradiant,
+		gradient = gradient,
 		heverylines={ {0.5, COL_DARKGREY, 2}, { 1, COL_GREY, 10 } }
 	} )
 
@@ -48,11 +48,13 @@ function Machine(
 	)
 		name = aname
 		ncpu = ancpu
-		gradiant = Gradient({
+		gradient = Gradient({
 			[ncpu*.8] = COL_GREEN,
 			[ncpu] = COL_ORANGE,
 			[ncpu*1.5] = COL_RED
 		})
+
+		srf_trnd.setGradient( gradient )
 	end
 
 	function self.getName()
