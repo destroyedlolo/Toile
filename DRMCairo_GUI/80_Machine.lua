@@ -80,7 +80,7 @@ function Machine(
 
 	function self.Decoration()	-- Clear then draw decorations
 		self.Clear()
-		self.get():Clear( 0,0,0,.5 )
+		self.get():Clear( 0,0,0,.2 )
 		self.setColor( COL_BORDER )
 		self.get():DrawRectangle( 0,0, sw,sh )
 		if name then
