@@ -36,13 +36,7 @@ function StoreGfx(
 		return dt
 	end
 
-	function self.updgfx()
-		if sgfx then	-- Only if a gfx surface is provided
-			sgfx.DrawGfx(dt, opts.forced_min)
-		end
-	end
-
-	function self.updmaxmin()
+	function self.updmaxmin()	-- Update min/max fields
 		local min,max
 		if sgfx and sgfx.getMode() == 'delta' then
 			min,max = dt:DiffMinMax()
@@ -58,6 +52,17 @@ function StoreGfx(
 		if opts.smin and (not ansmin or min ~= ansmin or opts.force_min_refresh) then
 			opts.smin.update( min, ansmin == min)
 			ansmin = min
+		end
+	end
+
+	function self.updgfx()	-- Update graphics
+		if sgfx then	-- Only if a gfx surface is provided
+			sgfx.DrawGfx(dt, opts.forced_min)
+		end
+		self.updmaxmin()	-- Update min/max fields
+	
+		if sgfx then	-- Only if a gfx surface is provided
+			sgfx.Refresh()
 		end
 	end
 
@@ -77,11 +82,10 @@ end
 		end
 		dt:Push(v)
 
-		self.updgfx()
-		self.updmaxmin()
-		if sgfx then	-- Only if a gfx surface is provided
-			sgfx.Refresh()
-		end
+			-- Submit gfx refreshing tasks
+			-- don't do it in this function to avoir race condition
+			-- if data are received in too fast way
+		SelShared.PushTask( self.updgfx, SelShared.TaskOnceConst("LAST") )
 	end
 
 	return self

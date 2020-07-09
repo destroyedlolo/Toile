@@ -28,6 +28,7 @@ function Machine(
 			timeout = 65,
 			align = ALIGN_RIGHT,
 			sample_text = "53.23",
+			bgcolor = COL_TRANSPARENT,
 		}
 	)
 
@@ -35,8 +36,8 @@ function Machine(
 		align = ALIGN_RIGHT,
 		sample_text = "53.23",
 		bgcolor = COL_TRANSPARENT,
-		ownsurface = true,
-		gradient = gradient
+--		ownsurface = true,
+--		gradient = gradient
 	} )
 
 	local srf_trnd = GfxArea( self, 1, offy, sw-2, sh-offy-1, COL_ORANGE, COL_GFXBGT,{
@@ -71,10 +72,16 @@ function Machine(
 		return name
 	end
 
-	function self.Clear()	-- Fully remove this field
+	function self.Clear(clipped)	-- Fully remove this field
 		psrf.get():SaveContext()
-		psrf.get():SetClipS(sx,sy, sw,sh )	-- clear only this sub footprint
-		psrf.Clear()
+		if clipped then	-- Offset this surface
+			clipped[1] = clipped[1]+sx
+			clipped[2] = clipped[2]+sy
+		else
+			clipped = { sx,sy, sw,sh }
+		end
+		psrf.get():SetClipS( unpack(clipped) )	-- clear only this sub footprint
+		psrf.Clear( clipped )
 		psrf.get():RestoreContext()
 	end
 

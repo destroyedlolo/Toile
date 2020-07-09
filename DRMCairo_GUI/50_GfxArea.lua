@@ -45,11 +45,19 @@ function GfxArea(
 		return sx+sw, sy
 	end
 
-	function self.Clear()
+	function self.Clear(
+		clipped -- clipping area from child (optional)
+	)
 		if psrf.Clear then
 			psrf.get():SaveContext() -- In case of transparency
-			psrf.get():SetClipS(sx,sy, sw,sh )	-- clear only this sub footprint
-			psrf.Clear()
+			if clipped then	-- Offset this surface
+				clipped[1] = clipped[1]+sx
+				clipped[2] = clipped[2]+sy
+			else
+				clipped = { sx,sy, sw,sh }
+			end
+			psrf.get():SetClipS( unpack(clipped) )	-- clear only this sub footprint
+			psrf.Clear(clipped)
 			psrf.get():RestoreContext()
 		end
 
@@ -109,6 +117,9 @@ function GfxArea(
 			--
 			-- Create background gradient
 			--
+if opts.debug then
+print( ">>>>", opts.gradient, pmin,min, pmax,max)
+end
 		if opts.gradient and (pmin ~= min or pmax ~= max) then	-- Rethink gradient only if min/max changed
 			pmin = min
 			pmax = max
