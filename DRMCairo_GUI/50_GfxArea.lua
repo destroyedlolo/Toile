@@ -117,9 +117,6 @@ function GfxArea(
 			--
 			-- Create background gradient
 			--
-if opts.debug then
-print( ">>>>", opts.gradient, pmin,min, pmax,max)
-end
 		if opts.gradient and (pmin ~= min or pmax ~= max) then	-- Rethink gradient only if min/max changed
 			pmin = min
 			pmax = max
