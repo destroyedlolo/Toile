@@ -13,17 +13,26 @@ function Field(
 --	width, height : force the field's geometry
 --	bgcolor : background color
 --	ndecimal : round to ndecimal
---	refresh : force refresh even if the data doesn't change
---		(useful if smax overlap gfx with mask)
 --	ownsurface : it's not a subsurface but a real one that will be blited to
 --		the parent at refresh. Need if it overlaps another one and draws
 --		transparent colors
+--	included : this field is included and fully depend on his mother surface. Consequently :
+--		* clear() is not called
+--		* its content is only draw on its mother 
+--		* so the result will be displayed at mother's refresh
 --	suffix : string to add to the value (i.e. : unit)
 --	gradient : gradient to colorize
 --	timeout : force to timeoutcolor after timeout seconds without update
 --	timeoutcolor : color to force to (default COL_DARKRED)
 --
 --	At last one of sample_text or width MUST be provided
+--
+--
+--	from DirectFB but not anymore used :
+--	------------------------------------
+--
+--	refresh : force refresh even if the data doesn't change
+--		(useful if smax overlap gfx with mask)
 --]]
 	if not opts then
 		opts = {}
@@ -130,9 +139,13 @@ function Field(
 		if opts.suffix then
 			v = v .. opts.suffix
 		end
-		self.Clear()
+		if not opts.included then
+			self.Clear()
+		end
 		self.DrawStringOff(v, 0,0)
-		self.Refresh()
+		if not opts.included then
+			self.Refresh()
+		end
 	end
 
 	function self.ping()	-- Notify the value has been updated
