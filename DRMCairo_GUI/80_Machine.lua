@@ -24,7 +24,6 @@ function Machine(
 	local cpuld = Field( self, 
 		sw-self.get():GetStringExtents("53.88")-2, 1,
 		font, COL_GREEN, {
-			gradient = gradient,
 			timeout = 65,
 			align = ALIGN_RIGHT,
 			sample_text = "53.23",
@@ -40,7 +39,6 @@ function Machine(
 			bgcolor = COL_TRANSPARENT,
 			included = true,
 --			ownsurface = true,
---			gradient = gradient
 		} 
 	)
 
@@ -70,6 +68,8 @@ function Machine(
 		})
 
 		srf_trnd.setGradient( gradient )
+		cpuld.setGradient( gradient )
+		srf_max.setGradient( gradient )
 	end
 
 	function self.getName()

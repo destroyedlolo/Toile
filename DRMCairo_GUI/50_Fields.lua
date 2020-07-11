@@ -154,6 +154,10 @@ function Field(
 		end		
 	end
 
+	function self.setGradient( g )
+		opts.gradient = g
+	end
+
 	function self.update( v )	-- Callback when the field has to be updated
 if opts.debug then
 print("Field.update", v)
