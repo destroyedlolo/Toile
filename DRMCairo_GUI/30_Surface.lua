@@ -5,8 +5,14 @@
 function Surface( 
 	primary_surface,	-- Physical screen
 	srf_x, srf_y,		-- top left position
-	srf_w, srf_h		-- size
+	srf_w, srf_h,		-- size
+	opts
 )
+--[[ known options  :
+--	keepcontent : Don't erase the background when hidded
+--		only when primary_surface is a physical surface
+--		avoid flictering during page switch
+--]]
 	if not opts then
 		opts = {}
 	end
@@ -87,8 +93,15 @@ print("Surface", "not visible")
 		else	-- currently displayed
 			displayed = putonscreen
 			if putonscreen == false then -- do we have to hide it ?
-				primary_surface.Clear( {srf_x, srf_y, srf_w, srf_h} )
-				primary_surface.Refresh( {srf_x, srf_y, srf_w, srf_h} )
+				if type(primary_surface) == "table" then
+					primary_surface.Clear( {srf_x, srf_y, srf_w, srf_h} )
+					primary_surface.Refresh( {srf_x, srf_y, srf_w, srf_h} )
+				elseif not opts.keepcontent then	-- a physical surface
+					primary_surface:SaveContext()
+					primary_surface:SetClipS( srf_x, srf_y, srf_w, srf_h )
+					primary_surface:Clear( COL_BLACK.get() )
+					primary_surface:RestoreContext()
+				end
 			end
 		end
 	end
