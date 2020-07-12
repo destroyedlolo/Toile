@@ -17,6 +17,7 @@ function Machine(
 	local name
 	local ncpu
 	local gradient
+	local colentry	-- Entry in the machine collection
 
 	self.setFont( font )	-- Used as well by the Title
 	local offy = self.get():GetFontExtents() + 3
@@ -55,12 +56,36 @@ function Machine(
 		force_max_refresh = true
 	})
 
+	local wdcnt	-- Watchdog counter
+	local function watchdog()	-- ensure this host is still alive
+		if wdcnt > 0 then
+			wdcnt = wdcnt - 1
+			if wdcnt == 0 then	-- Release this host
+				colentry.surface = nil	-- Release this place
+				name = nil
+				cpuload.getCollection():Clear()	-- Remove previous data
+				self.Clear()
+				self.Refresh()
+				self.Visibility(false)
+				wdTimer.TaskOnceRemove(watchdog)
+			end
+		end
+	end
+
+	function self.ping()	-- Notify the value has been updated
+		if opts.timeout then
+			wdcnt = opts.timeout
+		end		
+	end
+
 	function self.allocate(	-- Use this surface for given machine
 		aname,	-- Name of the machine
-		ancpu	-- Number of cores
+		ancpu,	-- Number of cores
+		aentry	-- entry in the collection that's tracking machines in parent
 	)
 		name = aname
 		ncpu = ancpu
+		colentry = aentry
 		gradient = Gradient({
 			[ncpu*.8] = COL_GREEN,
 			[ncpu] = COL_ORANGE,
@@ -70,6 +95,11 @@ function Machine(
 		srf_trnd.setGradient( gradient )
 		cpuld.setGradient( gradient )
 		srf_max.setGradient( gradient )
+
+		if opts.timeout then
+			wdTimer.TaskOnceAdd(watchdog)
+			wdcnt = opts.timeout
+		end
 	end
 
 	function self.getName()
@@ -107,6 +137,7 @@ function Machine(
 		end
 		cpuld.update(val)
 		cpuload.adddtv(val)
+		self.ping()
 	end
 
 	self.Visibility(false)

@@ -159,10 +159,6 @@ function Field(
 	end
 
 	function self.update( v )	-- Callback when the field has to be updated
-if opts.debug then
-print("Field.update", v)
-print("pos >>", x,y)
-end
 		val = v
 		if opts.gradient then
 			self.setColorRGB( opts.gradient.findgradientcolor(v) )

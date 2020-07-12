@@ -79,13 +79,17 @@ print("Surface", "not visible")
 		-- -> has to be put on screen
 		-- if the surface goes to the screen, it is refreshed
 
-		if displayed == false then	-- otherwise, already on screen : no refresh
+		if displayed == false then	-- currently hidden
 			displayed = putonscreen
-			if putonscreen then
+			if putonscreen then	-- do we have to display it ?
 				self.Refresh()
 			end
-		else
+		else	-- currently displayed
 			displayed = putonscreen
+			if putonscreen == false then -- do we have to hide it ?
+				primary_surface.Clear( {srf_x, srf_y, srf_w, srf_h} )
+				primary_surface.Refresh( {srf_x, srf_y, srf_w, srf_h} )
+			end
 		end
 	end
 
