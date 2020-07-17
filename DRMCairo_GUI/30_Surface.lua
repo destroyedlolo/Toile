@@ -53,14 +53,18 @@ function Surface(
 		-- refresh content to the parent surface
 		if displayed then	-- only if the surface is displayed
 			if type(primary_surface) == "table" then
+					-- Determine clipping area
+				if clipped then	-- Offset this surface
+					clipped[1] = clipped[1]+srf_x
+					clipped[2] = clipped[2]+srf_y
+				else
+					clipped = { srf_x, srf_y, srf_w, srf_h }
+				end
+				if primary_surface.Clear then
+					primary_surface.Clear(clipped)	-- erase bellow
+				end
 				primary_surface.get():Blit( self.get(), srf_x, srf_y )
 				if primary_surface.getDisplayed() then
-					if clipped then	-- Offset this surface
-						clipped[1] = clipped[1]+srf_x
-						clipped[2] = clipped[2]+srf_y
-					else
-						clipped = { srf_x, srf_y, srf_w, srf_h }
-					end
 					primary_surface.Refresh(clipped)
 				end
 			else

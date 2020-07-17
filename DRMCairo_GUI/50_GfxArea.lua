@@ -21,6 +21,9 @@ function GfxArea(
 --		- 'delta' : draw min-max
 --		- default or 'range' : min/max range
 --	gradient : use a dynmamique gradient behind
+--	transparency : the surfaces below must be refreshed as this one has 
+--		transparency. With this opt set, surfaces bellow are cleared first.
+--		Mostly useful when it has background image.
 --
 --	From DiretFB version : not yet used
 --	noclear : don't call Clear() after FrozeUnder() - for gfx debuging purposes -
@@ -48,7 +51,7 @@ function GfxArea(
 	function self.Clear(
 		clipped -- clipping area from child (optional)
 	)
-		if psrf.Clear then
+		if psrf.Clear and opts.transparency then
 			psrf.get():SaveContext() -- In case of transparency
 			if clipped then	-- Offset this surface
 				clipped[1] = clipped[1]+sx
