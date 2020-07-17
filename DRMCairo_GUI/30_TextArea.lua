@@ -11,6 +11,12 @@ function TextArea(
 )
 --[[ known options  :
 --	bgcolor : background color
+--	ownsurface : it's not a subsurface but a real one that will be blited to
+--		the parent at refresh. Need if it overlaps another one and draws
+--		transparent colors
+--	transparency : the surfaces below must be refreshed as this one has 
+--		transparency. With this opt set, surfaces bellow are cleared first.
+--		Mostly useful when it has background image.
 --]]
 	if not opts then
 		opts = {}
@@ -19,11 +25,33 @@ function TextArea(
 		opts.bgcolor = COL_BLACK
 	end
 
-	local self = SubSurface(psrf, sx,sy, sw,sh )
+	local self
+	if opts.ownsurface == true then
+		self = Surface(psrf, sx,sy, sw,sh, opts )
+		self.Visibility(true) -- always put on its mother surface as it's not the primary
+	else
+		self = SubSurface(psrf, sx,sy, sw,sh )
+	end
+
 	local csr = { x=0, y=0 }	-- Current cursor
 	local srf = self.get()
 
-	function self.Clear()
+	function self.Clear(
+		clipped -- clipping area from child (optional)
+	)
+		if psrf.Clear and opts.transparency then
+			psrf.get():SaveContext() -- In case of transparency
+			if clipped then	-- Offset this surface
+				clipped[1] = clipped[1]+sx
+				clipped[2] = clipped[2]+sy
+			else
+				clipped = { sx,sy, sw,sh }
+			end
+			psrf.get():SetClipS( unpack(clipped) )	-- clear only this sub footprint
+			psrf.Clear(clipped)
+			psrf.get():RestoreContext()
+		end
+
 		srf:Clear( opts.bgcolor.get() )
 		csr.x = 0; csr.y = 0
 	end

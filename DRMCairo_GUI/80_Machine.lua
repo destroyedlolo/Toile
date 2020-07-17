@@ -29,6 +29,7 @@ function Machine(
 			align = ALIGN_RIGHT,
 			sample_text = "53.23",
 			bgcolor = COL_TRANSPARENT,
+			transparency = true
 		}
 	)
 
@@ -47,7 +48,8 @@ function Machine(
 		align=ALIGN_RIGHT,
 		stretch = 1,
 		gradient = gradient,
-		heverylines={ {0.5, COL_DARKGREY, 2}, { 1, COL_GREY, 10 } }
+		heverylines={ {0.5, COL_DARKGREY, 2}, { 1, COL_GREY, 10 } },
+		transparency = true
 	} )
 
 	local cpuload = StoreGfx( srf_trnd, {

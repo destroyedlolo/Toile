@@ -14,7 +14,7 @@ function Field(
 --	bgcolor : background color
 --	ndecimal : round to ndecimal
 --	ownsurface : it's not a subsurface but a real one that will be blited to
---		the parent at refresh. Need if it overlaps another one and draws
+--		the parent at refresh. Needed if it overlaps another one and draws
 --		transparent colors
 --	included : this field is included and fully depend on his mother surface. Consequently :
 --		* clear() is not called
@@ -24,6 +24,9 @@ function Field(
 --	gradient : gradient to colorize
 --	timeout : force to timeoutcolor after timeout seconds without update
 --	timeoutcolor : color to force to (default COL_DARKRED)
+--	transparency : the surfaces below must be refreshed as this one has 
+--		transparency. With this opt set, surfaces bellow are cleared first.
+--		Mostly useful when it has background image.
 --
 --	At last one of sample_text or width MUST be provided
 --
@@ -110,7 +113,7 @@ function Field(
 	end
 
 	function self.Clear()
-		if psrf.Clear then
+		if psrf.Clear and opts.transparency then
 			psrf.get():SaveContext() -- In case of transparency
 			psrf.get():SetClipS(x,y, opts.width, opts.height )	-- clear only this sub footprint
 			psrf.Clear({x,y, opts.width, opts.height})

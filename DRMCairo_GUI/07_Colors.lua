@@ -18,7 +18,9 @@ COL_DIGIT = Color( 0, 1, 1, 1 )
 COL_GFXBG = Color( 0.05, 0.05, 0.05, 1 )
 COL_GFXBGT = Color( 0.05, 0.05, 0.05, 0.3 )
 COL_GFXFG = Color( 1, 0.13, 0, 1 )
+
 COL_TRANSPARENT = Color( 0, 0, 0, 0 )
+COL_TRANSPARENT60 = Color( 0.05, 0.05, 0.05, 0.6 )
 
 COL_REDD = Color( 0.25, 0.02, 0.02, 1 )
 COL_ORANGED = Color( 0.25, 0.14, 0, 1 )
