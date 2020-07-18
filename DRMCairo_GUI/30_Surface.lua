@@ -63,7 +63,12 @@ function Surface(
 				if primary_surface.Clear then
 					primary_surface.Clear(clipped)	-- erase bellow
 				end
+
+				primary_surface.get():SaveContext()
+				primary_surface.get():SetClipS( unpack(clipped) )
 				primary_surface.get():Blit( self.get(), srf_x, srf_y )
+				primary_surface.get():RestoreContext()
+
 				if primary_surface.getDisplayed() then
 					primary_surface.Refresh(clipped)
 				end
