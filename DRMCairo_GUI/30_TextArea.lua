@@ -36,7 +36,7 @@ function TextArea(
 	local csr = { x=0, y=0 }	-- Current cursor
 	local srf = self.get()
 
-	function self.Clear(
+	function ClearBellow( 
 		clipped -- clipping area from child (optional)
 	)
 		if psrf.Clear and opts.transparency then
@@ -51,7 +51,12 @@ function TextArea(
 			psrf.Clear(clipped)
 			psrf.get():RestoreContext()
 		end
+	end
 
+	function self.Clear(
+		clipped -- clipping area from child (optional)
+	)
+		ClearBellow(clipped)
 		srf:Clear( opts.bgcolor.get() )
 		csr.x = 0; csr.y = 0
 	end
@@ -61,7 +66,10 @@ function TextArea(
 	end
 
 	function self.Scroll()
-		self.get():SaveContext()
+		ClearBellow()
+
+		srf:SaveContext()
+		srf:SetOperator( SelDCSurface.OperatorConst("SOURCE") )
 
 		local fh = self.get():GetFontExtents()
 		srf:Blit( srf,
@@ -72,7 +80,7 @@ function TextArea(
 		self.setColor( opts.bgcolor )
 		srf:FillRectangle( 0, sh - fh, sw, fh )
 
-		self.get():RestoreContext()
+		srf:RestoreContext()
 	end
 
 	function self.CR( withoutLF ) -- Carriage return
