@@ -97,8 +97,11 @@ function TextArea(
 		end
 	end
 
-	function self.DrawString( t )
-		local w = srf:GetStringExtents( t )
+	function self.DrawString( 
+		t, -- text to display
+		norefresh	-- Don't refresh yet
+	)
+		local w = srf:GetStringExtents( t:gsub(" ","-") ) -- gsub() Needed as trailling space are ignored
 
 		if csr.x ~= 0 and csr.x + w > sw then
 			self.CR()
@@ -107,7 +110,9 @@ function TextArea(
 		srf:DrawStringTop( t, csr.x, csr.y )
 		csr.x = csr.x + w
 	
-		self.Refresh()
+		if not norefresh then
+			self.Refresh()
+		end
 	end
 
 	-- init
