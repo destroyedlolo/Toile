@@ -43,6 +43,9 @@ function StoreGfx(
 		else
 			min,max = dt:MinMax()
 		end
+		if not min then	-- The collection is still emtpy
+			return
+		end
 
 		if opts.smax and (not ansmax or max ~= ansmax or opts.force_max_refresh) then
 			opts.smax.update( max, ansmax == max)
