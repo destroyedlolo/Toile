@@ -1,7 +1,7 @@
 -- Manage collection of images
 
 function ImagesCollection(
-	dir,
+	dir,	-- Where images can be found
 	opts
 )
 --[[ known options  :
@@ -15,8 +15,8 @@ function ImagesCollection(
 	local self = {}
 	local Imgs = {}
 
-	function self.getImg( id )
-		if not Imgs[ id ] then
+	function self.getImg( id )	-- Get one image for the collection
+		if not Imgs[ id ] then	-- not yet loaded
 			local t,err = SelImage.create( dir .. id .. '.png' )
 			if not t then
 				error(dir .. id .. '.png : ' .. err)

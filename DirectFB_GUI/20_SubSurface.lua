@@ -50,5 +50,8 @@ print("Calling", k, tbl[k] )
 		srf:Flip(SelSurface.FlipFlagsConst("NONE"))
 	end
 
+	function self.Refresh()	-- Compatibility only
+		self.refresh()
+	end
 	return self
 end

@@ -59,6 +59,7 @@ function MQTTLog( aname, atpc,	-- 1st topic
 			opts = {}
 		end
 		opts.udata = opts.udata or 0
+		SelShared.Set("$$udata$$" .. tpc, opts.udata) -- Share its udata
 		opts.taskonce = self.DisplayCallBack
 
 		return MQTTinput( name, tpc, rcvfunc, opts)
