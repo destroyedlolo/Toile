@@ -38,7 +38,13 @@ function GfxArea(
 		opts.mode = 'range'
 	end
 
-	local self = SubSurface(psrf, sx,sy, sw,sh )
+	local self
+	if opts.ownsurface == true then
+		self = Surface(psrf, sx,sy, sw,sh, opts)
+		self.Visibility(true)
+	else
+		self = SubSurface(psrf, sx,sy, sw,sh, opts )
+	end
 
 	function self.getMode()
 		return opts.mode
@@ -52,16 +58,13 @@ function GfxArea(
 		clipped -- clipping area from child (optional)
 	)
 		if psrf.Clear and opts.transparency then
-			psrf.get():SaveContext() -- In case of transparency
 			if clipped then	-- Offset this surface
 				clipped[1] = clipped[1]+sx
 				clipped[2] = clipped[2]+sy
 			else
 				clipped = { sx,sy, sw,sh }
 			end
-			psrf.get():SetClipS( unpack(clipped) )	-- clear only this sub footprint
 			psrf.Clear(clipped)
-			psrf.get():RestoreContext()
 		end
 
 		self.get():Clear( bgcolor.get() )	-- Then clear ourself
