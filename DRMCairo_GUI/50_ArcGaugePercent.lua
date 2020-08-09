@@ -10,6 +10,9 @@ function ArcGaugePercent(
 --[[ known options :
 --	align : tell if the graphics is on the left (default) or on the right
 --	bgcolor : color outside the gauge
+--	ownsurface : it's not a subsurface but a real one that will be blited to
+--		the parent at refresh. Needed if it overlaps another one and draws
+--		transparent colors
 --	emptycolor : color for empty area (optional)
 --	tvcolor : color for TV
 --	internetcolor : color for internet
@@ -32,7 +35,13 @@ function ArcGaugePercent(
 		opts.internetcolor = COL_GREEN
 	end
 
-	local self = SubSurface(psrf, sx,sy, sw,sh )
+	local self
+	if opts.ownsurface == true then
+		self = Surface(psrf, sx,sy, sw,sh, opts)
+		self.Visibility(true) -- always put on its mother surface as it's not the primary
+	else
+		self = SubSurface(psrf, sx,sy, sw,sh, opts )
+	end
 
 	----
 	-- Methods
