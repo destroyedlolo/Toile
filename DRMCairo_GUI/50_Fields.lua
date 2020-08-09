@@ -59,6 +59,11 @@ function Field(
 		psrf.get():RestoreContext()
 	end
 
+		-- Normalisation
+	x,y = math.ceil(x), math.ceil(y)
+	opts.width = math.ceil( opts.width )
+	opts.height = math.ceil( opts.height )
+
 	if not opts.bgcolor then
 		opts.bgcolor = COL_BLACK
 	end

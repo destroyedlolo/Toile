@@ -35,6 +35,10 @@ function ArcGaugePercent(
 		opts.internetcolor = COL_GREEN
 	end
 
+	-- Normalisation
+	sx,sy = math.ceil(sx), math.ceil(sy)
+	sw,sh = math.ceil(sw), math.ceil(sh)
+
 	local self
 	if opts.ownsurface == true then
 		self = Surface(psrf, sx,sy, sw,sh, opts)
