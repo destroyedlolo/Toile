@@ -119,10 +119,7 @@ function Field(
 
 	function self.Clear()
 		if psrf.Clear and opts.transparency then
-			psrf.get():SaveContext() -- In case of transparency
-			psrf.get():SetClipS(x,y, opts.width, opts.height )	-- clear only this sub footprint
 			psrf.Clear({x,y, opts.width, opts.height})
-			psrf.get():RestoreContext()
 		end
 		self.get():Clear( opts.bgcolor.get() )
 	end
