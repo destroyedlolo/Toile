@@ -16,7 +16,7 @@ COL_BORDER = Color( 0.25, 0.25, 0.25, 1 )
 COL_TITLE = Color( 0.64, 0.64, 0.64, 1 )
 COL_DIGIT = Color( 0, 1, 1, 1 )
 COL_GFXBG = Color( 0.05, 0.05, 0.05, 1 )
-COL_GFXBGT = Color( 0.05, 0.05, 0.05, 0.3 )
+COL_GFXBGT = Color( 0.05, 0.05, 0.05, 0.2 )
 COL_GFXFG = Color( 1, 0.13, 0, 1 )
 
 COL_TRANSPARENT = Color( 0, 0, 0, 0 )

@@ -109,16 +109,13 @@ function Machine(
 	end
 
 	function self.Clear(clipped)	-- Fully remove this field
-		psrf.get():SaveContext()
 		if clipped then	-- Offset this surface
 			clipped[1] = clipped[1]+sx
 			clipped[2] = clipped[2]+sy
 		else
 			clipped = { sx,sy, sw,sh }
 		end
-		psrf.get():SetClipS( unpack(clipped) )	-- clear only this sub footprint
 		psrf.Clear( clipped )
-		psrf.get():RestoreContext()
 	end
 
 	function self.Decoration()	-- Clear then draw decorations
