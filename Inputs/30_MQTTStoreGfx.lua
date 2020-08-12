@@ -51,7 +51,6 @@ function MQTTStoreGfx(
 	end
 
 	self.TaskOnceAdd( adddt )
-	self.TaskOnceAdd( self.updgfx )
 
 	if opts.smax or opts.smin then
 		self.TaskOnceAdd( self.updmaxmin )
