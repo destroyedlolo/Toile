@@ -138,6 +138,9 @@ function Field(
 	end
 
 	function self.updtxt( v )
+if opts.debug then
+print(">> updtxt", v)
+end
 		if opts.ndecimal then
 			v = string.format("%." .. (opts.ndecimal or 0) .. "f", tonumber(v))
 		end
@@ -148,9 +151,15 @@ function Field(
 			self.Clear()
 		end
 		self.DrawStringOff(v, 0,0)
+if opts.debug then
+print(">> Draw")
+end
 		if not opts.included then
 			self.Refresh()
 		end
+if opts.debug then
+print(">> fin updtxt", v)
+end
 	end
 
 	function self.ping()	-- Notify the value has been updated
@@ -176,6 +185,9 @@ end
 
 		self.updtxt( v )
 		self.ping()
+if opts.debug then
+print("fin upd", v)
+end
 	end
 
 	return self
