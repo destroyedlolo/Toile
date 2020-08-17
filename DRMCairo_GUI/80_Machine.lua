@@ -8,6 +8,9 @@ function Machine(
 	color,	-- name's color
 	opts
 )
+--[[ known options  :
+--	timeout - timeout to mark this surface as dead
+--]]
 	if not opts then
 		opts = {}
 	end
@@ -63,6 +66,9 @@ function Machine(
 		if wdcnt > 0 then
 			wdcnt = wdcnt - 1
 			if wdcnt == 0 then	-- Release this host
+if opts.debug then
+	print(name .. " lost")
+end
 				colentry.surface = nil	-- Release this place
 				name = nil
 				cpuload.getCollection():Clear()	-- Remove previous data
