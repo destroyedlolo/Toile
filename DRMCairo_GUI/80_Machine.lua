@@ -59,7 +59,7 @@ function Machine(
 	})
 
 	local wdcnt	-- Watchdog counter
-	local function watchdog()	-- ensure this host is still alive
+	function self.watchdog()	-- ensure this host is still alive
 		if wdcnt > 0 then
 			wdcnt = wdcnt - 1
 			if wdcnt == 0 then	-- Release this host
@@ -69,7 +69,7 @@ function Machine(
 				self.Clear()
 				self.Refresh()
 				self.Visibility(false)
-				wdTimer.TaskOnceRemove(watchdog)
+				wdTimer.TaskOnceRemove(self.watchdog)
 			end
 		end
 	end
@@ -99,7 +99,7 @@ function Machine(
 		srf_max.setGradient( gradient )
 
 		if opts.timeout then
-			wdTimer.TaskOnceAdd(watchdog)
+			wdTimer.TaskOnceAdd(self.watchdog)
 			wdcnt = opts.timeout
 		end
 	end
