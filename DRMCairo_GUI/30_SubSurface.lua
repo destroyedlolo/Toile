@@ -18,13 +18,13 @@ function SubSurface(
 
 	function self.Clear( clipped )
 		if clipped then	-- Offset this surface
-			clipped[1] = clipped[1]+x
-			clipped[2] = clipped[2]+y
+			clipped[1] = clipped[1]+srf_x
+			clipped[2] = clipped[2]+srf_y
 		else
 			clipped = table.pack(self.getSize())
 		end
 	
-		psrf.Clear(clipped)
+		parent_srf.Clear(clipped)
 	end
 
 	----
