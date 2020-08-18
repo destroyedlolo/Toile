@@ -16,9 +16,24 @@ function SubSurface(
 	-- Fields
 	----
 
+	function self.Clear( clipped )
+		if clipped then	-- Offset this surface
+			clipped[1] = clipped[1]+x
+			clipped[2] = clipped[2]+y
+		else
+			clipped = table.pack(self.getSize())
+		end
+	
+		psrf.Clear(clipped)
+	end
+
 	----
 	-- Methods
 	----
+	function self.getSize()
+		return srf_x, srf_y, srf_w, srf_h
+	end
+
 	function self.Refresh(
 		clipped -- true if drawing is already restricted
 	)
