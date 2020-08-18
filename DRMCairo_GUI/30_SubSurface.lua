@@ -38,6 +38,10 @@ print("SubSurface", "parent surface not visible")
 		end
 	end
 
+	function self.getDisplayed()	-- A subsurface is always displayed
+		return true
+	end
+
 	function self.refresh()	-- During dev
 		print("Call to deprecated refresh()")
 		self.Refresh()
