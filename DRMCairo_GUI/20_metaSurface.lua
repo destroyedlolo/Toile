@@ -1,7 +1,9 @@
 -- metaSurface contains shared methods among *Surface objects
 
 function metaSurface( 
-	csrf 	-- Cairo's surface
+	csrf, 	-- Cairo's surface
+	srf_x, srf_y,		-- top left position
+	srf_w, srf_h		-- size
 )
 	local self = {}
 
@@ -17,6 +19,31 @@ function metaSurface(
 	function self.get()	-- dummy function, will be overwritten
 		return csrf
 	end
+
+	function self.getPos()	-- return the top-left of this surface
+		return srf_x, srf_y
+	end
+
+	function self.getSize()
+		return srf_w, srf_h
+	end
+
+	function self.getHight()
+		return srf_h
+	end
+
+	function self.getExtends()
+		return srf_x, srf_y, srf_w, srf_h
+	end
+
+	function self.getBelow()
+		return srf_x, srf_y + srf_h
+	end
+
+	function self.getAfter()
+		return srf_x + srf_w, srf_y
+	end
+
 
 	function self.setFont( f )	-- set the font
 		self.get():SetFont( f.font, f.size )

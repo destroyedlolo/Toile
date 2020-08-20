@@ -50,10 +50,6 @@ function GfxArea(
 		return opts.mode
 	end
 
-	function self.getAfter()
-		return sx+sw, sy
-	end
-
 	function self.Clear(
 		clipped -- clipping area from child (optional)
 	)

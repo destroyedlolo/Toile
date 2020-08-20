@@ -10,7 +10,7 @@ function SubSurface(
 		opts = {}
 	end
 
-	local self = metaSurface( parent_srf.get():SubSurface(srf_x,srf_y, srf_w, srf_h) )
+	local self = metaSurface( parent_srf.get():SubSurface(srf_x,srf_y, srf_w, srf_h), srf_x, srf_y, srf_w, srf_h )
 
 	----
 	-- Fields
@@ -21,7 +21,7 @@ function SubSurface(
 			clipped[1] = clipped[1]+srf_x
 			clipped[2] = clipped[2]+srf_y
 		else
-			clipped = table.pack(self.getSize())
+			clipped = table.pack(self.getExtends())
 		end
 	
 		parent_srf.Clear(clipped)
@@ -30,10 +30,6 @@ function SubSurface(
 	----
 	-- Methods
 	----
-	function self.getSize()
-		return srf_x, srf_y, srf_w, srf_h
-	end
-
 	function self.Refresh(
 		clipped -- true if drawing is already restricted
 	)
@@ -45,7 +41,7 @@ function SubSurface(
 				clipped[1] = clipped[1]+srf_x
 				clipped[2] = clipped[2]+srf_y
 			else
-				clipped = { srf_x, srf_y, srf_w, srf_h }
+				clipped = table.pack(self.getExtends())
 			end
 			parent_srf.Refresh(clipped)
 elseif opts.debug then

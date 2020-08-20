@@ -17,7 +17,7 @@ function Surface(
 		opts = {}
 	end
 
-	local self = metaSurface( SelDCSurface.create(srf_w, srf_h) )
+	local self = metaSurface( SelDCSurface.create(srf_w, srf_h), srf_x, srf_y, srf_w, srf_h )
 
 	----
 	-- Fields
@@ -35,14 +35,6 @@ function Surface(
 		return primary_surface
 	end
 		
-	function self.getPos()	-- return the top-left of this surface
-		return srf_x, srf_y
-	end
-
-	function self.getSize()
-		return srf_w, srf_h
-	end
-
 	function self.getDisplayed()
 		return displayed
 	end

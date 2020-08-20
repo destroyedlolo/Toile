@@ -109,14 +109,6 @@ function Field(
 	-- Methods
 	----
 
-	function self.getHight()
-		return opts.height
-	end
-
-	function self.getAfter()
-		return x + opts.width, y
-	end
-
 	function self.Clear()
 		if psrf.Clear and opts.transparency then
 			psrf.Clear({x,y, opts.width, opts.height})
