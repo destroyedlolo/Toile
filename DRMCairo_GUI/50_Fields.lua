@@ -12,6 +12,8 @@ function Field(
 --	sample_text : text to use to compute the field width
 --	width, height : force the field's geometry
 --	bgcolor : background color
+--		( default : black )
+--		( false : no background color, only clear under surface ) 
 --	ndecimal : round to ndecimal
 --	ownsurface : it's not a subsurface but a real one that will be blited to
 --		the parent at refresh. Needed if it overlaps another one and draws
@@ -64,7 +66,7 @@ function Field(
 	opts.width = math.ceil( opts.width )
 	opts.height = math.ceil( opts.height )
 
-	if not opts.bgcolor then
+	if not opts.bgcolor and opts.bgcolor ~= false then
 		opts.bgcolor = COL_BLACK
 	end
 	if not opts.timeoutcolor then
@@ -113,7 +115,9 @@ function Field(
 		if psrf.Clear and opts.transparency then
 			psrf.Clear({x,y, opts.width, opts.height})
 		end
-		self.get():Clear( opts.bgcolor.get() )
+		if opts.bgcolor then
+			self.get():Clear( opts.bgcolor.get() )
+		end
 	end
 
 	function self.DrawStringOff( v, x,y )	-- Draw a string at the specified offset

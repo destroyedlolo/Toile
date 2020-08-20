@@ -7,13 +7,13 @@ function WindDir(
 	opts
 )
 --[[ known options :
---	bgcolor,	-- background color
+--	bgcolor,	-- background color (by default : none)
 --	darkcolor, brightcolor -- Arrow colors
 --]]
 	if not opts then
 		opts = {}
 	end
-	if not opts.bgcolor then
+	if not opts.bgcolor and opts.bgcolor ~= false then
 		opts.bgcolor = COL_BLACK
 	end
 	if not opts.darkcolor then
@@ -53,7 +53,11 @@ function WindDir(
 		local s2 = { x=    0,	y= -.5 }
 		local s3 = { x=    0, 	y=  .5 }
 
-		srf:Clear( opts.bgcolor.get() )
+		if opts.bgcolor then
+			srf:Clear( opts.bgcolor.get() )
+		else
+			psrf.Clear( table.pack(self.getExtends()) )
+		end
 
 		srf:SetColor( opts.brightcolor.get() )
 		local x1,y1 = point( s1, dir, c)
