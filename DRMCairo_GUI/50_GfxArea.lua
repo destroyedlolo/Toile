@@ -213,10 +213,10 @@ function GfxArea(
 				if opts.vlinesH then
 					local hr = os.date('%H',t)
 					if ansH and ansH ~= hr then
-						psrf.get():SaveContext()
+						self.get():SaveContext()
 						self.setColor( opts.vlinesH )
 						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHight())
-						psrf.get():RestoreContext()
+						self.get():RestoreContext()
 					end
 					ansH = hr
 				end
@@ -224,10 +224,10 @@ function GfxArea(
 				if opts.vlinesD then
 					local d = os.date('%d',t)
 					if ansD and ansD ~= d then
-						psrf.get():SaveContext()
+						self.get():SaveContext()
 						self.setColor( opts.vlinesD )
 						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHight())
-						psrf.get():RestoreContext()
+						self.get():RestoreContext()
 					end
 					ansD = d
 				end
