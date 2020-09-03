@@ -12,6 +12,7 @@ function Surface(
 --	keepcontent : Don't erase the background when hidded
 --		only when primary_surface is a physical surface
 --		avoid flictering during page switch
+--	visible : start as visible
 --]]
 	if not opts then
 		opts = {}
@@ -105,6 +106,10 @@ print("Surface", "not visible")
 				end
 			end
 		end
+	end
+
+	if opts.visible then
+		self.Visibility( true )
 	end
 
 	return self
