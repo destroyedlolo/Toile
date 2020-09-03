@@ -1,6 +1,6 @@
 COL_BLACK = Color( 0,0,0,1 )
-COL_RED = Color( 1, 0.06, 0.06, 1 )
-COL_DARKRED = Color( 0.5, 0.03, 0.03, 1 )
+COL_RED = Color( 1, 0, 0, 1 )
+COL_DARKRED = Color( 0.5, 0, 0, 1 )
 COL_ORANGE = Color( 1, 0.55, 0, 1 )
 COL_DARKORANGE = Color( 0.60, 0.27, 0, 1 )
 COL_GREEN = Color( 0, 0.78, 0, 1 )
