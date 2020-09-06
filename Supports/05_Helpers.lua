@@ -85,3 +85,14 @@ function SubTasks( tasks, aonce )
 		end
 	end
 end
+
+-- debuging
+
+function AddStringIfExist( str, add )
+	if str then
+		return str .. add
+	else
+		return nil
+	end
+end
+

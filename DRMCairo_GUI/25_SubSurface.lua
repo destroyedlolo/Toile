@@ -10,6 +10,8 @@ function SubSurface(
 		opts = {}
 	end
 
+	opts.debug = AddStringIfExist(opts.debug, "/subSrf")
+
 	local self = metaSurface( parent_srf.get():SubSurface(srf_x,srf_y, srf_w, srf_h), srf_x, srf_y, srf_w, srf_h )
 
 	----
@@ -45,7 +47,7 @@ function SubSurface(
 			end
 			parent_srf.Refresh(clipped)
 elseif opts.debug then
-print("SubSurface", "parent surface not visible")
+print(opts.debug, "parent surface not visible")
 		end
 	end
 
