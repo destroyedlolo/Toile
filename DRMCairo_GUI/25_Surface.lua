@@ -80,8 +80,7 @@ end
 if opts.debug then
 print(opts.debug, "(srf)Refresh() parent",unpack(clipped) )
 end
---					primary_surface.Refresh( { clipped[1], clipped[2], clipped[3], clipped[4] } )
-					primary_surface.Refresh( clipped )
+					primary_surface.Refresh( { clipped[1], clipped[2], clipped[3], clipped[4] } )
 if opts.debug then
 print(opts.debug, "(srf)Refresh() parent fin",unpack(clipped) )
 end
