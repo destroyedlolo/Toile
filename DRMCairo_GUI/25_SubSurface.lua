@@ -10,11 +10,24 @@ function SubSurface(
 		opts = {}
 	end
 
-	local self = metaSurface( parent_srf.get():SubSurface(srf_x,srf_y, srf_w, srf_h) )
+	opts.debug = AddStringIfExist(opts.debug, "/subSrf")
+
+	local self = metaSurface( parent_srf.get():SubSurface(srf_x,srf_y, srf_w, srf_h), srf_x, srf_y, srf_w, srf_h )
 
 	----
 	-- Fields
 	----
+
+	function self.Clear( clipped )
+		if clipped then	-- Offset this surface
+			clipped[1] = clipped[1]+srf_x
+			clipped[2] = clipped[2]+srf_y
+		else
+			clipped = table.pack(self.getExtends())
+		end
+	
+		parent_srf.Clear(clipped)
+	end
 
 	----
 	-- Methods
@@ -30,12 +43,16 @@ function SubSurface(
 				clipped[1] = clipped[1]+srf_x
 				clipped[2] = clipped[2]+srf_y
 			else
-				clipped = { srf_x, srf_y, srf_w, srf_h }
+				clipped = table.pack(self.getExtends())
 			end
 			parent_srf.Refresh(clipped)
 elseif opts.debug then
-print("SubSurface", "parent surface not visible")
+print(opts.debug, "parent surface not visible")
 		end
+	end
+
+	function self.getDisplayed()	-- A subsurface is always displayed
+		return true
 	end
 
 	function self.refresh()	-- During dev

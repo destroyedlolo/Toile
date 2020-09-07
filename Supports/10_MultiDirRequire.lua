@@ -13,7 +13,7 @@ function MultiDirRequire(
 		for f in lfs.dir(path..dir) do
 			local attr = lfs.attributes( path..dir ..'/'.. f )
 			local found, len, res = f:find("^(.*)%.[^%.]*$")
-			if found and attr.mode == 'file' and res:sub(1,1) ~= '.' and f:match("^.+(%..+)$") ~= '.md' then
+			if found and attr.mode == 'file' and res:sub(1,1) ~= '.' and f:match("^.+(%..+)$") ~= '.md' and string.len(res) ~= 0 then
 				if files[res] then
 					SelLog.log('E', res .. ' erasing "' .. files[res] ..'"')
 				end

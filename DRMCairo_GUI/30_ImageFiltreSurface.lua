@@ -1,4 +1,6 @@
--- Applies a filtre to a surface
+-- First the backgound is drawn then 
+-- apply given filter
+-- (see ImageStencil for a better alternative)
 
 function ImageFiltreSurface(
 	psrf,	-- mother surface

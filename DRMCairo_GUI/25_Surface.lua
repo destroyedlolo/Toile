@@ -12,12 +12,14 @@ function Surface(
 --	keepcontent : Don't erase the background when hidded
 --		only when primary_surface is a physical surface
 --		avoid flictering during page switch
+--	visible : start as visible
 --]]
 	if not opts then
 		opts = {}
 	end
+	opts.debug = AddStringIfExist(opts.debug, "/Surface")
 
-	local self = metaSurface( SelDCSurface.create(srf_w, srf_h) )
+	local self = metaSurface( SelDCSurface.create(srf_w, srf_h), srf_x, srf_y, srf_w, srf_h )
 
 	----
 	-- Fields
@@ -35,14 +37,6 @@ function Surface(
 		return primary_surface
 	end
 		
-	function self.getPos()	-- return the top-left of this surface
-		return srf_x, srf_y
-	end
-
-	function self.getSize()
-		return srf_w, srf_h
-	end
-
 	function self.getDisplayed()
 		return displayed
 	end
@@ -55,13 +49,26 @@ function Surface(
 			if type(primary_surface) == "table" then
 					-- Determine clipping area
 				if clipped then	-- Offset this surface
+if opts.debug then
+print(opts.debug, "(Srf)clipped")
+end
 					clipped[1] = clipped[1]+srf_x
 					clipped[2] = clipped[2]+srf_y
 				else
+if opts.debug then
+print(opts.debug, "(srf)pas clipped")
+end
 					clipped = { srf_x, srf_y, srf_w, srf_h }
 				end
+
 				if primary_surface.Clear then
-					primary_surface.Clear(clipped)	-- erase bellow
+if opts.debug then
+print(opts.debug, "(srf)clear() parent debut",unpack(clipped) )
+end
+					primary_surface.Clear( { clipped[1],clipped[2],clipped[3],clipped[4] } )	-- erase bellow
+if opts.debug then
+print(opts.debug, "(srf)clear() parent fin",unpack(clipped) )
+end
 				end
 
 				primary_surface.get():SaveContext()
@@ -70,7 +77,13 @@ function Surface(
 				primary_surface.get():RestoreContext()
 
 				if primary_surface.getDisplayed() then
-					primary_surface.Refresh(clipped)
+if opts.debug then
+print(opts.debug, "(srf)Refresh() parent",unpack(clipped) )
+end
+					primary_surface.Refresh( { clipped[1], clipped[2], clipped[3], clipped[4] } )
+if opts.debug then
+print(opts.debug, "(srf)Refresh() parent fin",unpack(clipped) )
+end
 				end
 			else
 				if clipped then
@@ -85,7 +98,7 @@ function Surface(
 				end
 			end
 elseif opts.debug then
-print("Surface", "not visible")
+print(opts.debug, "(srf)not visible")
 		end
 	end
 
@@ -113,6 +126,10 @@ print("Surface", "not visible")
 				end
 			end
 		end
+	end
+
+	if opts.visible then
+		self.Visibility( true )
 	end
 
 	return self

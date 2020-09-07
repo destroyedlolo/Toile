@@ -8,6 +8,9 @@ function Machine(
 	color,	-- name's color
 	opts
 )
+--[[ known options  :
+--	timeout - timeout to mark this surface as dead
+--]]
 	if not opts then
 		opts = {}
 	end
@@ -59,17 +62,20 @@ function Machine(
 	})
 
 	local wdcnt	-- Watchdog counter
-	local function watchdog()	-- ensure this host is still alive
+	function self.watchdog()	-- ensure this host is still alive
 		if wdcnt > 0 then
 			wdcnt = wdcnt - 1
 			if wdcnt == 0 then	-- Release this host
+if opts.debug then
+	print(name .. " lost")
+end
 				colentry.surface = nil	-- Release this place
 				name = nil
 				cpuload.getCollection():Clear()	-- Remove previous data
 				self.Clear()
 				self.Refresh()
 				self.Visibility(false)
-				wdTimer.TaskOnceRemove(watchdog)
+				wdTimer.TaskOnceRemove(self.watchdog)
 			end
 		end
 	end
@@ -99,7 +105,7 @@ function Machine(
 		srf_max.setGradient( gradient )
 
 		if opts.timeout then
-			wdTimer.TaskOnceAdd(watchdog)
+			wdTimer.TaskOnceAdd(self.watchdog)
 			wdcnt = opts.timeout
 		end
 	end
@@ -109,16 +115,13 @@ function Machine(
 	end
 
 	function self.Clear(clipped)	-- Fully remove this field
-		psrf.get():SaveContext()
 		if clipped then	-- Offset this surface
 			clipped[1] = clipped[1]+sx
 			clipped[2] = clipped[2]+sy
 		else
 			clipped = { sx,sy, sw,sh }
 		end
-		psrf.get():SetClipS( unpack(clipped) )	-- clear only this sub footprint
 		psrf.Clear( clipped )
-		psrf.get():RestoreContext()
 	end
 
 	function self.Decoration()	-- Clear then draw decorations

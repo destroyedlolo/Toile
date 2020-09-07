@@ -12,6 +12,8 @@ function Field(
 --	sample_text : text to use to compute the field width
 --	width, height : force the field's geometry
 --	bgcolor : background color
+--		( default : black )
+--		( false : no background color, only clear under surface ) 
 --	ndecimal : round to ndecimal
 --	ownsurface : it's not a subsurface but a real one that will be blited to
 --		the parent at refresh. Needed if it overlaps another one and draws
@@ -59,7 +61,12 @@ function Field(
 		psrf.get():RestoreContext()
 	end
 
-	if not opts.bgcolor then
+		-- Normalisation
+	x,y = math.ceil(x), math.ceil(y)
+	opts.width = math.ceil( opts.width )
+	opts.height = math.ceil( opts.height )
+
+	if not opts.bgcolor and opts.bgcolor ~= false then
 		opts.bgcolor = COL_BLACK
 	end
 	if not opts.timeoutcolor then
@@ -104,22 +111,13 @@ function Field(
 	-- Methods
 	----
 
-	function self.getHight()
-		return opts.height
-	end
-
-	function self.getAfter()
-		return x + opts.width, y
-	end
-
 	function self.Clear()
 		if psrf.Clear and opts.transparency then
-			psrf.get():SaveContext() -- In case of transparency
-			psrf.get():SetClipS(x,y, opts.width, opts.height )	-- clear only this sub footprint
 			psrf.Clear({x,y, opts.width, opts.height})
-			psrf.get():RestoreContext()
 		end
-		self.get():Clear( opts.bgcolor.get() )
+		if opts.bgcolor then
+			self.get():Clear( opts.bgcolor.get() )
+		end
 	end
 
 	function self.DrawStringOff( v, x,y )	-- Draw a string at the specified offset
@@ -136,6 +134,9 @@ function Field(
 	end
 
 	function self.updtxt( v )
+if opts.debug then
+print(">> updtxt", v)
+end
 		if opts.ndecimal then
 			v = string.format("%." .. (opts.ndecimal or 0) .. "f", tonumber(v))
 		end
@@ -146,9 +147,15 @@ function Field(
 			self.Clear()
 		end
 		self.DrawStringOff(v, 0,0)
+if opts.debug then
+print(">> Draw")
+end
 		if not opts.included then
 			self.Refresh()
 		end
+if opts.debug then
+print(">> fin updtxt", v)
+end
 	end
 
 	function self.ping()	-- Notify the value has been updated
@@ -162,6 +169,9 @@ function Field(
 	end
 
 	function self.update( v )	-- Callback when the field has to be updated
+if opts.debug then
+print("upd", v)
+end
 		val = v
 		if opts.gradient then
 			self.setColorRGB( opts.gradient.findgradientcolor(v) )
@@ -171,6 +181,9 @@ function Field(
 
 		self.updtxt( v )
 		self.ping()
+if opts.debug then
+print("fin upd", v)
+end
 	end
 
 	return self

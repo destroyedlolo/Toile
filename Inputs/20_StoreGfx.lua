@@ -7,6 +7,7 @@ function StoreGfx(
 --[[ known options  :
 --	forced_min : force the minimum value to display
 --	force_max_refresh : force refresh even if the max value doesn't change
+--	force_min_refresh : force refresh even if the min value doesn't change
 --		(usefull if Max overlap gfx with 'frozen under')
 --	width : width of the gfx surface (mostly useful when sgfx can't be provided as with OLed interface)
 --	smax : max surface

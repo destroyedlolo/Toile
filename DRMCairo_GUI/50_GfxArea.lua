@@ -38,30 +38,29 @@ function GfxArea(
 		opts.mode = 'range'
 	end
 
-	local self = SubSurface(psrf, sx,sy, sw,sh )
+	local self
+	if opts.ownsurface == true then
+		self = Surface(psrf, sx,sy, sw,sh, opts)
+		self.Visibility(true)
+	else
+		self = SubSurface(psrf, sx,sy, sw,sh, opts )
+	end
 
 	function self.getMode()
 		return opts.mode
-	end
-
-	function self.getAfter()
-		return sx+sw, sy
 	end
 
 	function self.Clear(
 		clipped -- clipping area from child (optional)
 	)
 		if psrf.Clear and opts.transparency then
-			psrf.get():SaveContext() -- In case of transparency
 			if clipped then	-- Offset this surface
 				clipped[1] = clipped[1]+sx
 				clipped[2] = clipped[2]+sy
 			else
 				clipped = { sx,sy, sw,sh }
 			end
-			psrf.get():SetClipS( unpack(clipped) )	-- clear only this sub footprint
 			psrf.Clear(clipped)
-			psrf.get():RestoreContext()
 		end
 
 		self.get():Clear( bgcolor.get() )	-- Then clear ourself
@@ -214,10 +213,10 @@ function GfxArea(
 				if opts.vlinesH then
 					local hr = os.date('%H',t)
 					if ansH and ansH ~= hr then
-						psrf.get():SaveContext()
+						self.get():SaveContext()
 						self.setColor( opts.vlinesH )
 						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHight())
-						psrf.get():RestoreContext()
+						self.get():RestoreContext()
 					end
 					ansH = hr
 				end
@@ -225,10 +224,10 @@ function GfxArea(
 				if opts.vlinesD then
 					local d = os.date('%d',t)
 					if ansD and ansD ~= d then
-						psrf.get():SaveContext()
+						self.get():SaveContext()
 						self.setColor( opts.vlinesD )
 						self.get():DrawLine(x*sx, 0, x*sx, self.get():GetHight())
-						psrf.get():RestoreContext()
+						self.get():RestoreContext()
 					end
 					ansD = d
 				end
