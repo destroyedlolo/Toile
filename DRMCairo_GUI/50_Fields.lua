@@ -134,6 +134,14 @@ function Field(
 	end
 
 	function self.updtxt( v )
+		if not v then
+			v = val
+
+			if not v then	-- Secure initialisation
+				return
+			end
+		end
+
 if opts.debug then
 print(">> updtxt", v)
 end
@@ -152,6 +160,8 @@ print(">> Draw")
 end
 		if not opts.included then
 			self.Refresh()
+elseif opts.debug then
+print(">>>> pas de refresh")
 		end
 if opts.debug then
 print(">> fin updtxt", v)
@@ -173,6 +183,10 @@ if opts.debug then
 print("upd", v)
 end
 		val = v
+		if not v then	-- Secure field initialisation
+			return
+		end
+
 		if opts.gradient then
 			self.setColorRGB( opts.gradient.findgradientcolor(v) )
 		else
