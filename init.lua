@@ -1,4 +1,4 @@
-TOILE_VERSION=6.1300
+TOILE_VERSION=6.1301
 
 -- Ensure we're not using obsolete version
 if SELPLUG_DRMCairo then

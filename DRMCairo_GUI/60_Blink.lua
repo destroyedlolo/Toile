@@ -53,6 +53,8 @@ function Blink(
 
 		if v then
 			val = v
+		else
+			keep = true
 		end
 
 		if keep == true then	-- Only refresh a subsurface
