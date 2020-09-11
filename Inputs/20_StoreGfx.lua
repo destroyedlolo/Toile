@@ -8,6 +8,7 @@ function StoreGfx(
 --	forced_min : force the minimum value to display
 --	force_max_refresh : force refresh even if the max value doesn't change
 --	force_min_refresh : force refresh even if the min value doesn't change
+--	force_field : force refresh of given field
 --		(usefull if Max overlap gfx with 'frozen under')
 --	width : width of the gfx surface (mostly useful when sgfx can't be provided as with OLed interface)
 --	smax : max surface
@@ -68,6 +69,14 @@ function StoreGfx(
 		if sgfx then	-- Only if a gfx surface is provided
 			sgfx.Refresh()
 		end
+	
+		if opts.force_field then
+if opts.debug then
+print(opts.debug, "field upd")
+end
+			opts.force_field.updtxt()
+		end
+
 	end
 
 	function self.adddtv( v )
