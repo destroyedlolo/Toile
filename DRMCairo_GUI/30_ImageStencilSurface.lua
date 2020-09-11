@@ -7,9 +7,14 @@ function ImageStencilSurface(
 	opts
 )
 --[[ known options :
+--	bgcolor : background color
 --]]
 	if not opts then
 		opts = {}
+	end
+
+	if not opts.bgcolor then
+		opts.bgcolor = COL_TRANSPARENT
 	end
 
 	local mask = SelDCSurfaceImage.createFromPNG( stencil )
@@ -25,7 +30,7 @@ end
 if opts.debug then
 print(opts.debug, "(ISS)clear")
 end
-		self.get():Clear( COL_TRANSPARENT.get() )
+		self.get():Clear( opts.bgcolor.get() )
 		if psrf.Clear then
 if opts.debug then
 print(opts.debug, "clear parent")
@@ -50,6 +55,7 @@ end
 		self.get():Blit( mask, 0,0 )
 		self.Refresh()
 	end
+	self.Clear()
 
 	return self
 end

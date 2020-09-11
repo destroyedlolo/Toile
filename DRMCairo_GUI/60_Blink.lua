@@ -48,15 +48,23 @@ function Blink(
 	end
 
 	function self.update( v, keep )
+		-- v : value du display (if nil, keep the same one)
+		-- keep : do no blink
+
+		if v then
+			val = v
+		else
+			keep = true
+		end
+
 		if keep == true then	-- Only refresh a subsurface
-			self.updtxt(v)
+			self.updtxt(val)
 			return
 		end
 			
 		cur_r,cur_g,cur_b,cur_a = COL_WHITE.get()
-		val = v
 		parent_setColorRGB( cur_r,cur_g,cur_b,cur_a )
-		parent_update(v)
+		parent_update(val)
 
 		fading = true
 		animTimer.TaskOnceAdd( fade )
