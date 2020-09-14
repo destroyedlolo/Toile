@@ -24,9 +24,6 @@ function GfxArea(
 --	transparency : the surfaces below must be refreshed as this one has 
 --		transparency. With this opt set, surfaces bellow are cleared first.
 --		Mostly useful when it has background image.
---
---	From DiretFB version : not yet used
---	noclear : don't call Clear() after FrozeUnder() - for gfx debuging purposes -
 --]]
 	if not opts then
 		opts = {}
@@ -75,6 +72,9 @@ function GfxArea(
 	function self.DrawGfx( data, amin )	-- Minimal graphics
 		self.Clear()
 
+if opts.debug then
+	print(opts.debug, "drawGfx")
+end
 			--
 			-- Calculate scales
 			--
@@ -85,6 +85,9 @@ function GfxArea(
 		else
 			min,max = data:MinMax()
 		end
+if opts.debug then
+	print(opts.debug, "collection", data:HowMany(), min, max)
+end
 	
 		if not min then	-- Nothing to display
 			return
@@ -199,8 +202,14 @@ function GfxArea(
 			self.setColor( color )
 		end
 
+if opts.debug then
+	print(opts.debug, "drawing", data:HowMany(), min, max)
+end
 		local ansH,ansD
 		for v,t,_ in data:iData() do
+if opts.debug then
+	print(opts.debug,  v,t,_, min,max, t == max)
+end
 			local vmax
 			if _ then	-- 2 values provided
 				vmax = t
@@ -238,6 +247,9 @@ function GfxArea(
 						self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
 					else
 						self.get():DrawLine(x*sx, h - (v-min)*sy, x*sx, h - (vmax-min)*sy)
+if opts.debug then
+	print(opts.debug, x*sx, h - (v-min)*sy, x*sx, h - (vmax-min)*sy)
+end
 					end
 				else		-- Draw single data
 					self.get():DrawLine((x-1)*sx, h - (y-min)*sy, x*sx, h - (v-min)*sy)
