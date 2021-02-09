@@ -25,11 +25,11 @@ function FAIdata( name,
 		local vtv = tv.get()
 		local vint = internet.get()
 
-		if vcap then
+		if vcap ~= 0 then
 			srf.update( vcap )
 		end
 
-		if vcap and vtv and vint and gauge then
+		if vcap ~=0 and vtv ~=0 and vint ~=0 and gauge ~=0 then
 			gauge.update( vcap, vtv, vint )
 		end
 	end
