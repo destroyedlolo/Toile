@@ -62,7 +62,7 @@ function ArcGaugePercent(
 	)
 		self.Clear()
 
-		if not capacity then
+		if not capacity or not tv then
 			self.Refresh()
 			return
 		end
