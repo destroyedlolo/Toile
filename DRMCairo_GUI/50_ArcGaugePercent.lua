@@ -62,11 +62,11 @@ function ArcGaugePercent(
 	)
 		self.Clear()
 
-		if not capacity or not tv then
+		if not capacity or not tv or not internet or tonumber(capacity) == 0 then
 			self.Refresh()
 			return
 		end
-			
+
 			-- calculate percentage
 		tv = tv*8 / capacity
 		internet = internet*8 / capacity
