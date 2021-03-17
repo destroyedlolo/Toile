@@ -29,9 +29,7 @@ function FAIdata( name,
 			srf.update( vcap )
 		end
 
-		if vcap ~=0 and vtv ~=0 and vint ~=0 and gauge ~=0 then
-			gauge.update( vcap, vtv, vint )
-		end
+		gauge.update( vcap, vtv, vint )
 	end
 
 	self.TaskOnceAdd( self.update )
