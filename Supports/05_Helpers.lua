@@ -89,7 +89,7 @@ end
 -- debuging
 
 function AddStringIfExist( str, add )
-	if str then
+	if type(str) == 'string' then
 		return str .. add
 	else
 		return nil
