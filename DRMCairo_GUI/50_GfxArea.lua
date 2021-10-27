@@ -24,6 +24,9 @@ function GfxArea(
 --	transparency : the surfaces below must be refreshed as this one has 
 --		transparency. With this opt set, surfaces bellow are cleared first.
 --		Mostly useful when it has background image.
+--
+--  CAUTION : Gradian is calculated ONLY for min/max value.
+--  	Consequently, INTERMEDIATES VALUES ARE IGNORED.
 --]]
 	if not opts then
 		opts = {}
