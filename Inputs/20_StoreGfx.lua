@@ -15,6 +15,7 @@ function StoreGfx(
 --	smin : min surface
 --	group : groups data by 'group' seconds
 --	rangeMin, rangeMax : reject data outside range
+--	save_locally : flags to retrieve from local backup (to be handled externaly)
 --]]
 	if not opts then
 		opts = {}
@@ -36,6 +37,10 @@ function StoreGfx(
 
 	function self.getCollection()
 		return dt
+	end
+
+	function self.getLocal()
+		return opts.save_locally
 	end
 
 	function self.updmaxmin()	-- Update min/max fields
