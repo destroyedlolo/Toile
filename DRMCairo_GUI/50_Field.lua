@@ -122,12 +122,12 @@ function Field(
 
 	function self.DrawStringOff( v, x,y )	-- Draw a string at the specified offset
 		local srf = self.get()
-		local tsz = self.get():GetStringExtents(v)
+		local tsz = self.get():GetStringExtents(v) + 1
 
 		if opts.align == ALIGN_RIGHT or opts.align == ALIGN_FRIGHT then
-			srf:DrawStringTop( v, srf:GetWidth() - tsz - x, y )
+			srf:DrawStringTop( v, math.floor(srf:GetWidth() - tsz - x), y )
 		elseif opts.align == ALIGN_CENTER then
-			srf:DrawStringTop( v, (srf:GetWidth() - tsz)/2 - x, y )
+			srf:DrawStringTop( v, math.floor((srf:GetWidth() - tsz)/2 - x), y )
 		else	-- left
 			srf:DrawStringTop( v, x,y )
 		end
