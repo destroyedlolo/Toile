@@ -32,14 +32,17 @@ function MQTTinput(aname, atpc, afunc, opts)
 		SelShared.Set( self.getName(), v )
 	end
 
+		-- Submit registered tasks
 	function self.TaskSubmit()
 		SubTasks( tasks )
 	end
 
+		-- Submit registered once tasks
 	function self.TaskOnceSubmit()
 		SubTasks( tasksonce, true )
 	end
 
+		-- Data received : submit registered tasks
 	function self.received()
 		self.TaskSubmit()
 		self.TaskOnceSubmit()
@@ -75,6 +78,21 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 	function self.TaskOnceRemove( func )
 		TableTaskRemove( tasksonce, func )
+	end
+
+		-- Notify an object when a data is received
+		-- mostly useful when more than one objects have to be notifed
+		-- It's update() will be called (as once task).
+		-- It must retrieve by itself the value (by a SelShared)
+		-- See VuMeter for an example
+		--
+		-- -> obj : object to be notified
+		-- -> varname : name of the SelShared variable to query (optional)
+	function self.NotifObject( obj, varname )
+		if varname then
+			obj.varname = varname
+		end
+		self.TaskOnceAdd( obj.update )
 	end
 
 	function self.list()
