@@ -82,8 +82,8 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 		-- Notify an object when a data is received
 		-- mostly useful when more than one objects have to be notifed
-		-- It's update() will be called (as once task).
-		-- It must retrieve by itself the value (by a SelShared)
+		-- Its update() will be called as once task.
+		-- It must retrieve by itself the value by a SelShared
 		-- See VuMeter for an example
 		--
 		-- -> obj : object to be notified
