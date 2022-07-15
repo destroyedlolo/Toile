@@ -156,7 +156,7 @@ end
 		end
 		self.DrawStringOff(v, 0,0)
 if opts.debug then
-print(">> Draw")
+print(">> Draw", v)
 end
 		if not opts.included then
 			self.Refresh()
