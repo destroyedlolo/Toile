@@ -13,9 +13,35 @@ function StoreGfx(
 --	width : width of the gfx surface (mostly useful when sgfx can't be provided as with OLed interface)
 --	smax : max surface
 --	smin : min surface
---	group : groups data by 'group' seconds
 --	rangeMin, rangeMax : reject data outside range
 --	save_locally : flags to retrieve from local backup (to be handled externaly)
+--	group : groups data by 'group' seconds
+--	average : number of values in average collection
+--
+--	Mode :
+--	------
+--
+--	example 1 :
+--		no group provided	-> store raw data
+--		no average provided
+--
+--		=> use SelTimedCollection
+--
+--	example 2 :
+--		group = 60		-> provide min/max of every minutes (whatever the sample rate)
+--		no average provided
+--
+--		=> use SelTimedWindowCollection
+--
+--	example 3 :	(providing data come every seconds)
+--
+--		group = 60		-> average are calculated on minute basis (60 seconds)
+--		average = 120	-> store 120 average of minutes so 2 hours
+--
+--		=> use SelAverageCollection
+--
+--	NOTEZ-BIEN : if average === true, average is set equal to width
+--
 --]]
 	if not opts then
 		opts = {}
@@ -26,10 +52,20 @@ function StoreGfx(
 		opts.width = sgfx.get():GetWidth()
 	end
 
-	if opts.group then
-		dt = SelTimedWindowCollection.Create( opts.width, opts.group )
+	if not opts.average then
+		if opts.group then
+			dt = SelTimedWindowCollection.Create( opts.width, opts.group )
+		else
+			dt = SelTimedCollection.Create( opts.width )
+		end
 	else
-		dt = SelTimedCollection.Create( opts.width )
+		if not opts.group then
+			error("group option must be provided if opts.average is provided",2)
+		end
+		if opts.average == true then
+			opts.average = opts.width
+		end
+		dt = SelAverageCollection.Create( opts.width, opts.average, opts.group )
 	end
 
 	local self = {}
@@ -47,11 +83,17 @@ function StoreGfx(
 		local min,max
 		if sgfx and sgfx.getMode() == 'delta' then
 			min,max = dt:DiffMinMax()
+			if not min then	-- The collection is still emtpy
+				return
+			end
 		else
 			min,max = dt:MinMax()
-		end
-		if not min then	-- The collection is still emtpy
-			return
+			if not min then	-- The collection is still emtpy
+				return
+			end
+
+			min = math.floor(min)
+			max = math.floor(max)
 		end
 
 		if opts.smax and (not ansmax or max ~= ansmax or opts.force_max_refresh) then
