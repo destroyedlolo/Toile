@@ -1,8 +1,8 @@
-TOILE_VERSION=6.1600
+TOILE_VERSION=6.1701
 
 -- Ensure we're not using obsolete version
 if SELPLUG_DRMCairo then
-	assert( SELENE_VERSION >= 6.0300, "HDB requires at least Selene v6.03.00" )
+	assert( SELENE_VERSION >= 6.1401, "HDB requires at least Selene v6.14.01" )
 else
 	assert( SELENE_VERSION >= 5.0100, "HDB requires at least Selene v5.01.00" )
 end
