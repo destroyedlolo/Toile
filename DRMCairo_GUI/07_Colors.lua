@@ -32,3 +32,10 @@ COL_ORANGED = Color( 0.25, 0.14, 0, 1 )
 COL_GREEND = Color( 0, 0.19, 0, 1 )
 COL_DIGITD = Color( 0, 0.25, 0.25, 1 )
 
+
+COL_REDAVG = Color( 0.75, 0, 0, 1 )
+COL_ORANGEAVG = Color( 0.75, 0.41, 0, 1 )
+COL_GREENAVG = Color( 0, 0.59, 0, 1 )
+COL_BLUEAVG = Color( 0, 0.38, 0.75, 1 )
+COL_DIGITAVG = Color( 0, 0.75, 0.75, 1 )
+
