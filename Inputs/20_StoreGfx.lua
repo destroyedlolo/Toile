@@ -17,6 +17,7 @@ function StoreGfx(
 --	save_locally : flags to retrieve from local backup (to be handled externaly)
 --	group : groups data by 'group' seconds
 --	average : number of values in average collection
+--	minmax_round ; if set, round the average min/max value (i.e. "%.3f" -> 0.001)
 --
 --	Mode :
 --	------
@@ -92,8 +93,15 @@ function StoreGfx(
 				return
 			end
 
-			min = math.floor(min)
-			max = math.floor(max)
+			if opts.minmax_round then
+				if type(opts.minmax_round) == "string" then
+					min = tonumber(string.format(opts.minmax_round, min))
+					max = tonumber(string.format(opts.minmax_round, max))
+				else
+					min = math.floor(min)
+					max = math.ceil(max)
+				end
+			end
 		end
 
 		if opts.smax and (not ansmax or max ~= ansmax or opts.force_max_refresh) then
