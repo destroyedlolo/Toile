@@ -2,7 +2,7 @@
 
 --[[
 --	logs are stored in a FIFO.
---	Data that have to be shared with the slave thread are stored in a SelShared
+--	Data that have to be shared with the slave thread are stored in a SelSharedVar
 --	as bellow :
 --	$$name$$<topic> - FIFO's name
 --	$$udata$$<topic> - Udata associated with this topic
@@ -21,15 +21,15 @@ function MQTTLog( aname, atpc,	-- 1st topic
 
 	local fifo = SelFIFO.Create(aname)			-- Create the named fifo
 
-	SelShared.Set("$$udata$$" .. atpc, aopts.udata) -- Share its udata
+	SelSharedVar.Set("$$udata$$" .. atpc, aopts.udata) -- Share its udata
 
 		-- Function to be launched at message arrival
 		-- Stored as shared function as called from both main topic
 		-- and additional ones
-	local rcvfunc = SelShared.RegisterSharedFunction( 
+	local rcvfunc = SelSharedFunction.Register( 
 		function (topic, data)
-			local name = SelShared.Get("$$name$$" .. topic)
-			local udata = SelShared.Get("$$udata$$" .. topic)
+			local name = SelSharedVar.Get("$$name$$" .. topic)
+			local udata = SelSharedVar.Get("$$udata$$" .. topic)
 
 			local fifo = SelFIFO.Find( name )
 			SelFIFO.Push2FIFO(fifo, data, udata)
@@ -59,7 +59,7 @@ function MQTTLog( aname, atpc,	-- 1st topic
 			opts = {}
 		end
 		opts.udata = opts.udata or 0
-		SelShared.Set("$$udata$$" .. tpc, opts.udata) -- Share its udata
+		SelSharedVar.Set("$$udata$$" .. tpc, opts.udata) -- Share its udata
 		opts.taskonce = self.DisplayCallBack
 
 		return MQTTinput( name, tpc, rcvfunc, opts)

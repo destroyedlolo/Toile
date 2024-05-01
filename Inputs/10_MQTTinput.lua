@@ -13,7 +13,7 @@ function MQTTinput(aname, atpc, afunc, opts)
 	if not opts then
 		opts = {}
 	end
-	SelShared.Set("$$name$$" .. atpc, aname)	-- Save the name for this topic
+	SelSharedVar.Set("$$name$$" .. atpc, aname)	-- Save the name for this topic
 
 	
 	local self = MQTTdata(aname, atpc, opts)
@@ -24,12 +24,12 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 	-- methods
 	function self.get()
-		return SelShared.Get( SelShared.Get("$$name$$" .. atpc) )
---		return SelShared.Get( self.getName() )
+		return SelSharedVar.Get( SelSharedVar.Get("$$name$$" .. atpc) )
+--		return SelSharedVar.Get( self.getName() )
 	end
 
 	function self.set( v )
-		SelShared.Set( self.getName(), v )
+		SelSharedVar.Set( self.getName(), v )
 	end
 
 		-- Submit registered tasks
@@ -54,7 +54,7 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 	function self.TaskAdd( func )
 		if TableTasksAdd( tasks, func ) == false then
-			SelLog.log('E',"MQTTinput.TaskAdd( NULL )")
+			SelLog.Log('E',"MQTTinput.TaskAdd( NULL )")
 			return
 		end
 	end
@@ -68,7 +68,7 @@ function MQTTinput(aname, atpc, afunc, opts)
 
 	function self.TaskOnceAdd( func )
 		if TableTasksAdd( tasksonce, func ) == false then
-			SelLog.log('E',"MQTTinput.TaskAdd( NULL )")
+			SelLog.Log('E',"MQTTinput.TaskAdd( NULL )")
 			return
 		end
 	end
@@ -83,11 +83,11 @@ function MQTTinput(aname, atpc, afunc, opts)
 		-- Notify an object when a data is received
 		-- mostly useful when more than one objects have to be notifed
 		-- Its update() will be called as once task.
-		-- It must retrieve by itself the value by a SelShared
+		-- It must retrieve by itself the value by a SelSharedVar
 		-- See VuMeter for an example
 		--
 		-- -> obj : object to be notified
-		-- -> varname : name of the SelShared variable to query (optional)
+		-- -> varname : name of the SelSharedVar variable to query (optional)
 	function self.NotifObject( obj, varname )
 		if varname then
 			obj.varname = varname
@@ -96,13 +96,13 @@ function MQTTinput(aname, atpc, afunc, opts)
 	end
 
 	function self.list()
-		SelLog.log('d', self.getName() .. " : Tasks " .. #tasks .. ' / ' .. #tasksonce)
+		SelLog.Log('d', self.getName() .. " : Tasks " .. #tasks .. ' / ' .. #tasksonce)
 	end
 
 	-- initialiser
 	local function rcvdt(tp, v)
-		local name = SelShared.Get("$$name$$" .. tp)
-		SelShared.Set( name, v )
+		local name = SelSharedVar.Get("$$name$$" .. tp)
+		SelSharedVar.Set( name, v )
 		return true
 	end
 
