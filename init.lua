@@ -1,10 +1,10 @@
 TOILE_VERSION=7.0000
 
 -- Ensure Selene's modules are loaded
-assert(SelTimer, "SelTimer us needed")
-assert(SelSharedVar, "SelSharedVar us needed")
-assert(SelFIFO, "SelFIFO us needed")
-assert(SelSharedFunction, "SelSharedFunction us needed")
+assert(SelTimer, "SelTimer is needed")
+assert(SelSharedVar, "SelSharedVar is needed")
+assert(SelFIFO, "SelFIFO is needed")
+assert(SelSharedFunction, "SelSharedFunction is needed")
 
 -- compatibility with newer Lua
 -- local unpack = unpack or table.unpack

@@ -57,7 +57,7 @@ function StoreGfx(
 		if opts.group then
 			dt = SelTimedWindowCollection.Create( opts.width, opts.group )
 		else
-			dt = SelTimedCollection.Create( opts.width )
+			dt = SelTimedCollection.Create(nil, opts.width)
 		end
 	else
 		if not opts.group then
@@ -66,7 +66,7 @@ function StoreGfx(
 		if opts.average == true then
 			opts.average = opts.width
 		end
-		dt = SelAverageCollection.Create( opts.width, opts.average, opts.group )
+		dt = SelAverageCollection.Create(nil, opts.width, opts.average, opts.group )
 	end
 
 	local self = {}

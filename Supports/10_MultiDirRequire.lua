@@ -31,6 +31,7 @@ function MultiDirRequire(
 		table.sort(keys)
 
 		for _,k in ipairs(keys) do
+			SelLog.Log('L', files[k] .. ' loading')
 			require( files[k] )
 			SelLog.Log('L', files[k] .. ' loaded')
 		end
