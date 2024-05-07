@@ -24,9 +24,9 @@ function MQTTStoreGfx(
 	end
 
 	if opts.group then
-		dt = SelTimedWindowCollection.Create( opts.width, opts.group )
+		dt = SelTimedWindowCollection.Create( name, opts.width, opts.group )
 	else
-		dt = SelTimedCollection.Create( opts.width )
+		dt = SelTimedCollection.Create( name, opts.width )
 	end
 	local ansmax, ansmin
 ]]

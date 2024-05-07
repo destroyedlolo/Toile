@@ -55,7 +55,7 @@ function StoreGfx(
 
 	if not opts.average then
 		if opts.group then
-			dt = SelTimedWindowCollection.Create( opts.width, opts.group )
+			dt = SelTimedWindowCollection.Create( nil, opts.width, opts.group )
 		else
 			dt = SelTimedCollection.Create(nil, opts.width)
 		end
