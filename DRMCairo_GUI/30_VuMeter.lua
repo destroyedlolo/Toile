@@ -66,7 +66,7 @@ function VuMeter(
 
 	function self.update( v )	-- Callback when the field has to be updated
 		if not v then	-- if called from tasks list
-			v = SelShared.Get( self.varname )
+			v = SelSharedVar.Get( self.varname )
 		end
 
 		if not v then	-- Secure field initialisation

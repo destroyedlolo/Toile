@@ -153,7 +153,7 @@ end
 			-- Submit gfx refreshing tasks
 			-- don't do it in this function to avoir race condition
 			-- if data are received in too fast way
-		SelShared.PushTask( self.updgfx, SelShared.TaskOnceConst("LAST") )
+		Selene.PushTask( self.updgfx, Selene.TaskOnceConst("LAST") )
 	end
 
 	return self
