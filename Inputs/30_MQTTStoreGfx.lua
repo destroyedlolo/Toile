@@ -24,15 +24,15 @@ function MQTTStoreGfx(
 	end
 
 	if opts.group then
-		dt = SelTimedWindowCollection.Create( opts.width, opts.group )
+		dt = SelTimedWindowCollection.Create( name, opts.width, opts.group )
 	else
-		dt = SelTimedCollection.Create( opts.width )
+		dt = SelTimedCollection.Create( name, opts.width )
 	end
 	local ansmax, ansmin
 ]]
 
 	local self = MQTTDisplay( name, topic, srf, opts )
-	local strgfx = StoreGfx( sgfx, opts )
+	local strgfx = StoreGfx( name, sgfx, opts )
 
 		-- Merge objects
 	for k,v in pairs(strgfx) do self[k] = v end

@@ -15,7 +15,7 @@ function MultiDirRequire(
 			local found, len, res = f:find("^(.*)%.[^%.]*$")
 			if found and attr.mode == 'file' and res:sub(1,1) ~= '.' and f:match("^.+(%..+)$") ~= '.md' and string.len(res) ~= 0 then
 				if files[res] then
-					SelLog.log('E', res .. ' erasing "' .. files[res] ..'"')
+					SelLog.Log('E', res .. ' erasing "' .. files[res] ..'"')
 				end
 				files[res] = dir ..'/'.. res
 			end
@@ -31,8 +31,9 @@ function MultiDirRequire(
 		table.sort(keys)
 
 		for _,k in ipairs(keys) do
+			SelLog.Log('L', files[k] .. ' loading')
 			require( files[k] )
-			SelLog.log('L', files[k] .. ' loaded')
+			SelLog.Log('L', files[k] .. ' loaded')
 		end
 	end
 

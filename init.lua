@@ -1,11 +1,10 @@
-TOILE_VERSION=6.1703
+TOILE_VERSION=7.0001
 
--- Ensure we're not using obsolete version
-if SELPLUG_DRMCairo then
-	assert( SELENE_VERSION >= 6.1401, "HDB requires at least Selene v6.14.01" )
-else
-	assert( SELENE_VERSION >= 5.0100, "HDB requires at least Selene v5.01.00" )
-end
+-- Ensure Selene's modules are loaded
+assert(SelTimer, "SelTimer is needed")
+assert(SelSharedVar, "SelSharedVar is needed")
+assert(SelFIFO, "SelFIFO is needed")
+assert(SelSharedFunction, "SelSharedFunction is needed")
 
 -- compatibility with newer Lua
 -- local unpack = unpack or table.unpack
@@ -30,7 +29,7 @@ function loaddir(path, dir )
 
 	for _,res in ipairs( t ) do
 		require('Toile/' .. dir ..'/'.. res)
-		SelLog.log('L', dir ..'/'.. res .. ' loaded')
+		SelLog.Log('L', dir ..'/'.. res .. ' loaded')
 	end
 end
 
@@ -38,20 +37,22 @@ end
 local info = debug.getinfo(1,'S');
 local whereiam = string.match(info.source, "@(.-)([^\\/]-%.?([^%.\\/]*))$")
 
-SelLog.log('Loading Toile v'.. TOILE_VERSION ..' ...' )
+SelLog.Log('Loading Toile v'.. TOILE_VERSION ..' ...' )
 loaddir(whereiam, 'Supports')
 wdTimer = bipTimer(1)	-- Wathdog timer
 
 loaddir(whereiam, 'Inputs')
 
-if SELPLUG_DRMCairo then	-- DRMCairo used
+if SelDCCard then	-- DRMCairo used
 	animTimer = bipTimer(.25)	-- Animation timer
 	loaddir(whereiam, 'DRMCairo_GUI')
-elseif SELPLUG_OLED then -- OLED used
+elseif SelOLED then -- OLED used
 	loaddir(whereiam, 'OLed')
+--[[
 elseif SELPLUG_DFB then	-- DirectFB used
 	animTimer = bipTimer(.25)	-- Animation timer
 	loaddir(whereiam, 'DirectFB_GUI')
+--]]
 else
 	error("No graphical layer found")
 end

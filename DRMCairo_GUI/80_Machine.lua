@@ -55,7 +55,7 @@ function Machine(
 		transparency = true
 	} )
 
-	local cpuload = StoreGfx( srf_trnd, {
+	local cpuload = StoreGfx(nil, srf_trnd, {
 		forced_min = 0,
 		smax = srf_max,
 		force_max_refresh = true

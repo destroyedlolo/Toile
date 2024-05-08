@@ -18,18 +18,18 @@ end
 -- Topic convertion
 
 function Topic2Number( t, v )
-	SelShared.set(t, tonumber(v))
+	SelSharedVar.set(t, tonumber(v))
 	return true
 end
 
 function Topic2NumberTTL( t, v, to )
 -- to : ttl de la variable, en seconde
-	SelShared.set(t, tonumber(v), to)
+	SelSharedVar.set(t, tonumber(v), to)
 	return true
 end
 
 function TopicDate2Number( t, v )
-	SelShared.set(t, TXT2DMS(v))
+	SelSharedVar.set(t, TXT2DMS(v))
 	return true
 end
 
@@ -65,9 +65,9 @@ end
 function SubTasks( tasks, aonce )
 	local once
 	if aonce then
-		once = SelShared.TaskOnceConst("LAST")
+		once = Selene.TaskOnceConst("LAST")
 	else
-		once = SelShared.TaskOnceConst("MULTIPLE")
+		once = Selene.TaskOnceConst("MULTIPLE")
 	end
 	
 		
@@ -78,10 +78,10 @@ function SubTasks( tasks, aonce )
 	for z,t in ipairs( tasks ) do
 		if type(t) == 'table' then
 			for i,j in ipairs(t) do
-				SelShared.PushTask( j, once )
+				Selene.PushTask( j, once )
 			end
 		else
-			SelShared.PushTask( t, once )
+			Selene.PushTask( t, once )
 		end
 	end
 end
