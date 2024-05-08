@@ -1,6 +1,7 @@
 -- Trace data collection
 
 function StoreGfx(
+	name,	-- Name of this collection
 	sgfx,	-- surface to display the graphic (may be nil, opts.width must be provided)
 	opts
 )
@@ -55,9 +56,9 @@ function StoreGfx(
 
 	if not opts.average then
 		if opts.group then
-			dt = SelTimedWindowCollection.Create( nil, opts.width, opts.group )
+			dt = SelTimedWindowCollection.Create(name, opts.width, opts.group)
 		else
-			dt = SelTimedCollection.Create(nil, opts.width)
+			dt = SelTimedCollection.Create(name, opts.width)
 		end
 	else
 		if not opts.group then
@@ -66,7 +67,7 @@ function StoreGfx(
 		if opts.average == true then
 			opts.average = opts.width
 		end
-		dt = SelAverageCollection.Create(nil, opts.width, opts.average, opts.group )
+		dt = SelAverageCollection.Create(name, opts.width, opts.average, opts.group)
 	end
 
 	local self = {}

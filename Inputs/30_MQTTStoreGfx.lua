@@ -32,7 +32,7 @@ function MQTTStoreGfx(
 ]]
 
 	local self = MQTTDisplay( name, topic, srf, opts )
-	local strgfx = StoreGfx( sgfx, opts )
+	local strgfx = StoreGfx( name, sgfx, opts )
 
 		-- Merge objects
 	for k,v in pairs(strgfx) do self[k] = v end

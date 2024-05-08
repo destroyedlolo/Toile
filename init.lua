@@ -1,4 +1,4 @@
-TOILE_VERSION=7.0000
+TOILE_VERSION=7.0001
 
 -- Ensure Selene's modules are loaded
 assert(SelTimer, "SelTimer is needed")
